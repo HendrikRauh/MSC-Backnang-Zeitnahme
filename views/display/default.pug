@@ -1,0 +1,33 @@
+extends /base.pug
+
+append variables
+    - baseTitle = "Display - Standard"
+
+append scripts 
+    script(src="/websocket.js")
+
+append styles
+    link(rel="stylesheet" href="display.css")
+
+append content 
+    #last-entry.card
+        .last-entry-details
+            #totalTime #{lastRun.time.formatedDriveTime} #{(lastRun.penalty!=null) ? "(+" + lastRun.penalty + "s)" : ""}
+        .value #{lastRun.driver.firstName} - #{lastRun.driver.drivingClass} - #{lastRun.vehicle.name}
+        .value #{lastRun.notes}
+
+    #last-times-driver.card
+        table 
+            tr 
+                th Fahrzeit 
+                th Strafsekunden
+                th Gesamtzeit
+                th Fahrzeug
+                th Notiz
+            for run in allDriverRuns 
+                tr
+                    td #{run.time.formatedDriveTime}
+                    td #{run.penalty}
+                    td #{run.time.formatedTotalTime}
+                    td #{run.vehicle.name}
+                    td #{run.notes}

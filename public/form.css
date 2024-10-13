@@ -1,0 +1,144 @@
+button:disabled {
+    background-color: var(--color-primary-disabled);
+}
+
+option,
+select {
+    font-size: 16px;
+    color: var(--color-text);
+    font-family: Arial, sans-serif;
+    text-align: center;
+    font-weight: bold;
+    height: auto;
+}
+
+button {
+    font-size: 16px;
+    color: var(--color-text);
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    margin: var(--big-spacing) 0;
+    padding: var(--big-spacing);
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    border-radius: var(--border-radius);
+    opacity: 1;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.emoji button{
+    font-size: 1.5rem;
+}
+
+button:hover:not(:disabled) {
+    background-color: var(--color-primary-hover);
+}
+
+button:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.form-row {
+    position: relative;
+    display: flex;
+}
+
+.input-field {
+    min-width: 130px;
+    width: 100%;
+    padding: var(--big-spacing);
+    border: 1px solid var(--color-text);
+    border-radius: 8px;
+    outline: 0;
+    background-color: transparent;
+    color: var(--color-text);
+    box-sizing: border-box;
+    transition: border 0.3s;
+}
+
+.input-field:focus {
+    border-color: var(--color-accent);
+}
+
+label {
+    font-size: 16px;
+    padding: 0 8px;
+    position: absolute;
+    top: 50%;
+    left: 8px;
+    transform: translateY(-50%);
+
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    pointer-events: none;
+
+    transition: top 0.3s;
+}
+
+input {
+    font-size: 16px;
+    color: var(--color-text);
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+}
+
+.input-field:focus ~ .label,
+.input-field:not(:placeholder-shown) ~ .label {
+    background-color: var(--color-background);
+    top: 0;
+}
+
+.input-field:focus ~ .label {
+    color: var(--color-accent);
+}
+
+.input-field:hover:not(:focus) {
+    border-color: var(--color-primary);
+}
+
+input.input-field::-webkit-outer-spin-button,
+input.input-field::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"].input-field {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+button {
+    display: block;
+    margin-bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+select {
+    flex-grow: 2;
+    color: var(--color-text);
+    border: 1px solid var(--color-text);
+    background-color: var(--color-surface);
+    padding: var(--big-spacing);
+    border-radius: 8px;
+}
+
+label:has(~ select) {
+    margin-bottom: 8px;
+    display: inline-block;
+}
+
+select:hover:not(:focus):not(:disabled) {
+    border-color: var(--color-primary);
+}
+
+select:focus {
+    border-color: var(--color-accent);
+}

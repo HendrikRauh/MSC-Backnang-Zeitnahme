@@ -1,0 +1,38 @@
+body {
+    background-color: var(--color-background);
+    font-size: 16px;
+    color: var(--color-text);
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 10px;
+    font-weight: bold;
+    height: auto;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    align-content: center;
+    padding: 10px;
+    margin: 10px;
+}
+
+*:disabled {
+    cursor: not-allowed;
+}
+
+.hidden {
+    display: none !important;
+    width: 0 !important;
+}

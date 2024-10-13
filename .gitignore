@@ -1,0 +1,18 @@
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+
+# Package manager
+package-lock.json
+
+# Database files
+*.sqlite
+*.sqlite-journal
+
+# Node modules folder
+node_modules
+
+# Personal Data
+insertDriversFromFile.json

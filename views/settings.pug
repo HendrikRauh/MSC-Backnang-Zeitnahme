@@ -1,0 +1,42 @@
+extends /base.pug
+
+append scripts 
+    script(src="/settings.js")
+
+append styles
+    link(rel="stylesheet" href="settings.css")
+    link(rel="stylesheet" href="form.css")
+
+append variables
+    - baseTitle = "Einsetellungen"
+
+append content
+    h1.display Displaymode
+        select(name="displayMode" id="displayMode")
+            option(value="ranking" selected=(displayMode==="ranking")) Rangliste
+            option(value="default" selected=(displayMode==="default")) Standard
+    hr
+    h1.drivers Fahrer auswählen und sortieren
+        .row
+            .btn-group
+                button(id = "activate" disabled) 🟢 AKTIVIEREN
+                button(id = "deactivate" disabled) 🔴 DEAKTIVIEREN
+            button(id = "deactivateAll" disabled) 🔁 RESET
+            .btn-group.hidden
+                button.hidden(id = "moveUp" disabled) ⬆️ HOCH
+                button.hidden(id = "moveDown" disabled) ⬇️ RUNTER
+            button(id = "save" disabled) 💾 SPEICHERN
+        .driverSelektors
+            .driverSel
+                h2 Aktive Fahrer
+                select(name="activeDrivers" id="activeDrivers" size=activeDrivers.length overflow="hidden" disabled=activeDriversEmpty) 
+                    for driver in activeDrivers
+                        option(value=driver.id) #{driver.firstName} #{driver.lastName} (#{driver.drivingClass})
+            .driverSel
+                h2 Inaktive Fahrer
+                select(name="inactiveDrivers" id="inactiveDrivers" multiple size=inactiveDrivers.length overflow="hidden" disabled=inactiveDriversEmpty)
+                    for driver in inactiveDrivers
+                        option(value=driver.id) #{driver.firstName} #{driver.lastName} (#{driver.drivingClass})
+    hr
+    h1.data Daten 
+        button(id = "resetData" disabled=disableResetButton) ALLE ZEITEN ZURÜCKSETZEN

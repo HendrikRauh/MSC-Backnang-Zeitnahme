@@ -1,0 +1,54 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+model Driver {
+    id            Int      @id @default(autoincrement())
+    firstName     String
+    lastName      String
+    drivingClass  String
+    birthYear     Int?
+    trainingGroup String
+    vehicle       Vehicle? @relation(fields: [vehicleId], references: [id])
+    vehicleId     Int?
+    active        Boolean  @default(false)
+    Time          Time[]
+}
+
+model Vehicle {
+    id          Int      @id @default(autoincrement())
+    name        String
+    description String?
+    Time        Time[]
+    Driver      Driver[]
+}
+
+model Time {
+    id        Int      @id @default(autoincrement())
+    driver    Driver?  @relation(fields: [driverId], references: [id])
+    driverId  Int?
+    vehicle   Vehicle? @relation(fields: [vehicleId], references: [id])
+    vehicleId Int?
+    penalty   Int?
+    notes     String?
+
+    startTime   TimeStamp  @relation("Startzeit", fields: [startTimeId], references: [id])
+    startTimeId Int
+    endTime     TimeStamp? @relation("Endzeit", fields: [endTimeId], references: [id])
+    endTimeId   Int?
+    active      Boolean    @default(true)
+}
+
+model TimeStamp {
+    id        Int      @id @default(autoincrement())
+    timestamp DateTime @unique
+    friendly  String?  @unique
+    active    Boolean  @default(true)
+    startTime Time[]   @relation("Startzeit")
+    endTime   Time[]   @relation("Endzeit")
+}

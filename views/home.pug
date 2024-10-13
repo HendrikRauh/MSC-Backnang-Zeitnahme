@@ -1,0 +1,20 @@
+extends /base.pug
+
+append variables
+    - baseTitle = "HOME"
+
+append styles
+    link(rel="stylesheet" href="home.css")
+
+append content
+    h1 #{baseTitle} - ZEITNAHME
+        .container
+            a(href="/display") Anzeige
+            a(href="/operation") Steuerung
+            hr
+            a(href="/settings") Einstellungen
+            a(href="/info") Systeminformationen
+            hr
+            a(href="/times") Alle Zeiten
+            hr
+            a(href="/database") Daten bearbeiten

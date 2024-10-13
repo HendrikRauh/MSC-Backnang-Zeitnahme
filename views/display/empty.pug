@@ -1,0 +1,13 @@
+extends /base.pug
+
+append variables
+    - baseTitle = "Display - NO DATA"
+
+append scripts 
+    script(src="/websocket.js")
+
+append styles
+    link(rel="stylesheet" href="display.css")
+
+append content 
+    h1 Keine Daten vorhanden!

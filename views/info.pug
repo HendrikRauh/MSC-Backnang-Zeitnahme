@@ -1,0 +1,30 @@
+extends /base.pug
+
+append variables
+    - baseTitle = "Info"
+
+append styles
+    link(rel="stylesheet" href="info.css")
+
+append content
+    h1 #{baseTitle} - ZEITNAHME
+    .container.info
+        if addresses
+            table 
+                tr
+                    th IP-Adresse
+                    th QR-Code
+                for address in addresses
+                    tr
+                        td #{address.ip}
+                        td 
+                            img(src=address.qr)
+        else
+            p Um von anderen Geräten auf die Anzeige zugreifen zu können müssen beide Geräte im selben Netzwerk sein.
+    .footer
+        .copyright 
+            p © #{new Date().getFullYear()} Hendrik Rauh
+        .contact 
+            | Bei Problemen oder Wünschen bitte ein Ticket via Mail unter 
+            a(href="mailto: hrmscbk@gmail.com") hrmscbk@gmail.com
+            |  erstellen.

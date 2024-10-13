@@ -1,0 +1,17 @@
+-- CreateTable
+CREATE TABLE "Vehicle" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" TEXT NOT NULL,
+    "description" TEXT
+);
+
+-- CreateTable
+CREATE TABLE "Time" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "timestamp" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "timeRaw" TEXT NOT NULL,
+    "penalty" INTEGER NOT NULL,
+    "notes" TEXT,
+    CONSTRAINT "Time_id_fkey" FOREIGN KEY ("id") REFERENCES "Driver" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "Time_id_fkey" FOREIGN KEY ("id") REFERENCES "Vehicle" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);

@@ -1,0 +1,47 @@
+#notes {
+    flex-grow: 3;
+}
+
+#penaltyR {
+    flex-grow: 1;
+}
+
+#new {
+    font-size: 40px;
+    margin-top: 0px;
+}
+
+#deleteTime, #deleteStarted, #deleteEnded {
+    width: min-content;
+    height: min-content;
+    margin: 0;
+}
+
+#deleteTime {
+    margin-top: 1rem;
+}
+
+.row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+h1.disconnected, .disconnected *  {
+    color: var(--color-danger);
+    border-color: var(--color-danger);
+}
+
+select:disabled {
+    background-color: var(--color-background);
+    color: var(--color-text-disabled);
+}
+
+button {
+    width: 100%;
+}

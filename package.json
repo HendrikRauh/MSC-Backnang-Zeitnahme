@@ -1,0 +1,53 @@
+{
+    "name": "msc-backnang-zeitnahme",
+    "version": "2.0.0",
+    "description": "New Version of a simple programm to track times of drivers for karting sport",
+    "main": "app.js",
+    "dependencies": {
+        "@pm2/io": "^6.0.1",
+        "@prisma/client": "5.20.0",
+        "@serialport/parser-readline": "^12.0.0",
+        "chokidar": "^3.6.0",
+        "colors": "^1.4.0",
+        "dotenv": "^16.4.5",
+        "express": "^4.21.0",
+        "express-rate-limit": "^7.4.0",
+        "express-session": "^1.18.0",
+        "helmet": "^7.2.0",
+        "play-sound": "^1.1.6",
+        "prisma": "^5.20.0",
+        "pug": "^3.0.3",
+        "qrcode": "^1.5.4",
+        "serialport": "^12.0.0",
+        "speaker": "^0.5.5",
+        "ws": "^8.18.0"
+    },
+    "devDependencies": {},
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/HendrikRauh/MSC-Backnang-Zeitnahme.git"
+    },
+    "keywords": [
+        "sport",
+        "karting",
+        "time",
+        "timing",
+        "stopwatch",
+        "Hendrik",
+        "Rauh",
+        "Motorsportclub",
+        "ADAC"
+    ],
+    "author": {
+        "name": "Hendrik Rauh",
+        "email": "h.rauh@outlook.com"
+    },
+    "license": "",
+    "bugs": {
+        "url": "https://github.com/HendrikRauh/MSC-Backnang-Zeitnahme/issues"
+    },
+    "homepage": "https://github.com/HendrikRauh/MSC-Backnang-Zeitnahme#readme"
+}

@@ -1,0 +1,33 @@
+extends /base.pug
+
+append variables
+    - baseTitle = "Display - Ranking"
+
+append scripts 
+    script(src="/websocket.js")
+
+append styles
+    link(rel="stylesheet" href="display.css")
+
+append content 
+    h1 Rangliste
+    table
+        tr
+            th Platz
+            th Fahrer
+            th Klasse
+            th Fahrzeit
+            th Strafe 
+            th Gesamtzeit
+            th Fahrzeug
+            th Notiz
+        for run in bestTimes
+            tr
+                td #{run.position}
+                td #{run.driver.firstName} #{run.driver.lastName}
+                td #{run.driver.drivingClass}
+                td #{run.time.formatedDriveTime}
+                td #{run.penalty}
+                td #{run.time.formatedTotalTime}
+                td #{run.vehicle.name}
+                td #{run.notes}

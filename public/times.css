@@ -1,0 +1,15 @@
+option {
+    color: var(--color-text);
+    background-color: var(--color-background);
+    border: none;
+}
+
+/* odd table */
+tbody tr:nth-child(odd) {
+    background-color: var(--color-table-odd-row) !important;
+}
+
+td,
+th {
+    text-align: right !important;
+}

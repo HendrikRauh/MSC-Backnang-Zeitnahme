@@ -1,0 +1,46 @@
+extends /base.pug
+
+append variables
+    - baseTitle = "Zeiten"
+
+append scripts 
+    script(src="/times.js" defer)
+    script(src="/datatables.min.js")
+
+append styles
+    link(rel="stylesheet" href="times.css")
+    link(rel="stylesheet" href="datatables.min.css")
+
+append content 
+    h1 Alle Zeiten
+    table#times
+        thead 
+            tr
+                th ID
+                th Fahrer 
+                th Klasse
+                th Rohzeit
+                th Fahrzeit
+                th Strafe
+                th Gesamtzeit
+                th Fahrzeug
+                th Notiz
+                th X
+        tbody
+            for run in times
+                tr
+                    td #{run.id}
+                    td #{run.driver.firstName} #{run.driver.lastName}
+                    td #{run.driver.drivingClass}
+                    td #{run.time.time}
+                    td #{run.time.formatedDriveTime}
+                    td #{run.penalty}
+                    td #{run.time.formatedTotalTime}
+                    td #{run.vehicle.name}
+                    td #{run.notes}
+                    td
+                        button.delete(data-id=run.id) Löschen
+    button#exportCSV CSV
+    button#exportPDF PDF
+    button#exportXLSX Excel
+    button#print Drucken

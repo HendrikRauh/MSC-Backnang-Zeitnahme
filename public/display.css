@@ -1,0 +1,53 @@
+.value {
+    font-size: calc(2vw + 2vh);
+    margin-bottom: 0;
+}
+
+#totalTime {
+    margin-top: 0;
+    font-size: calc(9vw + 3vh);
+    font-weight: bolder;
+}
+
+.card,
+#fullscreenToggle {
+    background-color: var(--color-surface);
+    border-radius: var(--border-radius);
+    padding: 10px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    text-align: center;
+    min-width: max-content;
+    min-height: max-content;
+    max-width: 100%;
+    max-height: 100%;
+    justify-content: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    height: 100%;
+    font-size: calc(1vw + 1vh);
+}
+
+table,
+th,
+td {
+    border: 1px solid var(--color-table-border);
+    text-align: center;
+    padding: 5px 10px;
+}
+
+th {
+    background-color: var(--color-table-header);
+    font-size: 0.75rem;
+}
+
+tr:nth-child(odd) {
+    background-color: var(--color-table-odd-row);
+}
+

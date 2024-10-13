@@ -1,0 +1,43 @@
+extends /base.pug
+
+append variables
+    - baseTitle = "Anleitung"
+
+append content
+    h1 #{baseTitle} - ZEITNAHME
+    h2 Start
+    ol
+        li Laptop hochfahren
+        li EASYSTART auf dem Desktop ausführen
+        li Lichtschranke aufbauen und anschließen
+        li Wenn die Passwortabfrage da ist "Rauh" eingeben
+        li Verbindung mit der Lichtschranke herstellen..Prolific..
+        li Schnittstelle zu Excel herstellen
+        li data.xlxs laden (Ordner:./zeitnahme-bridge/data/)
+        li Fahrer einlesen / anlegen (Ordner:./zeitnahme-bridge/Fahrerlisten/)
+    hr
+    h2 Abbau
+    ol
+        li Eingabemaske schließen
+        li Excel schließen
+        li Laptop herunterfahren
+        li Lichtschranke abbauen
+    hr
+    h2 Reset der Daten
+    ol
+        li Aktuelle Läufe fertig bearbeiten
+        li DATENRESET auf Desktop starten
+        li In dem geöffnetem Fenster mit j bestätigen
+        li Excelschnittstelle erneut verbinden
+        li Data.xlxs erneut einlesen
+    hr
+    h2 Update auf die neueste Version
+    ol
+        li Internetverbindung herstellen
+        li UPDATE auf Desktop starten
+        li Warten bis alle Terminalfenster geschlossen sind
+    hr
+    h2 Probleme
+    ol
+        li Alle Fenster schließen
+        li EASYSTART ausführen

@@ -1,0 +1,65 @@
+extends /base.pug
+
+append variables
+    - baseTitle = "Steuerung"
+
+append styles
+    link(rel="stylesheet" href="operation.css")
+    link(rel="stylesheet", href="form.css")
+
+append scripts 
+    script(src="/operation.js")
+
+append content
+    - let timestampsEmpty = timestamps.length < 1
+    - let driversEmpty = drivers.length < 1
+    - let vehiclesEmpty = vehicles.length < 1
+    - let startedEmpty = timesStarted.length < 1
+    - let endedEmpty = timesEnded.length < 1	
+    h1(class=portOpened ? "connected" : "disconnected" id="title") #{portOpened ? "" : "Uhr verbinden und neuladen!"}
+        .container.operation
+            .row#timestamps
+                select(name="new" id="new" disabled=timestampsEmpty)
+                    if timestampsEmpty 
+                        option Kein Zeitstempel
+                    for timestamp in timestamps
+                        option(value=timestamp.timestamp) #{timestamp.friendly}
+                button(id = "deleteTime" disabled=timestampsEmpty) ❌
+            .row
+                    select(name="drivers" id="drivers" disabled=driversEmpty)
+                        if driversEmpty
+                            option Kein Fahrer vorhanden
+                        for driver in drivers
+                            option(value=driver.id) #{driver.firstName} #{driver.lastName} (#{driver.drivingClass})
+
+                    select(name="vehicles" id="vehicles" disabled=vehiclesEmpty)
+                        if vehiclesEmpty
+                            option Kein Fahrzeug vorhanden
+                        for vehicle in vehicles
+                            option(value=vehicle.id) #{vehicle.name} (#{vehicle.description})
+
+            button(id = "start" disabled=driversEmpty||vehiclesEmpty||timestampsEmpty) Start
+
+            .row
+                select(name="started" id="started" disabled=startedEmpty)
+                    if startedEmpty
+                        option Kein gestarteter Lauf
+                    for time in timesStarted
+                        option(value=time.id) #{time.driver.firstName} #{time.driver.lastName} (#{time.vehicle.name} | #{time.startTime.friendly}🟢)
+                button(id = "deleteStarted" disabled=startedEmpty) ❌
+            button(id = "end" disabled=startedEmpty||timestampsEmpty) Ziel
+
+            .row
+                select(name="ended" id="ended" disabled=endedEmpty)
+                    if endedEmpty
+                        option Kein beendeter Lauf ohne Daten
+                    for time in timesEnded
+                        option(value=time.id) #{time.driver.firstName} #{time.driver.lastName} (#{time.endTime.friendly}🔴 | #{time.formatedDriveTime}⏱️)
+                .form-row#penaltyR
+                    input.input-field(type="number" id="penalty" min="0" step="2" placeholder=" ")
+                    label.label(for="penalty") Strafsekunden
+                .form-row#notes
+                    input.input-field(type="textarea" id="note" placeholder=" ")
+                    label.label(for="note") Notiz
+                button(id="deleteEnded" disabled=endedEmpty) ❌
+            button(id = "save" disabled=endedEmpty) Speichern

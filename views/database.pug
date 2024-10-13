@@ -1,0 +1,15 @@
+extends /base.pug
+
+append variables
+    - baseTitle = "Datenbank"
+
+append styles
+    link(rel="stylesheet" href="database.css")
+
+append scripts
+    script(src="database.js") 
+
+append content
+    h1 Datenbank wird geladen...
+        p#dbPort #{dbPort}
+    iframe(id="database")
