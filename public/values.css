@@ -8,7 +8,6 @@
 
     --color-on-primary: #000000;
 
-
     /* ACCENT COLORS */
 
     --color-accent: #d86207;
@@ -17,7 +16,6 @@
     --color-accent-disabled: #b0b0b0;
 
     --color-on-accent: #ffffff;
-
 
     /* SEMANTIC COLORS */
 
@@ -30,7 +28,6 @@
     --color-info: #388cfa;
     --color-info-hover: #2f6dbf;
 
-
     /* MAIN COLORS */
 
     --color-background: #1c1b1e;
@@ -38,7 +35,6 @@
     --color-text: #ffffff;
     --color-text-disabled: #a0a0a0;
     --color-border: #3a3a3a;
-
 
     /* TABLE */
 
@@ -49,14 +45,12 @@
     --color-table-border: #3a3a3a;
     --thickness-table-border: 1px;
 
-
     /* ID-CARDS */
 
     --color-idcard-background: #f5f5f5;
     --color-idcard-surface: #ffffff;
     --color-idcard-text: #000000;
     --border-idcard-outer: 1mm;
-
 
     /* DIMENSIONS */
 
@@ -65,11 +59,9 @@
     --spacing: 10px;
     --media-max-width: 400px;
 
-
     /* ANIMATIONS */
 
     --transition-duration: 0.3s;
-
 
     /* DIMENSIONS */
 
@@ -79,14 +71,12 @@
     --big-spacing: 16px;
     --media-max-width: 400px;
 
-
     /* ANIMATIONS */
 
     --transition-duration: 0.3s;
-}   
+}
 
 body.light {
-
     /* MAIN COLORS */
 
     --color-background: #f5f5f5;
@@ -94,7 +84,6 @@ body.light {
     --color-text: #000000;
     --color-text-disabled: #a0a0a0;
     --color-border: #e0e0e0;
-
 
     /* TABLE COLORS */
 

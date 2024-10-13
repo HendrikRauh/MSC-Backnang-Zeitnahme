@@ -50,4 +50,3 @@ th {
 tr:nth-child(odd) {
     background-color: var(--color-table-odd-row);
 }
-
