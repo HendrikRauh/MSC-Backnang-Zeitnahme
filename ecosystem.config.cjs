@@ -3,7 +3,7 @@ const env = {};
 module.exports = {
     apps: [
         {
-            name: "MSC-Zeitnahme",
+            name: "MSC-Backnang-Zeitnahme",
             script: "app.js",
             watch: false,
             // ignore_watch: ["node_modules", ".git"],
