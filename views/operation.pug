@@ -5,7 +5,7 @@ append variables
 
 append styles
     link(rel="stylesheet" href="operation.css")
-    link(rel="stylesheet", href="form.css")
+    link(rel="stylesheet" href="form.css")
 
 append scripts 
     script(src="/operation.js")
@@ -26,17 +26,17 @@ append content
                         option(value=timestamp.timestamp) #{timestamp.friendly}
                 button(id = "deleteTime" disabled=timestampsEmpty) ❌
             .row
-                    select(name="drivers" id="drivers" disabled=driversEmpty)
-                        if driversEmpty
-                            option Kein Fahrer vorhanden
-                        for driver in drivers
-                            option(value=driver.id) #{driver.firstName} #{driver.lastName} (#{driver.drivingClass})
+                select(name="drivers" id="drivers" disabled=driversEmpty)
+                    if driversEmpty
+                        option Kein Fahrer vorhanden
+                    for driver in drivers
+                        option(value=driver.id) #{driver.firstName} #{driver.lastName} (#{driver.drivingClass})
 
-                    select(name="vehicles" id="vehicles" disabled=vehiclesEmpty)
-                        if vehiclesEmpty
-                            option Kein Fahrzeug vorhanden
-                        for vehicle in vehicles
-                            option(value=vehicle.id) #{vehicle.name} (#{vehicle.description})
+                select(name="vehicles" id="vehicles" disabled=vehiclesEmpty)
+                    if vehiclesEmpty
+                        option Kein Fahrzeug vorhanden
+                    for vehicle in vehicles
+                        option(value=vehicle.id) #{vehicle.name} (#{vehicle.description})
 
             button(id = "start" disabled=driversEmpty||vehiclesEmpty||timestampsEmpty) Start
 
