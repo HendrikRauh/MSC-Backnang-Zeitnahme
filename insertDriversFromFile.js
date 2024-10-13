@@ -4,7 +4,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const drivers = JSON.parse(
-    fs.readFileSync(path.join(__dirname, "insertDriversFromFile.json"), "utf-8")
+    fs.readFileSync(path.join(__dirname, "insertDriversFromFile.json"), "utf8")
 );
 
 async function main() {

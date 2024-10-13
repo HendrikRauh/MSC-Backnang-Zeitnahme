@@ -51,10 +51,10 @@ async function refreshData() {
         const doc = parser.parseFromString(text, "text/html");
 
         // Extract the innerHTML of the body
-        const newBodyContent = doc.body.innerHTML;
+        const newBodyContent = doc.body.textContent;
 
         // Replace the current body content with the new one
-        document.body.innerHTML = newBodyContent;
+        document.body.innerText = newBodyContent;
         if (
             storedNew &&
             document.querySelector("option[value='" + storedNew + "']")
