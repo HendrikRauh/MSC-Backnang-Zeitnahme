@@ -10,9 +10,9 @@
         "chokidar": "^3.6.0",
         "colors": "^1.4.0",
         "dotenv": "^16.4.5",
-        "express": "^4.21.0",
-        "express-rate-limit": "^7.4.0",
-        "express-session": "^1.18.0",
+        "express": "^4.21.1",
+        "express-rate-limit": "^7.4.1",
+        "express-session": "^1.18.1",
         "helmet": "^7.2.0",
         "play-sound": "^1.1.6",
         "prisma": "^5.20.0",
@@ -22,7 +22,6 @@
         "speaker": "^0.5.5",
         "ws": "^8.18.0"
     },
-    "devDependencies": {},
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
