@@ -303,17 +303,17 @@ function getTime(startTime, endTime, penalty = 0) {
 
     const driveTime = endTime - startTime;
 
-    formatedDriveTime = formatDuration(driveTime);
+    formattedDriveTime = formatDuration(driveTime);
 
-    formatedTotalTime = formatDuration(driveTime + penalty * 1000);
+    formattedTotalTime = formatDuration(driveTime + penalty * 1000);
 
     console.log(
-        `Calculated time: ${driveTime}, formattedDriveTime: ${formatedDriveTime}, formattedTotalTime: ${formatedTotalTime}`
+        `Calculated time: ${driveTime}, formattedDriveTime: ${formattedDriveTime}, formattedTotalTime: ${formattedTotalTime}`
     );
     return {
         time: driveTime,
-        formatedDriveTime: formatedDriveTime,
-        formatedTotalTime: formatedTotalTime,
+        formattedDriveTime: formattedDriveTime,
+        formattedTotalTime: formattedTotalTime,
     };
 }
 
@@ -627,7 +627,7 @@ async function fetchOperationData() {
                 time.startTime.timestamp,
                 time.endTime.timestamp
             );
-            time.formatedDriveTime = timeData.formatedDriveTime;
+            time.formattedDriveTime = timeData.formattedDriveTime;
         }
     }
 

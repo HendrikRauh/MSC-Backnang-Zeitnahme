@@ -54,7 +54,7 @@ append content
                     if endedEmpty
                         option Kein beendeter Lauf ohne Daten
                     for time in timesEnded
-                        option(value=time.id) #{time.driver.firstName} #{time.driver.lastName} (#{time.endTime.friendly}🔴 | #{time.formatedDriveTime}⏱️)
+                        option(value=time.id) #{time.driver.firstName} #{time.driver.lastName} (#{time.endTime.friendly}🔴 | #{time.formattedDriveTime}⏱️)
                 .form-row#penaltyR
                     input.input-field(type="number" id="penalty" min="0" step="2" placeholder=" ")
                     label.label(for="penalty") Strafsekunden

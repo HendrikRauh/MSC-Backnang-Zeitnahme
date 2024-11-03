@@ -1,7 +1,7 @@
 {
     "name": "msc-backnang-zeitnahme",
     "version": "2.0.0",
-    "description": "New Version of a simple programm to track times of drivers for karting sport",
+    "description": "New Version of a simple program to track times of drivers for karting sport",
     "main": "app.js",
     "dependencies": {
         "@pm2/io": "^6.0.1",
