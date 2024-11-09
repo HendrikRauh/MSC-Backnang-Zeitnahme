@@ -1,3 +1,6 @@
+@echo off
+cd ..
+
 call pm2 stop ecosystem.config.cjs
 call npx prisma generate
 call npx prisma migrate dev --name init
