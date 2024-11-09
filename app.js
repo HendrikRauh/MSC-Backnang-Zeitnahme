@@ -86,19 +86,8 @@ server.listen(port, () => {
     startPrismaStudio();
     console.log(`Server is running on port ${port}`.green);
 
-    playSound("./announcement.wav");
-
     handleSerialPort();
 });
-
-const Speaker = require("speaker");
-
-function playSound(filePath) {
-    const fileStream = fs.createReadStream(filePath);
-    const speaker = new Speaker();
-
-    fileStream.pipe(speaker);
-}
 
 /**
  * Error handler
@@ -260,9 +249,6 @@ async function parseSerialData(data) {
                 friendly: formatTimestamp(date),
             },
         });
-
-        // play soundfile via the speakers
-        playSound("./bell.wav");
     } else {
         console.error(`No time found in data, accumulating more data...`);
         console.error(`Accumulated data: ${accumulatedData}`);

@@ -14,12 +14,10 @@
         "express-rate-limit": "^7.4.1",
         "express-session": "^1.18.1",
         "helmet": "^7.2.0",
-        "play-sound": "^1.1.6",
         "prisma": "^5.20.0",
         "pug": "^3.0.3",
         "qrcode": "^1.5.4",
         "serialport": "^12.0.0",
-        "speaker": "^0.5.5",
         "ws": "^8.18.0"
     },
     "scripts": {
