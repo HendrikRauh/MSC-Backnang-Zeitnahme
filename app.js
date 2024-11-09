@@ -577,10 +577,10 @@ async function fetchOperationData() {
     let drivers = await runQuery(async (prisma) => {
         return prisma.driver.findMany({
             orderBy: {
-                firstName: "asc",
+                active: "asc",
             },
             where: {
-                active: true,
+                active: { not: null },
             },
         });
     });
@@ -670,16 +670,16 @@ async function fetchTimeData() {
 async function fetchSettingsData() {
     const activeDrivers = await prisma.driver.findMany({
         where: {
-            active: true,
+            active: { not: null },
         },
         orderBy: {
-            firstName: "asc",
+            active: "asc",
         },
     });
 
     const inactiveDrivers = await prisma.driver.findMany({
         where: {
-            active: false,
+            active: null,
         },
         orderBy: {
             firstName: "asc",
@@ -962,7 +962,7 @@ app.post("/save-drivers", async (req, res) => {
     try {
         await prisma.driver.updateMany({
             data: {
-                active: false,
+                active: null,
             },
         });
 
@@ -972,7 +972,7 @@ app.post("/save-drivers", async (req, res) => {
                     id: parseInt(drivers[i]),
                 },
                 data: {
-                    active: true,
+                    active: i,
                 },
             });
         }
