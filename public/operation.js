@@ -1,5 +1,6 @@
 // file deepcode ignore UseSecureWebsockets: <please specify a reason of ignoring this>
 const socket = new WebSocket("ws://" + window.location.host);
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 socket.addEventListener("open", (event) => {
     console.log("WebSocket Client Connected");
@@ -26,8 +27,32 @@ socket.addEventListener("close", (event) => {
     });
 });
 
+async function loadAudio(url) {
+    const response = await fetch(url);
+    const arrayBuffer = await response.arrayBuffer();
+    return await audioContext.decodeAudioData(arrayBuffer);
+}
+
+async function playAudio(audioBuffer) {
+    const source = audioContext.createBufferSource();
+    source.buffer = audioBuffer;
+    source.connect(audioContext.destination);
+    source.start();
+}
+
+async function playBackgroundSound(soundUrl) {
+    try {
+        const audioBuffer = await loadAudio(soundUrl);
+
+        await playAudio(audioBuffer);
+    } catch (error) {
+        console.error("Error playing background sound:", error);
+    }
+}
+
 async function refreshData() {
     // Save the current selection index
+    playBackgroundSound("notification.mp3");
     var storedNew = document.getElementById("new").value;
     var storedStarted = document.getElementById("started").value;
     var storedDriver = document.getElementById("drivers").value;
