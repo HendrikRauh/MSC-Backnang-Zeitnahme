@@ -16,7 +16,7 @@ echo #Installing PM2
 call npm install -g pm2
 
 echo #Linking PM2
-call pm2 link uya5t4t5nmc2omi qauke1wfo0unsp0 ZEITNAHME
+call pm2 link uya5t4t5nmc2omi qauke1wfo0unsp0
 
 echo #Install git
 start /wait "" "%~dp0Git-2.47.0-64-bit.exe"
