@@ -681,9 +681,14 @@ async function fetchSettingsData() {
         where: {
             active: null,
         },
-        orderBy: {
-            firstName: "asc",
-        },
+        orderBy: [
+            {
+                trainingGroup: "asc",
+            },
+            {
+                firstName: "asc",
+            },
+        ],
     });
 
     const time = await prisma.time.findFirst({
