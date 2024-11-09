@@ -1,0 +1,14 @@
+extends /base.pug
+
+append variables
+    - baseTitle = "Display - Standalone"
+
+append scripts 
+    script(src="/websocket.js")
+
+append styles
+    link(rel="stylesheet" href="display.css")
+
+append content 
+    #standaloneMain #{main}
+    #standaloneSub #{sub}

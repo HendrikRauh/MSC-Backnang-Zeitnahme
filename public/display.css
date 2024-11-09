@@ -9,6 +9,16 @@
     font-weight: bolder;
 }
 
+#standaloneMain{
+    font-size: calc(10vw + 5vh);
+    font-weight: bolder;
+}
+
+#standaloneSub{
+        font-size: calc(7vw + 2vh);
+    font-weight: bolder;
+}
+
 .card,
 #fullscreenToggle {
     background-color: var(--color-surface);
@@ -50,3 +60,5 @@ th {
 tr:nth-child(odd) {
     background-color: var(--color-table-odd-row);
 }
+
+#
