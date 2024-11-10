@@ -27,7 +27,7 @@ const WebSocket = require("ws");
 
 const CONFIG = dotenv.config().parsed;
 const prisma = new PrismaClient({
-    log: ["query", "info", "warn", "error"],
+    log: ["warn", "error"],
 });
 const port = CONFIG.PORT || 3000;
 const dbPort = CONFIG.PRISMA_STUDIO_PORT || 5555;
