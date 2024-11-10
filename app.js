@@ -547,6 +547,48 @@ async function fetchRankingData() {
     return { bestTimes: ranking };
 }
 
+async function fetchStandaloneData() {
+    const lastTimestamps = await prisma.timeStamp.findMany({
+        where: {
+            active: true,
+        },
+        orderBy: {
+            timestamp: "desc",
+        },
+        take: 4,
+    });
+    try {
+        main = getTime(
+            lastTimestamps[1].timestamp,
+            lastTimestamps[0].timestamp
+        ).formattedDriveTime;
+    } catch {
+        if (lastTimestamps.length == 0) {
+            return;
+        } else if (lastTimestamps.length == 1) {
+            return { main: "--:--:---", sub1: "", sub2: "" };
+        }
+    }
+    try {
+        sub1 = getTime(
+            lastTimestamps[2].timestamp,
+            lastTimestamps[1].timestamp
+        ).formattedDriveTime;
+    } catch {
+        return { main, sub1: "--:--:---", sub2: "" };
+    }
+
+    try {
+        sub2 = getTime(
+            lastTimestamps[3].timestamp,
+            lastTimestamps[2].timestamp
+        ).formattedDriveTime;
+    } catch {
+        return { main, sub1, sub2: "--:--:---" };
+    }
+    return { main, sub1, sub2 };
+}
+
 async function fetchOperationData() {
     await handleSerialPort();
     const timestamps = await runQuery(async (prisma) => {
@@ -761,6 +803,10 @@ app.get("/display", async (req, res) => {
             case "ranking":
                 data = await fetchRankingData();
                 templateName = "display/ranking";
+                break;
+            case "standalone":
+                data = await fetchStandaloneData();
+                templateName = "display/standalone";
                 break;
             default:
                 return res.status(400).send("Unsupported display mode");
