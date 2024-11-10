@@ -548,8 +548,8 @@ async function fetchRankingData() {
 }
 
 async function fetchStandaloneData() {
-    // return the last to times (secondlast timestamp - last timestamp and thirdlast ts - secondlast ts)
-
+    sub1 = "--:--,---";
+    sub2 = "--:--,---";
     const lastTimestamps = await prisma.timeStamp.findMany({
         where: {
             active: true,
@@ -557,22 +557,35 @@ async function fetchStandaloneData() {
         orderBy: {
             timestamp: "desc",
         },
-        take: 3,
+        take: 4,
     });
 
-    console.log(lastTimestamps);
+    try {
+        main = getTime(
+            lastTimestamps[1].timestamp,
+            lastTimestamps[0].timestamp
+        ).formattedDriveTime;
+    } catch {
+        return;
+    }
+    try {
+        sub1 = getTime(
+            lastTimestamps[2].timestamp,
+            lastTimestamps[1].timestamp
+        ).formattedDriveTime;
+    } catch {
+        return { main };
+    }
 
-    main = getTime(
-        lastTimestamps[1].timestamp,
-        lastTimestamps[0].timestamp
-    ).formattedDriveTime;
-
-    sub = getTime(
-        lastTimestamps[2].timestamp,
-        lastTimestamps[1].timestamp
-    ).formattedDriveTime;
-
-    return { main: main, sub: sub };
+    try {
+        sub2 = getTime(
+            lastTimestamps[3].timestamp,
+            lastTimestamps[2].timestamp
+        ).formattedDriveTime;
+    } catch {
+        return { main, sub1 };
+    }
+    return { main, sub1, sub2 };
 }
 
 async function fetchOperationData() {
