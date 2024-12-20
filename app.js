@@ -22,6 +22,7 @@ const session = require("express-session");
 const { PrismaClient } = require("@prisma/client");
 const { SerialPort } = require("serialport");
 const WebSocket = require("ws");
+const utility = require("./src/utility");
 
 //* ----------------- VARIABLES -----------------
 
@@ -199,7 +200,7 @@ async function generateTimestamp() {
     await prisma.timeStamp.create({
         data: {
             timestamp: time,
-            friendly: formatTimestamp(time),
+            friendly: utility.formatTimestamp(time),
         },
     });
 }
@@ -246,7 +247,7 @@ async function parseSerialData(data) {
         await prisma.timeStamp.create({
             data: {
                 timestamp: date,
-                friendly: formatTimestamp(date),
+                friendly: utility.formatTimestamp(date),
             },
         });
     } else {
@@ -272,80 +273,6 @@ async function runQuery(query) {
             await prisma.$disconnect();
             process.exit(1);
         });
-}
-
-/**
- * Calculates the time between two timestamps and formats it as a string.
- * @param {string} startTime The start time as a string.
- * @param {string} endTime The end time as a string.
- * @param {number} penalty The penalty time in seconds.
- */
-function getTime(startTime, endTime, penalty = 0) {
-    console.log(
-        `Calculating time with startTime: ${startTime}, endTime: ${endTime}, penalty: ${penalty}`
-    );
-    startTime = new Date(startTime).getTime();
-    endTime = new Date(endTime).getTime();
-
-    const driveTime = endTime - startTime;
-
-    formattedDriveTime = formatDuration(driveTime);
-
-    formattedTotalTime = formatDuration(driveTime + penalty * 1000);
-
-    console.log(
-        `Calculated time: ${driveTime}, formattedDriveTime: ${formattedDriveTime}, formattedTotalTime: ${formattedTotalTime}`
-    );
-    return {
-        time: driveTime,
-        formattedDriveTime: formattedDriveTime,
-        formattedTotalTime: formattedTotalTime,
-    };
-}
-
-/**
- * Formats a duration in milliseconds as a string.
- * @param {number} durationMs The duration in milliseconds.
- * @returns {string} The formatted duration as a string.
- */
-function formatDuration(durationMs) {
-    console.log(`Formatting duration: ${durationMs}`);
-    let formattedString = "";
-
-    const totalSeconds = Math.floor(durationMs / 1000);
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-    const milliseconds = Math.floor(durationMs % 1000);
-
-    if (hours > 0) {
-        formattedString += String(hours).padStart(2, "0") + ":";
-    }
-
-    if (minutes > 0 || hours > 0) {
-        formattedString += String(minutes).padStart(2, "0") + ":";
-    }
-
-    formattedString += String(seconds).padStart(2, "0");
-    formattedString += "," + String(milliseconds).padStart(3, "0");
-
-    console.log(`Formatted duration: ${formattedString}`);
-    return formattedString;
-}
-
-/**
- * Formats a timestamp as a string.
- * @param {Date} timestamp The timestamp to format.
- * @returns {string} The formatted timestamp as a string.
- */
-function formatTimestamp(timestamp) {
-    console.log(`Formatting timestamp: ${timestamp}`);
-    return timestamp.toLocaleTimeString("de-de", {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        fractionalSecondDigits: 3,
-    });
 }
 
 /**
@@ -448,7 +375,7 @@ async function fetchDefaultDisplayData() {
         return null;
     }
 
-    lastRun.time = await getTime(
+    lastRun.time = await utility.getTime(
         lastRun.startTime.timestamp,
         lastRun.endTime.timestamp,
         lastRun.penalty
@@ -509,7 +436,7 @@ async function fetchRankingData() {
     for (let time of times) {
         let bestTime = bestTimes.get(time.driverId);
 
-        const currentTime = getTime(
+        const currentTime = await utility.getTime(
             time.startTime.timestamp,
             time.endTime.timestamp,
             time.penalty
@@ -558,7 +485,7 @@ async function fetchStandaloneData() {
         take: 4,
     });
     try {
-        main = getTime(
+        main = await utility.getTime(
             lastTimestamps[1].timestamp,
             lastTimestamps[0].timestamp
         ).formattedDriveTime;
@@ -570,7 +497,7 @@ async function fetchStandaloneData() {
         }
     }
     try {
-        sub1 = getTime(
+        sub1 = await utility.getTime(
             lastTimestamps[2].timestamp,
             lastTimestamps[1].timestamp
         ).formattedDriveTime;
@@ -579,7 +506,7 @@ async function fetchStandaloneData() {
     }
 
     try {
-        sub2 = getTime(
+        sub2 = await utility.getTime(
             lastTimestamps[3].timestamp,
             lastTimestamps[2].timestamp
         ).formattedDriveTime;
@@ -651,7 +578,7 @@ async function fetchOperationData() {
 
     for (let time of timesEnded) {
         if (time.startTime && time.endTime) {
-            const timeData = getTime(
+            const timeData = await utility.getTime(
                 time.startTime.timestamp,
                 time.endTime.timestamp
             );
@@ -761,7 +688,7 @@ async function fetchTimes() {
     });
 
     for (let i = 0; i < times.length; i++) {
-        times[i].time = await getTime(
+        times[i].time = await await utility.getTime(
             times[i].startTime.timestamp,
             times[i].endTime.timestamp,
             times[i].penalty
