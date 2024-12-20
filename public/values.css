@@ -2,6 +2,7 @@
     /* PRIMARY COLORS */
 
     --color-background: #221f22;
+    --color-card: #2d2a2e;
     --color-text: #fefaf9;
     --color-red: #ff6188;
     --color-orange: #fc9867;
@@ -38,6 +39,7 @@
 
 body.light {
     --color-background: #fefaf9;
+    --color-card: #f1eae9;
     --color-text: #221f22;
     --color-red: #e14775;
     --color-orange: #e16032;

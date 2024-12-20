@@ -9,23 +9,23 @@
     font-weight: bolder;
 }
 
-#standaloneMain{
+#standaloneMain {
     font-size: calc(10vw + 5vh);
     font-weight: bolder;
 }
 
-#standaloneSub1{
+#standaloneSub1 {
     font-size: calc(7vw + 2vh);
     font-weight: bolder;
 }
-#standaloneSub2{ 
+#standaloneSub2 {
     font-size: calc(6vw + 1vh);
     font-weight: bolder;
 }
 
 .card,
 #fullscreenToggle {
-    background-color: var(--color-surface);
+    background-color: var(--color-card);
     border-radius: var(--border-radius);
     padding: 10px;
     margin: 10px;
@@ -51,18 +51,7 @@ table {
 table,
 th,
 td {
-    border: 1px solid var(--color-table-border);
+    border: 1px solid var(--color-text);
     text-align: center;
     padding: 5px 10px;
 }
-
-th {
-    background-color: var(--color-table-header);
-    font-size: 0.75rem;
-}
-
-tr:nth-child(odd) {
-    background-color: var(--color-table-odd-row);
-}
-
-#
