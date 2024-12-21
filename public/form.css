@@ -110,6 +110,10 @@ select {
     border-radius: 50vh;
 }
 
+select.noPill {
+    border-radius: 1rem;
+}
+
 label:has(~ select) {
     margin-bottom: 8px;
     display: inline-block;

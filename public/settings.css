@@ -51,24 +51,26 @@ option {
 }
 
 option:checked {
-    color: var(--color-accent);
     background-color: transparent;
-}
-
-option:hover {
-    color: var(--color-primary);
+    border: 0.1rem solid var(--color-primary);
+    border-radius: 50vh;
 }
 
 #resetData {
-    background-color: var(--color-danger);
+    background-color: var(--color-red);
+    border-color: transparent;
 }
 
 #resetData:disabled {
-    background-color: var(--color-primary-disabled);
+    background-color: var(--color-card);
 }
 
 #save {
     flex-grow: 4;
+}
+
+#save:not(:disabled) {
+    background-color: var(--color-primary);
 }
 
 .btn-group {
