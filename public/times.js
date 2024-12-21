@@ -4,21 +4,30 @@ $(document).ready(function () {
             topStart: "buttons",
         },
         buttons: [
-            { extend: "print", key: "d", text: "Drucken" },
-            { extend: "pdf", key: "p", text: "PDF laden" },
-            { extend: "csv", key: "c", text: "CSV laden" },
-            { extend: "excel", key: "e", text: "Excel laden" },
+            { extend: "print", key: "d" },
+            { extend: "pdf", key: "p" },
+            { extend: "csv", key: "c" },
+            { extend: "excel", key: "e" },
             {
                 extend: "searchPanes",
                 config: {
                     cascadePanes: true,
                 },
-                key: "f",
-                text: "Filter",
+                key: "s",
             },
         ],
         paging: false,
         select: true,
+        language: {
+            url: "datatables.de.json",
+            emptyTable: "Keine Zeiten",
+            info: "Zeige _TOTAL_ Einträge",
+            infoEmpty: "Zeige 0 Einträge",
+            infoFiltered: "(gefiltert von _MAX_ Einträgen)",
+            infoPostFix: "",
+            lengthMenu: "Zeige _MENU_ Eintäge",
+            zeroRecords: "Keine Zeiten",
+        },
     });
 });
 
