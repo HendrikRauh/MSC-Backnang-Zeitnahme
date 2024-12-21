@@ -11,6 +11,8 @@
     --color-blue: #78dce8;
     --color-purple: #ab9df2;
 
+    --color-primary: var(--color-yellow);
+
     --thickness-table-border: 1px;
 
     /* DIMENSIONS */

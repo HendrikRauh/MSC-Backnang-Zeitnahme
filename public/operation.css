@@ -34,15 +34,9 @@
     margin-top: 1rem;
 }
 
-h1.disconnected,
-.disconnected * {
-    color: var(--color-danger);
-    border-color: var(--color-danger);
-}
-
-select:disabled {
-    background-color: var(--color-background);
-    color: var(--color-text-disabled);
+h1.disconnected {
+    color: var(--color-red);
+    border-color: var(--color-red);
 }
 
 button {
