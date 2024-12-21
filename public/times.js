@@ -17,10 +17,6 @@ $(document).ready(function () {
             { extend: "excel", key: "e" },
         ],
         paging: false,
-        select: {
-            enable: true,
-            info: false,
-        },
         language: {
             url: "datatables.de.json",
         },
