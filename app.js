@@ -731,6 +731,13 @@ async function fetchSettingsData() {
         },
     });
 
+    const ips = getAllServerIps();
+
+    if (ips.length === 1 && ips[0] === "127.0.0.1") {
+        console.log("No external IP found, returning null.");
+        return { addresses: null, port: port };
+    }
+
     const disableResetButton = time == null && timeStamp == null;
 
     return {
@@ -738,6 +745,7 @@ async function fetchSettingsData() {
         inactiveDrivers: inactiveDrivers,
         disableResetButton: disableResetButton,
         displayMode: CONFIG.DISPLAY_MODE,
+        ipAddress: ips,
     };
 }
 
