@@ -47,5 +47,8 @@
     "bugs": {
         "url": "https://github.com/HendrikRauh/MSC-Backnang-Zeitnahme/issues"
     },
-    "homepage": "https://github.com/HendrikRauh/MSC-Backnang-Zeitnahme#readme"
+    "homepage": "https://github.com/HendrikRauh/MSC-Backnang-Zeitnahme#readme",
+    "devDependencies": {
+        "typescript": "^5.7.2"
+    }
 }
