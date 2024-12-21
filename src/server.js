@@ -267,7 +267,6 @@ export async function startServer() {
     });
 
     server.listen(CONFIG.PORT, () => {
-        startPrismaStudio();
         console.log(`Server is running on port ${CONFIG.PORT}`.green);
     });
 }
@@ -312,6 +311,6 @@ async function fetchInfoData() {
     };
 }
 async function fetchPrismaStudioPort() {
-    startPrismaStudio(dbPort);
+    startPrismaStudio();
     return { dbPort: dbPort };
 }

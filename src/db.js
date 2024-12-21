@@ -6,10 +6,15 @@ import { exec } from "child_process";
 import dotenv from "dotenv";
 const CONFIG = dotenv.config().parsed;
 
+/**
+ * Starts the Prisma Database
+ */
 export function startDb() {
     const prisma = new PrismaClient({
         log: ["warn", "error"],
     });
+
+    startPrismaStudio();
 }
 
 /**
@@ -31,6 +36,9 @@ async function runQuery(query) {
         });
 }
 
+/**
+ * Starts Prisma Studio
+ */
 export function startPrismaStudio() {
     const req = http.request(
         {
@@ -415,6 +423,12 @@ export async function deleteTime(run) {
     });
 }
 
+/**
+ * Writes a new run to the DB
+ * @param {*} timestamp Starttimestamp
+ * @param {*} driverId ID of the started driver
+ * @param {*} vehicleId ID of the vehicle
+ */
 export async function startRun(timestamp, driverId, vehicleId) {
     await prisma.time.create({
         data: {
@@ -471,6 +485,12 @@ export async function lastVehicle(driverId) {
     return driver;
 }
 
+/**
+ *
+ * @param {*} run ID of the run
+ * @param {*} penalty Penalty seconds
+ * @param {*} note Notes about the run
+ */
 export async function saveRun(run, penalty, note) {
     await prisma.time.update({
         where: {
@@ -483,6 +503,9 @@ export async function saveRun(run, penalty, note) {
     });
 }
 
+/**
+ * Resets the times & timestamps
+ */
 export async function reset() {
     await prisma.time.updateMany({
         data: {
@@ -500,6 +523,10 @@ export async function reset() {
     });
 }
 
+/**
+ * Delete a given timestamp
+ * @param {*} timestamp ID of timestamp to be deleted
+ */
 export async function deleteTimestamp(timestamp) {
     await prisma.timeStamp.update({
         where: {
@@ -511,6 +538,10 @@ export async function deleteTimestamp(timestamp) {
     });
 }
 
+/**
+ * Mark the given drivers as active and others as inactive
+ * @param {*} drivers active drivers
+ */
 export async function saveDrivers(drivers) {
     await prisma.driver.updateMany({
         data: {
@@ -530,6 +561,11 @@ export async function saveDrivers(drivers) {
     }
 }
 
+/**
+ * Add a endtimestamp to a started run
+ * @param {*} run ID of the run
+ * @param {*} timestamp endtimestamp of the run
+ */
 export async function endRun(run, timestamp) {
     await prisma.time.update({
         where: {

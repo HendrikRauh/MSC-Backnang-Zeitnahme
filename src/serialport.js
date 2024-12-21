@@ -1,6 +1,7 @@
 var accumulatedData = "";
 var portOpened = null;
 import { SerialPort } from "serialport";
+import { createTimestamp } from "./db";
 
 export async function handleSerialPort() {
     if (!portOpened) {
@@ -66,8 +67,7 @@ export async function parseSerialData(data) {
         );
 
         accumulatedData = "";
-        TODO;
-        await createTimestamp();
+        await createTimestamp(date);
     } else {
         console.error(`No time found in data, accumulating more data...`);
         console.error(`Accumulated data: ${accumulatedData}`);
