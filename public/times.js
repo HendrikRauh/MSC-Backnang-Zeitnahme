@@ -11,10 +11,21 @@ $(document).ready(function () {
                 },
                 key: "f",
             },
-            { extend: "print", key: "d" },
-            { extend: "pdf", key: "p" },
+            {
+                extend: "print",
+                key: "p",
+                exportOptions: {
+                    columns: ":not(:last-child):not(:first-child)",
+                },
+            },
             { extend: "csv", key: "c" },
-            { extend: "excel", key: "e" },
+            {
+                extend: "excel",
+                key: "e",
+                exportOptions: {
+                    columns: ":not(:last-child)",
+                },
+            },
         ],
         paging: false,
         language: {
