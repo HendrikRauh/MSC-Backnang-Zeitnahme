@@ -32,7 +32,7 @@ export function getTime(startTime, endTime, penalty = 0) {
  * @param {number} durationMs The duration in milliseconds.
  * @returns {string} The formatted duration as a string.
  */
-function formatDuration(durationMs) {
+export function formatDuration(durationMs) {
     console.log(`Formatting duration: ${durationMs}`);
     let formattedString = "";
 
@@ -62,7 +62,7 @@ function formatDuration(durationMs) {
  * @param {Date} timestamp The timestamp to format.
  * @returns {string} The formatted timestamp as a string.
  */
-function formatTimestamp(timestamp) {
+export function formatTimestamp(timestamp) {
     console.log(`Formatting timestamp: ${timestamp}`);
     return timestamp.toLocaleTimeString("de-de", {
         hour: "2-digit",
