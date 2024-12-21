@@ -1,7 +1,7 @@
 var accumulatedData = "";
 var portOpened = null;
 import { SerialPort } from "serialport";
-import { createTimestamp } from "./db";
+import { createTimestamp } from "./db.js";
 
 export async function handleSerialPort() {
     if (!portOpened) {
