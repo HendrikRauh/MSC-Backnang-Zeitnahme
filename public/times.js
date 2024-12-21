@@ -1,22 +1,24 @@
 $(document).ready(function () {
     var table = $("#times").DataTable({
-        buttons: ["csv", "pdf", "excel", "print"],
-    });
-
-    $("#exportCSV").on("click", function () {
-        table.button(0).trigger();
-    });
-
-    $("#exportPDF").on("click", function () {
-        table.button(1).trigger();
-    });
-
-    $("#exportXLSX").on("click", function () {
-        table.button(2).trigger();
-    });
-
-    $("#print").on("click", function () {
-        table.button(3).trigger();
+        layout: {
+            topStart: "buttons",
+        },
+        buttons: [
+            { extend: "print", key: "d", text: "Drucken" },
+            { extend: "pdf", key: "p", text: "PDF laden" },
+            { extend: "csv", key: "c", text: "CSV laden" },
+            { extend: "excel", key: "e", text: "Excel laden" },
+            {
+                extend: "searchPanes",
+                config: {
+                    cascadePanes: true,
+                },
+                key: "f",
+                text: "Filter",
+            },
+        ],
+        paging: false,
+        select: true,
     });
 });
 
