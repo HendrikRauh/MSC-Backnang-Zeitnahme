@@ -131,11 +131,11 @@
     "searchPanes": {
         "clearMessage": "Leeren",
         "collapse": {
-            "0": "Suchmasken",
-            "_": "Suchmasken (%d)"
+            "0": "Filter",
+            "_": "Filter (%d)"
         },
         "countFiltered": "{shown} ({total})",
-        "emptyPanes": "Keine Suchmasken",
+        "emptyPanes": "Keine Filter",
         "title": "Aktive Filter: %d",
         "showMessage": "zeige Alle",
         "collapseMessage": "Alle einklappen",

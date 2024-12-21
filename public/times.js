@@ -13,7 +13,7 @@ $(document).ready(function () {
                 config: {
                     cascadePanes: true,
                 },
-                key: "s",
+                key: "f",
             },
         ],
         paging: false,
