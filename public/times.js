@@ -22,6 +22,7 @@ $(document).ready(function () {
                     columns: ":not(:last-child)",
                 },
             },
+            "spacer",
             {
                 extend: "searchPanes",
                 config: {
