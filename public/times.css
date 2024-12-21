@@ -62,12 +62,17 @@ th {
     }
 }
 
-div.dt-buttons > .dt-button {
+div.dt-buttons > .dt-button,
+.delete {
     background-color: transparent !important;
     border: 0.1rem solid var(--color-primary);
     border-radius: 50vh;
     transition: all 0.3s;
     background: var(--color-card) !important;
+}
+
+.delete {
+    aspect-ratio: 1;
 }
 
 div.dt-buttons > .dt-button:hover {
