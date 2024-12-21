@@ -24,7 +24,6 @@ $(document).ready(function () {
         language: {
             url: "datatables.de.json",
         },
-        searching: false,
     });
 });
 
