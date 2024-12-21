@@ -17,16 +17,12 @@ $(document).ready(function () {
             },
         ],
         paging: false,
-        select: true,
+        select: {
+            enable: true,
+            info: false,
+        },
         language: {
             url: "datatables.de.json",
-            emptyTable: "Keine Zeiten",
-            info: "Zeige _TOTAL_ Einträge",
-            infoEmpty: "Zeige 0 Einträge",
-            infoFiltered: "(gefiltert von _MAX_ Einträgen)",
-            infoPostFix: "",
-            lengthMenu: "Zeige _MENU_ Eintäge",
-            zeroRecords: "Keine Zeiten",
         },
     });
 });

@@ -1,17 +1,14 @@
 {
-    "emptyTable": "Keine Daten in der Tabelle vorhanden",
-    "info": "_START_ bis _END_ von _TOTAL_ Einträgen",
-    "infoEmpty": "Keine Daten vorhanden",
+    "emptyTable": "Keine Zeiten",
+    "info": "_TOTAL_ Einträge",
+    "infoEmpty": "0 Einträge",
     "infoFiltered": "(gefiltert von _MAX_ Einträgen)",
+    "infoPostFix": "",
+    "lengthMenu": "Zeige _MENU_ Eintäge",
+    "zeroRecords": "Keine Zeiten",
     "infoThousands": ".",
     "loadingRecords": "Wird geladen ..",
     "processing": "Bitte warten ..",
-    "paginate": {
-        "first": "Erste",
-        "next": "Nächste",
-        "last": "Letzte",
-        "previous": "Vorherige"
-    },
     "aria": {
         "sortAscending": ": aktivieren, um Spalte aufsteigend zu sortieren",
         "sortDescending": ": aktivieren, um Spalte absteigend zu sortieren"
@@ -145,9 +142,6 @@
         "count": "{total}",
         "loadMessage": "Lade Suchmasken .."
     },
-    "thousands": ".",
-    "zeroRecords": "Keine passenden Einträge gefunden",
-    "lengthMenu": "_MENU_ Zeilen anzeigen",
     "datetime": {
         "previous": "Vorher",
         "next": "Nachher",
