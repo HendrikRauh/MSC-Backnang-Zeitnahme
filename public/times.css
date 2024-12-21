@@ -74,3 +74,16 @@ div.dt-buttons > .dt-button:hover {
     border: 0.1rem solid var(--color-primary) !important;
     transform: scale(1.1);
 }
+
+table.dataTable > thead > tr > th,
+table.dataTable > thead > tr > td {
+    border-bottom: 0.1rem solid var(--color-text);
+}
+
+div.dt-container.dt-empty-footer tbody > tr:last-child > * {
+    border-bottom: 0.1rem solid var(--color-text);
+}
+
+tr:nth-child(even) {
+    background-color: var(--color-card) !important;
+}
