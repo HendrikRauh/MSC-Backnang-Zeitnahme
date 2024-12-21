@@ -37,6 +37,9 @@
     /* ANIMATIONS */
 
     --transition-duration: 0.3s;
+    --icon-search: url("/icon/search-dark.png");
+    --icon-sort-a: url("/icon/sort-a-dark.png");
+    --icon-sort-n: url("/icon/sort-n-dark.png");
 }
 
 body.light {
@@ -49,4 +52,8 @@ body.light {
     --color-green: #269d69;
     --color-blue: #1c8ca8;
     --color-purple: #7058be;
+
+    --icon-search: url("/icon/search-light.png");
+    --icon-sort-a: url("/icon/sort-a-light.png");
+    --icon-sort-n: url("/icon/sort-n-light.png");
 }

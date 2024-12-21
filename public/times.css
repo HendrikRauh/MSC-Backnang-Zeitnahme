@@ -13,3 +13,50 @@ td,
 th {
     text-align: right !important;
 }
+
+@layer {
+    div.dt-button-collection {
+        background-color: var(--color-background) !important;
+    }
+
+    div.dt-scroll-body {
+        background-color: var(--color-card) !important;
+    }
+    .dt-container.dt-empty-footer {
+        border: 0px solid transparent !important;
+    }
+    .dtsp-search {
+        color: var(--color-text) !important;
+    }
+
+    .dtsp-titleRow > button,
+    input.dtsp-paneInputButton:hover {
+        background-color: var(--color-card) !important;
+    }
+
+    span.dtsp-pill {
+        background-color: var(--color-primary) !important;
+    }
+    div.dtsp-topRow button.dtsp-countButton span {
+        background-image: var(--icon-sort-n) !important;
+    }
+    div.dtsp-topRow button.dtsp-nameButton span {
+        background-image: var(--icon-sort-a) !important;
+    }
+
+    .dtsp-searchIcon span {
+        background-image: var(--icon-search) !important;
+    }
+    button.dtsp-paneButton,
+    .dtsp-buttonGroup {
+        color: var(--color-text);
+    }
+
+    button {
+        color: var(--color-text);
+    }
+
+    div.dtsp-searchPane div.dtsp-topRow.dtsp-bordered:hover {
+        background-color: var(--color-card) !important;
+    }
+}
