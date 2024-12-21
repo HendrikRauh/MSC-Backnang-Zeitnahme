@@ -30,6 +30,10 @@ $(document).ready(function () {
                 key: "f",
             },
         ],
+        order: {
+            idx: 0,
+            dir: "desc",
+        },
         paging: false,
         language: {
             url: "datatables.de.json",
