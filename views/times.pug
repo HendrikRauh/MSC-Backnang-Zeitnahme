@@ -8,11 +8,11 @@ append scripts
     script(src="/datatables.min.js")
 
 append styles
+    link(rel="stylesheet" href="datatables.css")
     link(rel="stylesheet" href="times.css")
-    link(rel="stylesheet" href="datatables.min.css")
+    link(rel="stylesheet" href="base.css")
 
 append content 
-    h1 Alle Zeiten
     table#times
         thead 
             tr
@@ -39,8 +39,4 @@ append content
                     td #{run.vehicle.name}
                     td #{run.notes}
                     td
-                        button.delete(data-id=run.id) Löschen
-    button#exportCSV CSV
-    button#exportPDF PDF
-    button#exportXLSX Excel
-    button#print Drucken
+                        button.delete(data-id=run.id) ❌
