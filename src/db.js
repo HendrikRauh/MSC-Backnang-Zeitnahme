@@ -6,9 +6,11 @@ import { exec } from "child_process";
 import dotenv from "dotenv";
 const CONFIG = dotenv.config().parsed;
 
-const prisma = new PrismaClient({
-    log: ["warn", "error"],
-});
+export function startDb() {
+    const prisma = new PrismaClient({
+        log: ["warn", "error"],
+    });
+}
 
 /**
  * Run a query using Prisma and handle the result.
