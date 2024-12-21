@@ -14,6 +14,7 @@ th {
     text-align: right !important;
 }
 
+/* Override for unsupported darkmode of the searchPane extension */
 @layer {
     div.dt-button-collection {
         background-color: var(--color-background) !important;
@@ -59,4 +60,17 @@ th {
     div.dtsp-searchPane div.dtsp-topRow.dtsp-bordered:hover {
         background-color: var(--color-card) !important;
     }
+}
+
+div.dt-buttons > .dt-button {
+    background-color: transparent !important;
+    border: 0.1rem solid var(--color-primary);
+    border-radius: 50vh;
+    transition: all 0.3s;
+    background: var(--color-card) !important;
+}
+
+div.dt-buttons > .dt-button:hover {
+    border: 0.1rem solid var(--color-primary) !important;
+    transform: scale(1.1);
 }

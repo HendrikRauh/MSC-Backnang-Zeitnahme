@@ -4,10 +4,6 @@ $(document).ready(function () {
             topStart: "buttons",
         },
         buttons: [
-            { extend: "print", key: "d" },
-            { extend: "pdf", key: "p" },
-            { extend: "csv", key: "c" },
-            { extend: "excel", key: "e" },
             {
                 extend: "searchPanes",
                 config: {
@@ -15,6 +11,10 @@ $(document).ready(function () {
                 },
                 key: "f",
             },
+            { extend: "print", key: "d" },
+            { extend: "pdf", key: "p" },
+            { extend: "csv", key: "c" },
+            { extend: "excel", key: "e" },
         ],
         paging: false,
         select: {
@@ -24,6 +24,7 @@ $(document).ready(function () {
         language: {
             url: "datatables.de.json",
         },
+        searching: false,
     });
 });
 
