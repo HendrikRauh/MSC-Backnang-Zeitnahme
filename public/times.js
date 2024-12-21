@@ -2,15 +2,11 @@ $(document).ready(function () {
     var table = $("#times").DataTable({
         layout: {
             topStart: "buttons",
+            topEnd: "info",
+            bottomStart: null,
+            bottomEnd: null,
         },
         buttons: [
-            {
-                extend: "searchPanes",
-                config: {
-                    cascadePanes: true,
-                },
-                key: "f",
-            },
             {
                 extend: "print",
                 key: "p",
@@ -25,6 +21,13 @@ $(document).ready(function () {
                 exportOptions: {
                     columns: ":not(:last-child)",
                 },
+            },
+            {
+                extend: "searchPanes",
+                config: {
+                    cascadePanes: true,
+                },
+                key: "f",
             },
         ],
         paging: false,
