@@ -7,14 +7,13 @@ append styles
     link(rel="stylesheet" href="home.css")
 
 append content
-    h1 #{baseTitle} - ZEITNAHME
+    h1 Zeitnahme MSC
         .container
-            a(href="/display") Anzeige
-            a(href="/operation") Steuerung
-            hr
-            a(href="/settings") Einstellungen
-            a(href="/info") Systeminformationen
-            hr
-            a(href="/times") Alle Zeiten
-            hr
-            a(href="/database") Daten bearbeiten
+            a(href="/display").purple Anzeige
+            a(href="/operation").green Steuerung
+            a(href="/settings").yellow Einstellungen
+            a(href="/times").orange Zeiten
+            a(href="/database").red Datenbank
+    footer 
+        p Made with ❤ by 
+            a(href="https://www.github.com/HendrikRauh") Hendrik Rauh
