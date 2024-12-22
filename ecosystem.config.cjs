@@ -4,7 +4,7 @@ module.exports = {
     apps: [
         {
             name: "MSC-Backnang-Zeitnahme",
-            script: "bin/app.js",
+            script: "out/app.js",
             watch: false,
             // ignore_watch: ["node_modules", ".git"],
             // watch_delay: 5000,

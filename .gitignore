@@ -22,4 +22,4 @@ tempCodeRunnerFile.*
 
 # Typescript
 *.tsbuildinfo
-/bin
+/out
