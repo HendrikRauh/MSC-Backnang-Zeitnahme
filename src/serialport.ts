@@ -1,13 +1,12 @@
 var accumulatedData = "";
-var portOpened: SerialPort<AutoDetectTypes> | null = null;
+export var portOpened: SerialPort<AutoDetectTypes> | null = null;
 import { AutoDetectTypes } from "@serialport/bindings-cpp";
 import { SerialPort } from "serialport";
 import { createTimestamp } from "./db";
 import { websocketSend } from "./server";
 
-handleSerialPort();
-
 export async function handleSerialPort() {
+    console.log("Serial port handler started.");
     if (!portOpened) {
         console.log("Attempting to open serial port...");
         portOpened = await findAndOpenSerialPort("Prolific");

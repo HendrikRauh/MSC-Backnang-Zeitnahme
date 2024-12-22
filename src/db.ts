@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { exec } from "child_process";
 import http from "http";
 import { CONFIG } from "./config";
+import { handleSerialPort, portOpened } from "./serialport";
 import { formatTimestamp, getTime } from "./utility";
 
 const prisma = new PrismaClient({
@@ -239,7 +240,7 @@ export async function fetchStandaloneData() {
 }
 
 export async function fetchOperationData() {
-    // BUG: removed reconnect of serialport handler
+    handleSerialPort();
     const timestamps = await runQuery(async (prisma) => {
         return prisma.timeStamp.findMany({
             where: {
@@ -315,8 +316,7 @@ export async function fetchOperationData() {
 
     return {
         drivers: drivers,
-        // BUG: portOpened missing
-        // portOpened: portOpened,
+        portOpened: portOpened,
         timestamps: timestamps,
         vehicles: vehicles,
         timesStarted: timesStarted,
@@ -600,7 +600,7 @@ export async function endRun(run: number, timestamp: Date) {
 }
 
 export async function createTimestamp(date: Date) {
-    prisma.timeStamp.create({
+    await prisma.timeStamp.create({
         data: {
             timestamp: date,
             friendly: formatTimestamp(date),
