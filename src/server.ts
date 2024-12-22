@@ -25,34 +25,29 @@ import {
     createTimestamp,
     fetchOperationData,
     fetchSettingsData,
-} from "./db.js";
+} from "./db";
 
-import { CONFIG } from "./config.js";
+import { CONFIG } from "./config";
 
 /**
- * Gets all the IP addresses of the server.
- * @returns {Array} An array of all server IP addresses.
+ * Gets all the IPv4 addresses of the server.
+ * @returns {Promise<string[]>} A promise that resolves to an array of IPv4 server IP addresses.
  */
-export function getAllServerIps() {
-    var ipAddresses = [];
-    try {
-        const nets = networkInterfaces();
-        for (const name of Object.keys(nets)) {
-            if (nets.hasOwnProperty(name)) {
-                for (const net of nets[name]) {
-                    if (net.family === "IPv4" && !net.internal) {
-                        ipAddresses.push(net.address);
-                    }
-                }
+export async function getAllServerIps(): Promise<string[]> {
+    const nets = networkInterfaces();
+    const results: string[] = [];
+
+    for (const name of Object.keys(nets)) {
+        for (const net of nets[name]!) {
+            // Skip over non-IPv4 and internal (i.e., 127.0.0.1) addresses
+            if (net.family === "IPv4" && !net.internal) {
+                results.push(net.address);
             }
         }
-    } catch (e) {
-        console.error(e);
-        ipAddresses = ["127.0.0.1"];
     }
-    return ipAddresses;
-}
 
+    return results;
+}
 /**
  * Send a message to all connected clients.
  * @param {String} message
