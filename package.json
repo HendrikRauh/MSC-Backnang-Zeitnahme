@@ -3,7 +3,6 @@
     "version": "2.0.0",
     "description": "New Version of a simple program to track times of drivers for karting sport",
     "main": "app.js",
-    "type": "module",
     "dependencies": {
         "@pm2/io": "^6.1.0",
         "@prisma/client": "5.20.0",
