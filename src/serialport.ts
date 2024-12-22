@@ -1,7 +1,9 @@
 var accumulatedData = "";
-var portOpened = null;
+var portOpened: SerialPort<AutoDetectTypes> | null = null;
 import { SerialPort } from "serialport";
 import { createTimestamp } from "./db.js";
+import { AutoDetectTypes } from "@serialport/bindings-cpp";
+import { websocketSend } from "./server.js";
 
 handleSerialPort();
 
@@ -37,7 +39,7 @@ export async function handleSerialPort() {
  * @returns {Promise<void>} A promise that resolves when the data has been parsed.
  * @throws {Error} If an error occurs while parsing the data.
  */
-export async function parseSerialData(data) {
+export async function parseSerialData(data: string) {
     console.log(`Received serial data: ${data}`);
     accumulatedData += data;
 
@@ -77,7 +79,7 @@ export async function parseSerialData(data) {
 }
 
 // Function to find and open a serial port by manufacturer
-async function findAndOpenSerialPort(manufacturer) {
+async function findAndOpenSerialPort(manufacturer: string | undefined) {
     const ports = await SerialPort.list();
     for (const port of ports) {
         if (port.manufacturer === manufacturer) {
@@ -88,7 +90,7 @@ async function findAndOpenSerialPort(manufacturer) {
     return null;
 }
 
-async function openSerialPort(path) {
+async function openSerialPort(path: string) {
     try {
         const port = await new SerialPort({
             path: path,
@@ -98,7 +100,7 @@ async function openSerialPort(path) {
         port.on("error", (err) => {
             console.error("Error connecting to port:", err);
             portOpened = null;
-            tellClients("disconnect");
+            websocketSend("disconnect");
             console.error("Port closed");
         });
 
@@ -112,7 +114,7 @@ async function openSerialPort(path) {
         port.on("close", () => {
             console.error("Port closed");
             portOpened = null;
-            tellClients("disconnect");
+            websocketSend("disconnect");
         });
 
         return port;

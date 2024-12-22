@@ -1,11 +1,10 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import { WebSocketServer } from "ws";
 
 import helmet from "helmet";
 import session from "express-session";
 import path from "path";
 import http from "http";
-import dotenv from "dotenv";
 import { networkInterfaces } from "os";
 import {
     startPrismaStudio,
@@ -28,7 +27,7 @@ import {
     fetchSettingsData,
 } from "./db.js";
 
-const CONFIG = dotenv.config().parsed;
+import { CONFIG } from "./config.js";
 
 /**
  * Gets all the IP addresses of the server.
@@ -39,9 +38,11 @@ export function getAllServerIps() {
     try {
         const nets = networkInterfaces();
         for (const name of Object.keys(nets)) {
-            for (const net of nets[name]) {
-                if (net.family === "IPv4" && !net.internal) {
-                    ipAddresses.push(net.address);
+            if (nets.hasOwnProperty(name)) {
+                for (const net of nets[name]) {
+                    if (net.family === "IPv4" && !net.internal) {
+                        ipAddresses.push(net.address);
+                    }
                 }
             }
         }
@@ -56,7 +57,7 @@ export function getAllServerIps() {
  * Send a message to all connected clients.
  * @param {String} message
  */
-export async function websocketSend(message) {
+export async function websocketSend(message: string) {
     wss.clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {
             client.send(message);
@@ -104,9 +105,7 @@ app.use(
 );
 app.get("/", renderView("home"));
 
-app.get("/info", fetchDataAndRender("info", fetchInfoData));
-
-app.get("/display", async (req, res) => {
+app.get("/display", async (req: Request, res: Response) => {
     const displayMode = CONFIG.DISPLAY_MODE; // Fetch the current display mode from your config or another source
 
     try {
@@ -269,14 +268,14 @@ server.listen(CONFIG.PORT, () => {
     console.log(`Server is running on port ${CONFIG.PORT}`.green);
 });
 
-function renderView(viewName) {
-    return (req, res) => {
+function renderView(viewName: string) {
+    return (req: Request, res: Response) => {
         res.render(viewName);
     };
 }
 
-function fetchDataAndRender(viewName, queryFn) {
-    return async (req, res) => {
+function fetchDataAndRender(viewName: string, queryFn) {
+    return async (req: Request, res: Response) => {
         try {
             const data = await queryFn();
             res.render(viewName, data);
@@ -289,4 +288,5 @@ function fetchDataAndRender(viewName, queryFn) {
 
 async function fetchPrismaStudioPort() {
     startPrismaStudio();
+    return { dbPort: CONFIG.PRISMA_STUDIO_PORT };
 }

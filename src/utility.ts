@@ -1,17 +1,11 @@
-/**
- * Calculates the time between two timestamps and formats it as a string.
- * @param {string} startTime The start time as a string.
- * @param {string} endTime The end time as a string.
- * @param {number} penalty The penalty time in seconds.
- */
-export function getTime(startTime, endTime, penalty = 0) {
+export function getTime(startTimeRaw: Date, endTimeRaw: Date, penalty = 0) {
     console.log(
-        `Calculating time with startTime: ${startTime}, endTime: ${endTime}, penalty: ${penalty}`
+        `Calculating time with startTime: ${startTimeRaw}, endTime: ${endTimeRaw}, penalty: ${penalty}`
     );
-    startTime = new Date(startTime).getTime();
-    endTime = new Date(endTime).getTime();
+    const startTime = new Date(startTimeRaw).getTime();
+    const endTime = new Date(endTimeRaw).getTime();
 
-    const driveTime = endTime - startTime;
+    const driveTime: number = endTime - startTime;
 
     let formattedDriveTime = formatDuration(driveTime);
 
@@ -32,7 +26,7 @@ export function getTime(startTime, endTime, penalty = 0) {
  * @param {number} durationMs The duration in milliseconds.
  * @returns {string} The formatted duration as a string.
  */
-export function formatDuration(durationMs) {
+export function formatDuration(durationMs: number) {
     console.log(`Formatting duration: ${durationMs}`);
     let formattedString = "";
 
@@ -62,7 +56,7 @@ export function formatDuration(durationMs) {
  * @param {Date} timestamp The timestamp to format.
  * @returns {string} The formatted timestamp as a string.
  */
-export function formatTimestamp(timestamp) {
+export function formatTimestamp(timestamp: Date) {
     console.log(`Formatting timestamp: ${timestamp}`);
     return timestamp.toLocaleTimeString("de-de", {
         hour: "2-digit",

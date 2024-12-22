@@ -2,9 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { getTime, formatTimestamp } from "./utility.js";
 import http from "http";
 import { exec } from "child_process";
-
-import dotenv from "dotenv";
-const CONFIG = dotenv.config().parsed;
+import { CONFIG } from "./config.js";
 
 const prisma = new PrismaClient({
     log: ["warn", "error"],
@@ -18,13 +16,13 @@ startPrismaStudio();
  * @returns {Promise} The result of the query.
  * @throws {Error} If an error occurs during the query.
  */
-async function runQuery(query) {
+async function runQuery(query: Function) {
     console.log("Running query.");
     return query(prisma)
-        .then((queryResult) => {
+        .then((queryResult: unknown) => {
             return queryResult;
         })
-        .catch(async (e) => {
+        .catch(async (e: unknown) => {
             console.error(e);
             await prisma.$disconnect();
             process.exit(1);
@@ -188,6 +186,7 @@ export async function fetchRankingData() {
 }
 
 export async function fetchStandaloneData() {
+    let main, sub1, sub2;
     const lastTimestamps = await prisma.timeStamp.findMany({
         where: {
             active: true,
@@ -210,7 +209,7 @@ export async function fetchStandaloneData() {
         }
     }
     try {
-        sub1 = await getTime(
+        const sub1 = await getTime(
             lastTimestamps[2].timestamp,
             lastTimestamps[1].timestamp
         ).formattedDriveTime;
@@ -219,7 +218,7 @@ export async function fetchStandaloneData() {
     }
 
     try {
-        sub2 = await getTime(
+        const sub2 = await getTime(
             lastTimestamps[3].timestamp,
             lastTimestamps[2].timestamp
         ).formattedDriveTime;
@@ -397,7 +396,7 @@ export async function fetchTimes() {
     });
 
     for (let i = 0; i < times.length; i++) {
-        times[i].time = await await getTime(
+        times[i].time = getTime(
             times[i].startTime.timestamp,
             times[i].endTime.timestamp,
             times[i].penalty
@@ -407,7 +406,7 @@ export async function fetchTimes() {
     return { times: times };
 }
 
-export async function deleteTime(run) {
+export async function deleteTime(run: number) {
     await prisma.time.update({
         where: {
             id: run,
@@ -424,7 +423,11 @@ export async function deleteTime(run) {
  * @param {*} driverId ID of the started driver
  * @param {*} vehicleId ID of the vehicle
  */
-export async function startRun(timestamp, driverId, vehicleId) {
+export async function startRun(
+    timestamp: Date,
+    driverId: number,
+    vehicleId: number
+) {
     await prisma.time.create({
         data: {
             driver: {
@@ -467,7 +470,7 @@ export async function startRun(timestamp, driverId, vehicleId) {
     });
 }
 
-export async function lastVehicle(driverId) {
+export async function lastVehicle(driverId: number) {
     const driver = await prisma.driver.findFirst({
         where: {
             id: driverId,
@@ -480,13 +483,7 @@ export async function lastVehicle(driverId) {
     return driver;
 }
 
-/**
- *
- * @param {*} run ID of the run
- * @param {*} penalty Penalty seconds
- * @param {*} note Notes about the run
- */
-export async function saveRun(run, penalty, note) {
+export async function saveRun(run: number, penalty: number, note: string) {
     await prisma.time.update({
         where: {
             id: run,
@@ -522,7 +519,7 @@ export async function reset() {
  * Delete a given timestamp
  * @param {*} timestamp ID of timestamp to be deleted
  */
-export async function deleteTimestamp(timestamp) {
+export async function deleteTimestamp(timestamp: Date) {
     await prisma.timeStamp.update({
         where: {
             timestamp: timestamp,
@@ -537,7 +534,7 @@ export async function deleteTimestamp(timestamp) {
  * Mark the given drivers as active and others as inactive
  * @param {*} drivers active drivers
  */
-export async function saveDrivers(drivers) {
+export async function saveDrivers(drivers: string | any[]) {
     await prisma.driver.updateMany({
         data: {
             active: null,
@@ -561,7 +558,7 @@ export async function saveDrivers(drivers) {
  * @param {*} run ID of the run
  * @param {*} timestamp endtimestamp of the run
  */
-export async function endRun(run, timestamp) {
+export async function endRun(run: number, timestamp: Date) {
     await prisma.time.update({
         where: {
             id: run,
@@ -584,7 +581,7 @@ export async function endRun(run, timestamp) {
     });
 }
 
-export async function createTimestamp(date) {
+export async function createTimestamp(date: Date) {
     prisma.timeStamp.create({
         data: {
             timestamp: date,
