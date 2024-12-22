@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { getTime, formatTimestamp } from "./utility.js";
 import http from "http";
 import { exec } from "child_process";
@@ -86,10 +86,18 @@ export async function fetchDefaultDisplayData() {
         return null;
     }
 
-    lastRun.time = await getTime(
+    type LastRunWithTime = typeof lastRun & {
+        time: {
+            time: Number;
+            formattedDriveTime: String;
+            formattedTotalTime: String;
+        };
+    };
+
+    (lastRun as LastRunWithTime).time = getTime(
         lastRun.startTime.timestamp,
-        lastRun.endTime.timestamp,
-        lastRun.penalty
+        lastRun.endTime!!.timestamp,
+        lastRun.penalty ?? 0
     );
 
     const lastRuns = await prisma.time.findMany({
