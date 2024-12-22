@@ -30,14 +30,17 @@ append content
         .driverSelektors
             .driverSel
                 h2 Aktive Fahrer
-                select(name="activeDrivers" id="activeDrivers" size=activeDrivers.length overflow="hidden" disabled=activeDriversEmpty) 
+                select(name="activeDrivers" id="activeDrivers" class="noPill" size=activeDrivers.length overflow="hidden" disabled=activeDriversEmpty) 
                     for driver in activeDrivers
                         option(value=driver.id) #{driver.firstName} #{driver.lastName} (#{driver.drivingClass})
             .driverSel
                 h2 Inaktive Fahrer
-                select(name="inactiveDrivers" id="inactiveDrivers" multiple size=inactiveDrivers.length overflow="hidden" disabled=inactiveDriversEmpty)
+                select(name="inactiveDrivers" id="inactiveDrivers" class="noPill" multiple size=inactiveDrivers.length overflow="hidden" disabled=inactiveDriversEmpty)
                     for driver in inactiveDrivers
                         option(value=driver.id) #{driver.firstName} #{driver.lastName} (#{driver.drivingClass})
     hr
     h1.data Daten 
         button(id = "resetData" disabled=disableResetButton) ALLE ZEITEN ZURÜCKSETZEN
+
+    footer 
+        p #{ipAddress}

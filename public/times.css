@@ -13,3 +13,82 @@ td,
 th {
     text-align: right !important;
 }
+
+/* Override for unsupported darkmode of the searchPane extension */
+@layer {
+    div.dt-button-collection {
+        background-color: var(--color-background) !important;
+    }
+
+    div.dt-scroll-body {
+        background-color: var(--color-card) !important;
+    }
+    .dt-container.dt-empty-footer {
+        border: 0px solid transparent !important;
+    }
+    .dtsp-search {
+        color: var(--color-text) !important;
+    }
+
+    .dtsp-titleRow > button,
+    input.dtsp-paneInputButton:hover {
+        background-color: var(--color-card) !important;
+    }
+
+    span.dtsp-pill {
+        background-color: var(--color-primary) !important;
+    }
+    div.dtsp-topRow button.dtsp-countButton span {
+        background-image: var(--icon-sort-n) !important;
+    }
+    div.dtsp-topRow button.dtsp-nameButton span {
+        background-image: var(--icon-sort-a) !important;
+    }
+
+    .dtsp-searchIcon span {
+        background-image: var(--icon-search) !important;
+    }
+    button.dtsp-paneButton,
+    .dtsp-buttonGroup {
+        color: var(--color-text);
+    }
+
+    button {
+        color: var(--color-text);
+    }
+
+    div.dtsp-searchPane div.dtsp-topRow.dtsp-bordered:hover {
+        background-color: var(--color-card) !important;
+    }
+}
+
+div.dt-buttons > .dt-button,
+.delete {
+    background-color: transparent !important;
+    border: 0.1rem solid var(--color-primary);
+    border-radius: 50vh;
+    transition: all 0.3s;
+    background: var(--color-card) !important;
+}
+
+.delete {
+    aspect-ratio: 1;
+}
+
+div.dt-buttons > .dt-button:hover {
+    border: 0.1rem solid var(--color-primary) !important;
+    transform: scale(1.1);
+}
+
+table.dataTable > thead > tr > th,
+table.dataTable > thead > tr > td {
+    border-bottom: 0.1rem solid var(--color-text);
+}
+
+div.dt-container.dt-empty-footer tbody > tr:last-child > * {
+    border-bottom: 0.1rem solid var(--color-text);
+}
+
+tr:nth-child(even) {
+    background-color: var(--color-card) !important;
+}
