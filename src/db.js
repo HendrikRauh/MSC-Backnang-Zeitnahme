@@ -588,7 +588,7 @@ export async function endRun(run, timestamp) {
 }
 
 export async function createTimestamp(date) {
-    prisma.timeStamp.create({
+    await prisma.timeStamp.create({
         data: {
             timestamp: date,
             friendly: formatTimestamp(date),
