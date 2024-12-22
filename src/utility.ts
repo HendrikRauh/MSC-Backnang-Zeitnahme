@@ -1,8 +1,4 @@
-export function getTime(
-    startTimeRaw: Date,
-    endTimeRaw: Date,
-    penalty: number = 0
-) {
+export function getTime(startTimeRaw: Date, endTimeRaw: Date, penalty = 0) {
     console.log(
         `Calculating time with startTime: ${startTimeRaw}, endTime: ${endTimeRaw}, penalty: ${penalty}`
     );
@@ -27,10 +23,10 @@ export function getTime(
 
 /**
  * Formats a duration in milliseconds as a string.
- * @param {number} durationMs The duration in milliseconds.
- * @returns {string} The formatted duration as a string.
+ * @param durationMs The duration in milliseconds.
+ * @returns The formatted duration as a string.
  */
-export function formatDuration(durationMs: number) {
+export function formatDuration(durationMs: number): string {
     console.log(`Formatting duration: ${durationMs}`);
     let formattedString = "";
 
@@ -57,8 +53,8 @@ export function formatDuration(durationMs: number) {
 
 /**
  * Formats a timestamp as a string.
- * @param {Date} timestamp The timestamp to format.
- * @returns {string} The formatted timestamp as a string.
+ * @param timestamp The timestamp to format.
+ * @returns The formatted timestamp as a string.
  */
 export function formatTimestamp(timestamp: Date) {
     console.log(`Formatting timestamp: ${timestamp}`);

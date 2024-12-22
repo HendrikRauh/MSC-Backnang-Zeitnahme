@@ -48,6 +48,7 @@ export async function getAllServerIps(): Promise<string[]> {
 
     return results;
 }
+
 /**
  * Send a message to all connected clients.
  * @param {String} message
@@ -102,7 +103,7 @@ app.use(async (req, res, next) => {
 
 app.get("/", renderView("home"));
 
-app.get("/display", async (req: Request, res: Response) => {
+app.get("/display", async (req, res) => {
     const displayMode = CONFIG.DISPLAY_MODE; // Fetch the current display mode from your config or another source
 
     try {
@@ -123,7 +124,8 @@ app.get("/display", async (req: Request, res: Response) => {
                 templateName = "display/standalone";
                 break;
             default:
-                return res.status(400).send("Unsupported display mode");
+                res.status(400).send("Unsupported display mode");
+                return;
         }
         if (!data) {
             return res.render("display/empty");
@@ -271,8 +273,8 @@ function renderView(viewName: string) {
     };
 }
 
-function fetchDataAndRender(viewName: string, queryFn) {
-    return async (req: Request, res: Response) => {
+function fetchDataAndRender(viewName: string, queryFn: () => Promise<any>) {
+    return async (_req: Request, res: Response) => {
         try {
             const data = await queryFn();
             res.render(viewName, data);
