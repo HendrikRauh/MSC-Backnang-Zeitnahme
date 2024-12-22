@@ -4,3 +4,4 @@ git pull
 git stash pop
 Start regenPrisma.bat
 npm i
+tsc -b
