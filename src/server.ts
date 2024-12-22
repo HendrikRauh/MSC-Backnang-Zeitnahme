@@ -25,9 +25,9 @@ import {
     createTimestamp,
     fetchOperationData,
     fetchSettingsData,
-} from "./db.js";
+} from "./db";
 
-import { CONFIG } from "./config.js";
+import { CONFIG } from "./config";
 
 /**
  * Gets all the IP addresses of the server.

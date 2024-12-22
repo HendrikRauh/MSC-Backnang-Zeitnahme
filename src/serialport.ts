@@ -1,9 +1,9 @@
 var accumulatedData = "";
 var portOpened: SerialPort<AutoDetectTypes> | null = null;
 import { SerialPort } from "serialport";
-import { createTimestamp } from "./db.js";
+import { createTimestamp } from "./db";
 import { AutoDetectTypes } from "@serialport/bindings-cpp";
-import { websocketSend } from "./server.js";
+import { websocketSend } from "./server";
 
 handleSerialPort();
 

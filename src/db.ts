@@ -1,8 +1,8 @@
 import { PrismaClient } from "@prisma/client";
-import { getTime, formatTimestamp } from "./utility.js";
+import { getTime, formatTimestamp } from "./utility";
 import http from "http";
 import { exec } from "child_process";
-import { CONFIG } from "./config.js";
+import { CONFIG } from "./config";
 
 const prisma = new PrismaClient({
     log: ["warn", "error"],
