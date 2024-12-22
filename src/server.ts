@@ -265,7 +265,7 @@ app.post("/set-display-mode", async (req, res) => {
 });
 
 server.listen(CONFIG.PORT, () => {
-    console.log(`Server is running on port ${CONFIG.PORT}`.green);
+    console.log(`Server is running on port ${CONFIG.PORT}`);
 });
 
 function renderView(viewName: string) {
