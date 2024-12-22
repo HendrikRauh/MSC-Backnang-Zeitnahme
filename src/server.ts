@@ -1,30 +1,29 @@
-import express, { Request, Response, NextFunction } from "express";
+import express, { Request, Response } from "express";
 import { WebSocketServer } from "ws";
 
-import helmet from "helmet";
 import session from "express-session";
-import path from "path";
+import helmet from "helmet";
 import http from "http";
 import { networkInterfaces } from "os";
+import path from "path";
 import {
-    startPrismaStudio,
-    generateTimestamp,
+    deleteTime,
+    deleteTimestamp,
+    endRun,
     fetchDefaultDisplayData,
+    fetchOperationData,
     fetchRankingData,
+    fetchSettingsData,
     fetchStandaloneData,
     fetchTimeData,
     fetchTimes,
-    startRun,
-    endRun,
-    saveRun,
-    saveDrivers,
-    deleteTime,
-    deleteTimestamp,
+    generateTimestamp,
     lastVehicle,
     reset,
-    createTimestamp,
-    fetchOperationData,
-    fetchSettingsData,
+    saveDrivers,
+    saveRun,
+    startPrismaStudio,
+    startRun,
 } from "./db";
 
 import { CONFIG } from "./config";
