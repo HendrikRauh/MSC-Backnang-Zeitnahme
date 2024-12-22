@@ -9,13 +9,11 @@ const CONFIG = dotenv.config().parsed;
 /**
  * Starts the Prisma Database
  */
-export function startDb() {
-    const prisma = new PrismaClient({
-        log: ["warn", "error"],
-    });
+const prisma = new PrismaClient({
+    log: ["warn", "error"],
+});
 
-    startPrismaStudio();
-}
+startPrismaStudio();
 
 /**
  * Run a query using Prisma and handle the result.
