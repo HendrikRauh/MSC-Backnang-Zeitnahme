@@ -2,6 +2,7 @@ var accumulatedData = "";
 var portOpened = null;
 import { SerialPort } from "serialport";
 import { createTimestamp } from "./db.js";
+import { websocketSend } from "./server.js";
 
 export async function handleSerialPort() {
     if (!portOpened) {
@@ -96,7 +97,7 @@ async function openSerialPort(path) {
         port.on("error", (err) => {
             console.error("Error connecting to port:", err);
             portOpened = null;
-            tellClients("disconnect");
+            websocketSend("disconnect");
             console.error("Port closed");
         });
 
@@ -110,7 +111,7 @@ async function openSerialPort(path) {
         port.on("close", () => {
             console.error("Port closed");
             portOpened = null;
-            tellClients("disconnect");
+            websocketSend("disconnect");
         });
 
         return port;
