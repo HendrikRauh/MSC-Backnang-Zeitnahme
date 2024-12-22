@@ -4,6 +4,8 @@ import http from "http";
 import { exec } from "child_process";
 
 import dotenv from "dotenv";
+import { getAllServerIps } from "./server.js";
+
 const CONFIG = dotenv.config().parsed;
 
 /**
@@ -377,6 +379,7 @@ export async function fetchSettingsData() {
         inactiveDrivers: inactiveDrivers,
         disableResetButton: disableResetButton,
         displayMode: CONFIG.DISPLAY_MODE,
+        ipAddress: getAllServerIps(),
     };
 }
 
