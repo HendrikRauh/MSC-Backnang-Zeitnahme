@@ -1,4 +1,8 @@
-export function getTime(startTimeRaw: Date, endTimeRaw: Date, penalty = 0) {
+export function getTime(
+    startTimeRaw: Date,
+    endTimeRaw: Date,
+    penalty: number = 0
+) {
     console.log(
         `Calculating time with startTime: ${startTimeRaw}, endTime: ${endTimeRaw}, penalty: ${penalty}`
     );
