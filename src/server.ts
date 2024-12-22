@@ -102,7 +102,7 @@ app.use(async (req, res, next) => {
 
 app.get("/", renderView("home"));
 
-app.get("/display", async (req, res) => {
+app.get("/display", async (req: Request, res: Response) => {
     const displayMode = CONFIG.DISPLAY_MODE; // Fetch the current display mode from your config or another source
 
     try {
@@ -123,8 +123,7 @@ app.get("/display", async (req, res) => {
                 templateName = "display/standalone";
                 break;
             default:
-                res.status(400).send("Unsupported display mode");
-                return;
+                return res.status(400).send("Unsupported display mode");
         }
         if (!data) {
             return res.render("display/empty");
@@ -272,8 +271,8 @@ function renderView(viewName: string) {
     };
 }
 
-function fetchDataAndRender(viewName: string, queryFn: () => Promise<any>) {
-    return async (_req: Request, res: Response) => {
+function fetchDataAndRender(viewName: string, queryFn) {
+    return async (req: Request, res: Response) => {
         try {
             const data = await queryFn();
             res.render(viewName, data);

@@ -1,8 +1,10 @@
 import { PrismaClient } from "@prisma/client";
-import { exec } from "child_process";
+import { getTime, formatTimestamp } from "./utility";
+
 import http from "http";
-import { CONFIG } from "./config.js";
-import { formatTimestamp, getTime } from "./utility.js";
+import { exec } from "child_process";
+import { CONFIG } from "./config";
+import { handleSerialPort } from "./serialport";
 
 const prisma = new PrismaClient({
     log: ["warn", "error"],
@@ -12,19 +14,17 @@ startPrismaStudio();
 
 /**
  * Run a query using Prisma and handle the result.
- * @param query The query to run.
- * @returns The result of the query.
- * @throws If an error occurs during the query.
+ * @param {Function} query The query to run.
+ * @returns {Promise} The result of the query.
+ * @throws {Error} If an error occurs during the query.
  */
-async function runQuery<T>(
-    query: (prisma: PrismaClient) => Promise<T>
-): Promise<T> {
+async function runQuery(query: Function) {
     console.log("Running query.");
     return query(prisma)
-        .then((queryResult: T) => {
+        .then((queryResult: unknown) => {
             return queryResult;
         })
-        .catch(async (e: T) => {
+        .catch(async (e: unknown) => {
             console.error(e);
             await prisma.$disconnect();
             process.exit(1);
@@ -102,7 +102,7 @@ export async function fetchDefaultDisplayData() {
         lastRun.penalty ?? 0
     );
 
-    const lastRuns = (await prisma.time.findMany({
+    const lastRuns = await prisma.time.findMany({
         where: {
             driverId: lastRun.driverId,
             NOT: {
@@ -119,13 +119,13 @@ export async function fetchDefaultDisplayData() {
             startTime: true,
             endTime: true,
         },
-    })) as LastRunWithTime[];
+    });
 
     for (let i = 0; i < lastRuns.length; i++) {
         lastRuns[i].time = await getTime(
             lastRuns[i].startTime.timestamp,
-            lastRuns[i].endTime!!.timestamp,
-            lastRuns[i].penalty ?? 0
+            lastRuns[i].endTime.timestamp,
+            lastRuns[i].penalty
         );
     }
 
@@ -159,8 +159,8 @@ export async function fetchRankingData() {
 
         const currentTime = await getTime(
             time.startTime.timestamp,
-            time.endTime!!.timestamp,
-            time.penalty ?? 0
+            time.endTime.timestamp,
+            time.penalty
         );
 
         if (!bestTime) {
@@ -239,7 +239,7 @@ export async function fetchStandaloneData() {
 }
 
 export async function fetchOperationData() {
-    // BUG: removed reconnect of serialport handler
+    handleSerialPort();
     const timestamps = await runQuery(async (prisma) => {
         return prisma.timeStamp.findMany({
             where: {
@@ -300,16 +300,11 @@ export async function fetchOperationData() {
 
     for (let time of timesEnded) {
         if (time.startTime && time.endTime) {
-            type TimeWithFormatted = typeof time & {
-                formattedDriveTime: string;
-            };
-
-            const timeData = getTime(
+            const timeData = await getTime(
                 time.startTime.timestamp,
                 time.endTime.timestamp
             );
-            (time as TimeWithFormatted).formattedDriveTime =
-                timeData.formattedDriveTime;
+            time.formattedDriveTime = timeData.formattedDriveTime;
         }
     }
 
@@ -411,13 +406,10 @@ export async function fetchTimes() {
     });
 
     for (let i = 0; i < times.length; i++) {
-        const time = times[i];
-        type Time = typeof time & { time: ReturnType<typeof getTime> };
-
-        (time as Time).time = getTime(
-            time.startTime.timestamp,
-            time.endTime!!.timestamp,
-            time.penalty ?? 0
+        times[i].time = getTime(
+            times[i].startTime.timestamp,
+            times[i].endTime.timestamp,
+            times[i].penalty
         );
     }
 
