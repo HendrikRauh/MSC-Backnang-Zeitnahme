@@ -1,8 +1,8 @@
-import { Prisma, PrismaClient } from "@prisma/client";
-import { getTime, formatTimestamp } from "./utility.js";
-import http from "http";
+import { PrismaClient } from "@prisma/client";
 import { exec } from "child_process";
+import http from "http";
 import { CONFIG } from "./config.js";
+import { formatTimestamp, getTime } from "./utility.js";
 
 const prisma = new PrismaClient({
     log: ["warn", "error"],
@@ -12,17 +12,19 @@ startPrismaStudio();
 
 /**
  * Run a query using Prisma and handle the result.
- * @param {Function} query The query to run.
- * @returns {Promise} The result of the query.
- * @throws {Error} If an error occurs during the query.
+ * @param query The query to run.
+ * @returns The result of the query.
+ * @throws If an error occurs during the query.
  */
-async function runQuery(query: Function) {
+async function runQuery<T>(
+    query: (prisma: PrismaClient) => Promise<T>
+): Promise<T> {
     console.log("Running query.");
     return query(prisma)
-        .then((queryResult: unknown) => {
+        .then((queryResult: T) => {
             return queryResult;
         })
-        .catch(async (e: unknown) => {
+        .catch(async (e: T) => {
             console.error(e);
             await prisma.$disconnect();
             process.exit(1);
@@ -100,7 +102,7 @@ export async function fetchDefaultDisplayData() {
         lastRun.penalty ?? 0
     );
 
-    const lastRuns = await prisma.time.findMany({
+    const lastRuns = (await prisma.time.findMany({
         where: {
             driverId: lastRun.driverId,
             NOT: {
@@ -117,13 +119,13 @@ export async function fetchDefaultDisplayData() {
             startTime: true,
             endTime: true,
         },
-    });
+    })) as LastRunWithTime[];
 
     for (let i = 0; i < lastRuns.length; i++) {
         lastRuns[i].time = await getTime(
             lastRuns[i].startTime.timestamp,
-            lastRuns[i].endTime.timestamp,
-            lastRuns[i].penalty
+            lastRuns[i].endTime!!.timestamp,
+            lastRuns[i].penalty ?? 0
         );
     }
 
@@ -157,8 +159,8 @@ export async function fetchRankingData() {
 
         const currentTime = await getTime(
             time.startTime.timestamp,
-            time.endTime.timestamp,
-            time.penalty
+            time.endTime!!.timestamp,
+            time.penalty ?? 0
         );
 
         if (!bestTime) {
@@ -298,11 +300,16 @@ export async function fetchOperationData() {
 
     for (let time of timesEnded) {
         if (time.startTime && time.endTime) {
-            const timeData = await getTime(
+            type TimeWithFormatted = typeof time & {
+                formattedDriveTime: string;
+            };
+
+            const timeData = getTime(
                 time.startTime.timestamp,
                 time.endTime.timestamp
             );
-            time.formattedDriveTime = timeData.formattedDriveTime;
+            (time as TimeWithFormatted).formattedDriveTime =
+                timeData.formattedDriveTime;
         }
     }
 
@@ -404,10 +411,13 @@ export async function fetchTimes() {
     });
 
     for (let i = 0; i < times.length; i++) {
-        times[i].time = getTime(
-            times[i].startTime.timestamp,
-            times[i].endTime.timestamp,
-            times[i].penalty
+        const time = times[i];
+        type Time = typeof time & { time: ReturnType<typeof getTime> };
+
+        (time as Time).time = getTime(
+            time.startTime.timestamp,
+            time.endTime!!.timestamp,
+            time.penalty ?? 0
         );
     }
 
