@@ -4,6 +4,7 @@ import { getTime, formatTimestamp } from "./utility";
 import http from "http";
 import { exec } from "child_process";
 import { CONFIG } from "./config";
+import { handleSerialPort } from "./serialport";
 
 const prisma = new PrismaClient({
     log: ["warn", "error"],
@@ -238,7 +239,7 @@ export async function fetchStandaloneData() {
 }
 
 export async function fetchOperationData() {
-    // BUG: removed reconnect of serialport handler
+    handleSerialPort();
     const timestamps = await runQuery(async (prisma) => {
         return prisma.timeStamp.findMany({
             where: {
