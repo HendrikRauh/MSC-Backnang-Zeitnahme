@@ -85,19 +85,21 @@ app.use(
 app.use(express.static(path.join(process.cwd(), "public")));
 app.use(express.json());
 
-app.use(
+app.use(async (req, res, next) => {
+    const serverIps = await getAllServerIps();
     helmet({
         contentSecurityPolicy: {
             useDefaults: false,
             directives: {
-                "default-src": ["'self'", ...getAllServerIps()],
-                "worker-src": ["'self'", "blob:", ...getAllServerIps()],
-                "img-src": ["'self'", "data:", ...getAllServerIps()],
+                "default-src": ["'self'", ...serverIps],
+                "worker-src": ["'self'", "blob:", ...serverIps],
+                "img-src": ["'self'", "data:", ...serverIps],
                 "frame-src": ["'self'", "*"],
             },
         },
-    })
-);
+    })(req, res, next);
+});
+
 app.get("/", renderView("home"));
 
 app.get("/display", async (req, res) => {
