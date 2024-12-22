@@ -2,7 +2,7 @@
     "name": "msc-backnang-zeitnahme",
     "version": "2.0.0",
     "description": "New Version of a simple program to track times of drivers for karting sport",
-    "main": "app.js",
+    "main": "./out/app.js",
     "dependencies": {
         "@pm2/io": "^6.1.0",
         "@prisma/client": "5.20.0",
@@ -46,5 +46,12 @@
     "bugs": {
         "url": "https://github.com/HendrikRauh/MSC-Backnang-Zeitnahme/issues"
     },
-    "homepage": "https://github.com/HendrikRauh/MSC-Backnang-Zeitnahme#readme"
+    "homepage": "https://github.com/HendrikRauh/MSC-Backnang-Zeitnahme#readme",
+    "devDependencies": {
+        "@types/express": "^5.0.0",
+        "@types/express-session": "^1.18.1",
+        "@types/node": "^22.10.2",
+        "@types/ws": "^8.5.13",
+        "typescript": "^5.7.2"
+    }
 }

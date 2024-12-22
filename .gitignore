@@ -19,3 +19,7 @@ insertDriversFromFile.json
 
 # Development
 tempCodeRunnerFile.*
+
+# Typescript
+*.tsbuildinfo
+/out
