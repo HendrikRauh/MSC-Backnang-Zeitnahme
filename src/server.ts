@@ -69,7 +69,6 @@ app.set("views", "views");
 app.locals.basedir = "views";
 
 app.use((req, res, next) => {
-    console.log(`Handling ${req.path} request from IP ${req.ip}`);
     next();
 });
 

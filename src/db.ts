@@ -20,7 +20,6 @@ startPrismaStudio();
 async function runQuery<T>(
     query: (prisma: PrismaClient) => Promise<T>
 ): Promise<T> {
-    console.log("Running query.");
     return query(prisma)
         .then((queryResult: T) => {
             return queryResult;

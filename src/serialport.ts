@@ -39,7 +39,6 @@ export async function handleSerialPort() {
  * @throws {Error} If an error occurs while parsing the data.
  */
 export async function parseSerialData(data: string) {
-    console.log(`Received serial data: ${data}`);
     accumulatedData += data;
 
     const timeRegexNormalTime = /(\d{1,2}:\d{2}:\d{2}\.\d{3})/;
