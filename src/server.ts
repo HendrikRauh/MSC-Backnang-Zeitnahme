@@ -288,28 +288,7 @@ function fetchDataAndRender(viewName, queryFn) {
         }
     };
 }
-async function fetchInfoData() {
-    const ips = getAllServerIps();
 
-    if (ips.length === 1 && ips[0] === "127.0.0.1") {
-        console.log("No external IP found, returning null.");
-        return { addresses: null, port: port };
-    }
-
-    const ipData = await Promise.all(
-        ips.map(async (ip) => {
-            const qr = await qrcode.toDataURL(`http://${ip}:${port}`);
-            return {
-                ip: ip,
-                qr: qr,
-            };
-        })
-    );
-    return {
-        addresses: ipData,
-        port: port,
-    };
-}
 async function fetchPrismaStudioPort() {
     startPrismaStudio();
     return { dbPort: dbPort };
