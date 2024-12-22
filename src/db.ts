@@ -3,6 +3,7 @@ import { exec } from "child_process";
 import http from "http";
 import { CONFIG } from "./config";
 import { handleSerialPort, portOpened } from "./serialport";
+import { getAllServerIps } from "./server";
 import { formatTimestamp, getTime } from "./utility";
 
 const prisma = new PrismaClient({
@@ -387,6 +388,7 @@ export async function fetchSettingsData() {
         inactiveDrivers: inactiveDrivers,
         disableResetButton: disableResetButton,
         displayMode: CONFIG.DISPLAY_MODE,
+        ips: getAllServerIps(),
     };
 }
 
