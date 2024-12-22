@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 
-const envPath = "../.env";
-const parsedConfig = dotenv.config({ path: envPath }).parsed;
+const parsedConfig = dotenv.config().parsed;
 
 interface Config {
     [key: string]: string;
