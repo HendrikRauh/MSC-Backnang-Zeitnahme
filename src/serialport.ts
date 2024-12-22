@@ -3,6 +3,8 @@ var portOpened = null;
 import { SerialPort } from "serialport";
 import { createTimestamp } from "./db.js";
 
+handleSerialPort();
+
 export async function handleSerialPort() {
     if (!portOpened) {
         console.log("Attempting to open serial port...");
