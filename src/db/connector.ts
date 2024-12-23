@@ -40,7 +40,7 @@ export function startPrismaStudio() {
 
 export async function hasDataToReset(): Promise<boolean> {
     const run = await runQuery(async (prisma) => {
-        prisma.run.findFirst({
+        return prisma.run.findFirst({
             where: {
                 active: true,
             },
@@ -48,7 +48,7 @@ export async function hasDataToReset(): Promise<boolean> {
     });
 
     const timeStamp = await runQuery(async (prisma) => {
-        prisma.timeStamp.findFirst({
+        return prisma.timeStamp.findFirst({
             where: {
                 active: true,
             },
