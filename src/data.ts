@@ -23,7 +23,7 @@ export {
     fetchDataForRanking,
     fetchDataForSettings,
     fetchDataForStandalone,
-    fetchDataForTimes,
+    fetchDataForTimes
 };
 
 async function fetchDataForDisplayDefault() {
@@ -216,3 +216,4 @@ async function fetchDataForSettings() {
         ips: ipAddresses,
     };
 }
+

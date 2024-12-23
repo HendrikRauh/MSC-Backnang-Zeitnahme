@@ -3,7 +3,13 @@ import { exec } from "child_process";
 import http from "http";
 import { CONFIG } from "../config";
 
-export { disableActiveEntries, hasDataToReset, runQuery, startPrismaStudio };
+export {
+    disableActiveEntries,
+    fetchPrismaStudioPort,
+    hasDataToReset,
+    runQuery,
+    startPrismaStudio,
+};
 
 const prisma = new PrismaClient({
     log: ["warn", "error"],
@@ -79,4 +85,9 @@ async function disableActiveEntries() {
             },
         });
     });
+}
+
+async function fetchPrismaStudioPort(): Promise<{ dbPort: string }> {
+    startPrismaStudio();
+    return { dbPort: CONFIG.PRISMA_STUDIO_PORT };
 }

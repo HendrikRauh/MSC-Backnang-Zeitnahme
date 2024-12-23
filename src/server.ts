@@ -14,7 +14,7 @@ import {
     fetchDataForStandalone,
     fetchDataForTimes,
 } from "./data";
-import { disableActiveEntries, startPrismaStudio } from "./db/connector";
+import { disableActiveEntries, fetchPrismaStudioPort } from "./db/connector";
 import { fetchLastVehicleByDriverId, setDriversActiveState } from "./db/driver";
 import { deactivateRun, endRun, saveRun, startRun } from "./db/run";
 import { deactivateTimestamp, generateTimestamp } from "./db/timestamp";
@@ -262,9 +262,4 @@ function fetchDataAndRender(viewName: string, queryFn: () => Promise<any>) {
             res.status(500).send(`Error fetching data for ${viewName}`);
         }
     };
-}
-
-async function fetchPrismaStudioPort(): Promise<{ dbPort: string }> {
-    startPrismaStudio();
-    return { dbPort: CONFIG.PRISMA_STUDIO_PORT };
 }
