@@ -62,7 +62,7 @@ async function setDriversActiveState(drivers: string | any[]) {
 }
 
 async function fetchLastVehicleByDriverId(driverId: number) {
-    const driver = await runQuery(async (prisma) => {
+    return await runQuery(async (prisma) => {
         return prisma.driver.findFirst({
             where: {
                 id: driverId,
@@ -72,6 +72,4 @@ async function fetchLastVehicleByDriverId(driverId: number) {
             },
         });
     });
-
-    return driver;
 }
