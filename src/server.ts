@@ -163,7 +163,7 @@ app.post("/delete-time", async (req, res) => {
 });
 
 app.post("/get-vehicle-for-driver", async (req, res) => {
-    let vehicle = fetchLastVehicleByDriverId(parseInt(req.body.driverId));
+    let vehicle = await fetchLastVehicleByDriverId(parseInt(req.body.driverId));
     res.status(200).send(vehicle);
 });
 
