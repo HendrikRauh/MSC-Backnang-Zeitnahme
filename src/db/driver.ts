@@ -31,10 +31,6 @@ export async function fetchInactiveDrivers() {
     });
 }
 
-/**
- * Saves the given drivers, setting the active driver order
- * @param drivers drivers to save
- */
 export async function setDriversActiveState(drivers: string | any[]) {
     await runQuery(async (prisma) => {
         return prisma.driver.updateMany({
@@ -58,11 +54,6 @@ export async function setDriversActiveState(drivers: string | any[]) {
     }
 }
 
-/**
- * Fetches the last vehicle of a driver
- * @param driverId ID of the driver
- * @returns The last vehicle of the driver
- */
 export async function fetchLastVehicleByDriverId(driverId: number) {
     const driver = await runQuery(async (prisma) => {
         return prisma.driver.findFirst({

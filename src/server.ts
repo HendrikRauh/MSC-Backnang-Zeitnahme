@@ -19,10 +19,6 @@ import { fetchLastVehicleByDriverId, setDriversActiveState } from "./db/driver";
 import { deactivateRun, endRun, saveRun, startRun } from "./db/run";
 import { deactivateTimestamp, generateTimestamp } from "./db/timestamp";
 
-/**
- * Gets all the IPv4 addresses of the server.
- * @returns A promise that resolves to an array of IPv4 server IP addresses.
- */
 export async function fetchAllServerIpAddresses(): Promise<string[]> {
     const nets = networkInterfaces();
     const results: string[] = [];
@@ -39,10 +35,6 @@ export async function fetchAllServerIpAddresses(): Promise<string[]> {
     return results;
 }
 
-/**
- * Send a message to all connected websockets.
- * @param message The message to send.
- */
 export async function websocketSend(message: string) {
     wss.clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {
@@ -252,23 +244,12 @@ server.listen(CONFIG.PORT, () => {
     console.log(`Server is running on port ${CONFIG.PORT}`);
 });
 
-/**
- * Renders a view with the specified name.
- * @param viewName Name of the pug file to render
- * @returns A function that renders the specified view
- */
 function renderView(viewName: string) {
     return (req: Request, res: Response) => {
         res.render(viewName);
     };
 }
 
-/**
- * Fetches data using the provided query function and renders the specified view with the data.
- * @param viewName Name of the pug file to render
- * @param queryFn Function that returns a promise that resolves to the data to render
- * @returns A function that fetches the data and renders the specified view
- */
 function fetchDataAndRender(viewName: string, queryFn: () => Promise<any>) {
     return async (_req: Request, res: Response) => {
         try {
@@ -281,10 +262,6 @@ function fetchDataAndRender(viewName: string, queryFn: () => Promise<any>) {
     };
 }
 
-/**
- * Fetches the port for Prisma Studio and starts it.
- * @returns A promise that resolves to an object containing the port for Prisma Studio.
- */
 async function fetchPrismaStudioPort(): Promise<{ dbPort: string }> {
     startPrismaStudio();
     return { dbPort: CONFIG.PRISMA_STUDIO_PORT };

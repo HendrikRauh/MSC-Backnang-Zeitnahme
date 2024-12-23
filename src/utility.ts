@@ -1,11 +1,3 @@
-/**
- * @param startTime start time of the run
- * @param endTime end time of the run
- * @param penalty penalty seconds to add to the run
- * @returns object with time, formattedDriveTime and formattedTotalTime
- */
-// In src/utility.ts
-
 export function calculateTime(
     startTime: Date,
     endTime: Date,
@@ -27,11 +19,6 @@ export function calculateTime(
     };
 }
 
-/**
- * Formats a duration in milliseconds as a string.
- * @param durationMs The duration in milliseconds.
- * @returns The formatted duration as a string.
- */
 export function formatDuration(durationMs: number): string {
     let formattedString = "";
 
@@ -55,11 +42,6 @@ export function formatDuration(durationMs: number): string {
     return formattedString;
 }
 
-/**
- * Formats a timestamp as a string.
- * @param timestamp The timestamp to format.
- * @returns The formatted timestamp as a string.
- */
 export function formatTimestamp(timestamp: Date) {
     return timestamp.toLocaleTimeString("de-de", {
         hour: "2-digit",

@@ -17,10 +17,6 @@ import { handleSerialPort, portOpened } from "./serialport";
 import { fetchAllServerIpAddresses } from "./server";
 import { calculateTime } from "./utility";
 
-/**
- * Fetches the data for the default display.
- * @returns The data for the default display.
- */
 export async function fetchDataForDisplayDefault() {
     const lastRun = await fetchLatestRun();
 
@@ -57,10 +53,6 @@ export async function fetchDataForDisplayDefault() {
     return { lastRun: lastRun, allDriverRuns: lastRunsOfDriver };
 }
 
-/**
- * Fetches all active times
- * @returns All active times
- */
 export async function fetchDataForTimes() {
     const times = await fetchFinishedRuns();
 
@@ -78,10 +70,6 @@ export async function fetchDataForTimes() {
     return { times: times };
 }
 
-/**
- * Fetches the data for the standalone display.
- * @returns The data for the standalone display.
- */
 export async function fetchDataForStandalone() {
     let main, sub1, sub2;
     const lastTimestamps = await fetchLastTimestamps(4);
@@ -117,10 +105,6 @@ export async function fetchDataForStandalone() {
     return { main, sub1, sub2 };
 }
 
-/**
- * Fetches the data for the ranking display.
- * @returns The data for the ranking display.
- */
 export async function fetchDataForRanking() {
     const times = await fetchFinishedRuns();
 
@@ -171,10 +155,6 @@ export async function fetchDataForRanking() {
     return { bestTimes: ranking };
 }
 
-/**
- * Fetches the data for the operation view.
- * @returns The data for the operation view.
- */
 export async function fetchDataForOperation() {
     handleSerialPort();
 
@@ -211,10 +191,6 @@ export async function fetchDataForOperation() {
     };
 }
 
-/**
- * Fetches the data for the settings view.
- * @returns The data for the settings view.
- */
 export async function fetchDataForSettings() {
     const activeDrivers = await fetchActiveDrivers();
     const inactiveDrivers = await fetchInactiveDrivers();

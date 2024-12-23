@@ -7,12 +7,6 @@ const prisma = new PrismaClient({
     log: ["warn", "error"],
 });
 
-/**
- * Run a query using Prisma and handle the result.
- * @param query The query to run.
- * @returns The result of the query.
- * @throws If an error occurs during the query.
- */
 export async function runQuery<T>(
     query: (prisma: PrismaClient) => Promise<T>
 ): Promise<T> {
@@ -27,9 +21,6 @@ export async function runQuery<T>(
         });
 }
 
-/**
- * Starts Prisma Studio if it is not already running.
- */
 export function startPrismaStudio() {
     const req = http.request(
         {
@@ -67,9 +58,6 @@ export async function hasDataToReset(): Promise<boolean> {
     return run != null || timeStamp != null;
 }
 
-/**
- * Resets the database, deactivating all runs and timestamps
- */
 export async function disableActiveEntries() {
     await runQuery(async (prisma) => {
         return prisma.run.updateMany({

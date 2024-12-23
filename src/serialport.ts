@@ -5,9 +5,6 @@ import { SerialPort } from "serialport";
 import { createTimestamp } from "./db/timestamp";
 import { websocketSend } from "./server";
 
-/**
- * Handle the serial port connection.
- */
 export async function handleSerialPort() {
     console.log("Serial port handler started.");
     if (!portOpened) {
@@ -35,12 +32,6 @@ export async function handleSerialPort() {
     }
 }
 
-/**
- * Parse incoming serial data and create a new timestamp in the database.
- * @param {string} data The incoming serial data.
- * @returns {Promise<void>} A promise that resolves when the data has been parsed.
- * @throws {Error} If an error occurs while parsing the data.
- */
 export async function parseSerialData(data: string): Promise<void> {
     accumulatedData += data;
 
@@ -79,11 +70,6 @@ export async function parseSerialData(data: string): Promise<void> {
     }
 }
 
-// Function to find and open a serial port by manufacturer
-/**
- * @param manufacturer Manufacturer of the serial port to open.
- * @returns Port object if successful, null if not.
- */
 async function findAndOpenSerialPort(manufacturer: string | undefined) {
     const ports = await SerialPort.list();
     for (const port of ports) {
@@ -95,10 +81,6 @@ async function findAndOpenSerialPort(manufacturer: string | undefined) {
     return null;
 }
 
-/**
- * @param path Path of the serial port to open.
- * @returns Port object if successful, null if not.
- */
 async function openSerialPort(path: string) {
     try {
         const port = await new SerialPort({

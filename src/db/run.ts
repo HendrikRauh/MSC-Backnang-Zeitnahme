@@ -81,10 +81,6 @@ export async function fetchAllRunsByDriverId(driverId: number) {
     });
 }
 
-/**
- * Deletes a given run from the database
- * @param run ID of the run to be deleted
- */
 export async function deactivateRun(run: number) {
     await runQuery(async (prisma) => {
         return prisma.run.updateMany({
@@ -98,12 +94,6 @@ export async function deactivateRun(run: number) {
     });
 }
 
-/**
- * Starts a new run
- * @param timestamp start time of the run
- * @param driverId ID of the driver
- * @param vehicleId ID of the vehicle
- */
 export async function startRun(
     timestamp: Date,
     driverId: number,
@@ -158,12 +148,6 @@ export async function startRun(
     });
 }
 
-/**
- * Saves the run with the given penalty and note
- * @param run ID of the run
- * @param penalty penalty seconds to add to the run
- * @param note note for the run
- */
 export async function saveRun(run: number, penalty: number, note: string) {
     await runQuery(async (prisma) => {
         return prisma.run.update({
@@ -178,11 +162,6 @@ export async function saveRun(run: number, penalty: number, note: string) {
     });
 }
 
-/**
- * Ends the given run with the given timestamp
- * @param run ID of the run
- * @param timestamp end time of the run
- */
 export async function endRun(run: number, timestamp: Date) {
     await runQuery(async (prisma) => {
         return prisma.run.update({

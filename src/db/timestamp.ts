@@ -1,9 +1,6 @@
 import { formatTimestamp } from "../utility";
 import { runQuery } from "./connector";
 
-/**
- * Generate timestamp for the database.
- */
 export async function generateTimestamp() {
     const time = new Date();
     await createTimestamp(time);
@@ -36,10 +33,6 @@ export async function fetchTimestamps() {
     });
 }
 
-/**
- * Deletes the given timestamp
- * @param timestamp timestamp to delete
- */
 export async function deactivateTimestamp(timestamp: Date) {
     console.log("Deleting timestamp: " + timestamp);
     await runQuery(async (prisma) => {
@@ -54,10 +47,6 @@ export async function deactivateTimestamp(timestamp: Date) {
     });
 }
 
-/**
- * Creates a new timestamp in the database
- * @param date timestamp to create
- */
 export async function createTimestamp(date: Date) {
     await runQuery(async (prisma) => {
         return prisma.timeStamp.create({
