@@ -60,7 +60,7 @@ export async function generateTimestamp() {
 
 async function getLastRun() {
     return await runQuery(async (prisma) => {
-        return prisma.time.findFirst({
+        return prisma.run.findFirst({
             where: {
                 NOT: {
                     endTime: null,
@@ -82,7 +82,7 @@ async function getLastRun() {
 
 async function getDriverRuns(driverId: number) {
     return await runQuery(async (prisma) => {
-        return prisma.time.findMany({
+        return prisma.run.findMany({
             where: {
                 driverId: driverId,
                 NOT: {
@@ -145,7 +145,7 @@ export async function fetchDefaultDisplayData() {
 
 async function getAllFinishedRuns() {
     return await runQuery(async (prisma) => {
-        return prisma.time.findMany({
+        return prisma.run.findMany({
             where: {
                 active: true,
                 NOT: {
@@ -297,7 +297,7 @@ async function getVehicles() {
 
 async function getStartedRuns() {
     return await runQuery(async (prisma) => {
-        return prisma.time.findMany({
+        return prisma.run.findMany({
             where: {
                 endTime: null,
                 active: true,
@@ -313,7 +313,7 @@ async function getStartedRuns() {
 
 async function getEndedUnsavedRuns() {
     return await runQuery(async (prisma) => {
-        return prisma.time.findMany({
+        return prisma.run.findMany({
             where: {
                 NOT: {
                     endTime: null,
@@ -403,7 +403,7 @@ async function getInactiveDrivers() {
 }
 
 async function hasDataToReset(): Promise<boolean> {
-    const run = await prisma.time.findFirst({
+    const run = await prisma.run.findFirst({
         where: {
             active: true,
         },
@@ -441,7 +441,7 @@ export async function fetchSettingsData() {
 
 async function getAllActiveTimes() {
     return await runQuery(async (prisma) => {
-        return prisma.time.findMany({
+        return prisma.run.findMany({
             where: {
                 active: true,
             },
@@ -482,7 +482,7 @@ export async function fetchTimes() {
  */
 export async function deleteTime(run: number) {
     await runQuery(async (prisma) => {
-        return prisma.time.updateMany({
+        return prisma.run.updateMany({
             where: {
                 id: run,
             },
@@ -505,7 +505,7 @@ export async function startRun(
     vehicleId: number
 ) {
     await runQuery(async (prisma) => {
-        return prisma.time.create({
+        return prisma.run.create({
             data: {
                 driver: {
                     connect: {
@@ -581,7 +581,7 @@ export async function lastVehicle(driverId: number) {
  */
 export async function saveRun(run: number, penalty: number, note: string) {
     await runQuery(async (prisma) => {
-        return prisma.time.update({
+        return prisma.run.update({
             where: {
                 id: run,
             },
@@ -598,7 +598,7 @@ export async function saveRun(run: number, penalty: number, note: string) {
  */
 export async function reset() {
     await runQuery(async (prisma) => {
-        return prisma.time.updateMany({
+        return prisma.run.updateMany({
             data: {
                 active: false,
             },
@@ -669,7 +669,7 @@ export async function saveDrivers(drivers: string | any[]) {
  */
 export async function endRun(run: number, timestamp: Date) {
     await runQuery(async (prisma) => {
-        return prisma.time.update({
+        return prisma.run.update({
             where: {
                 id: run,
             },
