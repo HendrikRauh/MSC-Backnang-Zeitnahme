@@ -1,11 +1,11 @@
 import express, { Request, Response } from "express";
-import { WebSocketServer } from "ws";
-
 import session from "express-session";
 import helmet from "helmet";
 import http from "http";
 import { networkInterfaces } from "os";
 import path from "path";
+import { WebSocketServer } from "ws";
+import { CONFIG } from "./config";
 import {
     deleteTime,
     deleteTimestamp,
@@ -26,11 +26,9 @@ import {
     startRun,
 } from "./db";
 
-import { CONFIG } from "./config";
-
 /**
  * Gets all the IPv4 addresses of the server.
- * @returns {Promise<string[]>} A promise that resolves to an array of IPv4 server IP addresses.
+ * @returns A promise that resolves to an array of IPv4 server IP addresses.
  */
 export async function getAllServerIps(): Promise<string[]> {
     const nets = networkInterfaces();
@@ -49,8 +47,8 @@ export async function getAllServerIps(): Promise<string[]> {
 }
 
 /**
- * Send a message to all connected clients.
- * @param {String} message
+ * Send a message to all connected websockets.
+ * @param message The message to send.
  */
 export async function websocketSend(message: string) {
     wss.clients.forEach((client) => {
@@ -265,12 +263,23 @@ server.listen(CONFIG.PORT, () => {
     console.log(`Server is running on port ${CONFIG.PORT}`);
 });
 
+/**
+ * Renders a view with the specified name.
+ * @param viewName Name of the pug file to render
+ * @returns A function that renders the specified view
+ */
 function renderView(viewName: string) {
     return (req: Request, res: Response) => {
         res.render(viewName);
     };
 }
 
+/**
+ * Fetches data using the provided query function and renders the specified view with the data.
+ * @param viewName Name of the pug file to render
+ * @param queryFn Function that returns a promise that resolves to the data to render
+ * @returns A function that fetches the data and renders the specified view
+ */
 function fetchDataAndRender(viewName: string, queryFn: () => Promise<any>) {
     return async (_req: Request, res: Response) => {
         try {
@@ -283,7 +292,11 @@ function fetchDataAndRender(viewName: string, queryFn: () => Promise<any>) {
     };
 }
 
-async function fetchPrismaStudioPort() {
+/**
+ * Fetches the port for Prisma Studio and starts it.
+ * @returns A promise that resolves to an object containing the port for Prisma Studio.
+ */
+async function fetchPrismaStudioPort(): Promise<{ dbPort: string }> {
     startPrismaStudio();
     return { dbPort: CONFIG.PRISMA_STUDIO_PORT };
 }

@@ -1,11 +1,13 @@
-export function getTime(startTimeRaw: Date, endTimeRaw: Date, penalty = 0) {
-    const startTime = new Date(startTimeRaw).getTime();
-    const endTime = new Date(endTimeRaw).getTime();
-
-    const driveTime: number = endTime - startTime;
+/**
+ * @param startTime start time of the run
+ * @param endTime end time of the run
+ * @param penalty penalty seconds to add to the run
+ * @returns object with time, formattedDriveTime and formattedTotalTime
+ */
+export function getTime(startTime: Date, endTime: Date, penalty = 0) {
+    const driveTime: number = endTime.getTime() - startTime.getTime();
 
     let formattedDriveTime = formatDuration(driveTime);
-
     let formattedTotalTime = formatDuration(driveTime + penalty * 1000);
 
     return {
