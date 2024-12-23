@@ -16,8 +16,8 @@ import {
     fetchTimes,
 } from "./data";
 import {
-    deleteTime,
-    deleteTimestamp,
+    deactivateRun,
+    deactivateTimestamp,
     endRun,
     generateTimestamp,
     lastVehicle,
@@ -172,7 +172,7 @@ app.post("/start-run", async (req, res) => {
 app.post("/delete-time", async (req, res) => {
     const run = parseInt(req.body.run);
     try {
-        await deleteTime(run);
+        await deactivateRun(run);
         res.status(200).send("Time deleted");
     } catch (e) {
         console.error(e);
@@ -219,7 +219,7 @@ app.post("/reset-data", async (req, res) => {
 app.post("/delete-timestamp", async (req, res) => {
     const timestamp = new Date(req.body.timestamp);
     try {
-        deleteTimestamp(timestamp);
+        deactivateTimestamp(timestamp);
         res.status(200).send("Timestamp deleted");
     } catch (e) {
         console.error(e);

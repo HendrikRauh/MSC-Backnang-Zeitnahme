@@ -256,7 +256,7 @@ export async function getAllActiveTimes() {
  * Deletes a given run from the database
  * @param run ID of the run to be deleted
  */
-export async function deleteTime(run: number) {
+export async function deactivateRun(run: number) {
     await runQuery(async (prisma) => {
         return prisma.run.updateMany({
             where: {
@@ -397,7 +397,7 @@ export async function reset() {
  * Deletes the given timestamp
  * @param timestamp timestamp to delete
  */
-export async function deleteTimestamp(timestamp: Date) {
+export async function deactivateTimestamp(timestamp: Date) {
     console.log("Deleting timestamp: " + timestamp);
     await runQuery(async (prisma) => {
         return prisma.timeStamp.update({
