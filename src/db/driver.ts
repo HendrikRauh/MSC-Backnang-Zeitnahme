@@ -1,6 +1,6 @@
 import { runQuery } from "./connector";
 
-export async function getActiveDrivers() {
+export async function fetchActiveDrivers() {
     return await runQuery(async (prisma) => {
         return prisma.driver.findMany({
             where: {
@@ -13,7 +13,7 @@ export async function getActiveDrivers() {
     });
 }
 
-export async function getInactiveDrivers() {
+export async function fetchInactiveDrivers() {
     return await runQuery(async (prisma) => {
         return prisma.driver.findMany({
             where: {
@@ -35,7 +35,7 @@ export async function getInactiveDrivers() {
  * Saves the given drivers, setting the active driver order
  * @param drivers drivers to save
  */
-export async function saveDrivers(drivers: string | any[]) {
+export async function setDriversActiveState(drivers: string | any[]) {
     await runQuery(async (prisma) => {
         return prisma.driver.updateMany({
             data: {
@@ -63,7 +63,7 @@ export async function saveDrivers(drivers: string | any[]) {
  * @param driverId ID of the driver
  * @returns The last vehicle of the driver
  */
-export async function lastVehicle(driverId: number) {
+export async function fetchLastVehicleByDriverId(driverId: number) {
     const driver = await runQuery(async (prisma) => {
         return prisma.driver.findFirst({
             where: {

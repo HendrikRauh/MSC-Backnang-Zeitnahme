@@ -9,7 +9,7 @@ export async function generateTimestamp() {
     await createTimestamp(time);
 }
 
-export async function getLastTimestamps(amount: number) {
+export async function fetchLatestTimestamps(amount: number) {
     return await runQuery(async (prisma) => {
         return prisma.timeStamp.findMany({
             where: {
@@ -23,7 +23,7 @@ export async function getLastTimestamps(amount: number) {
     });
 }
 
-export async function getActiveTimestamps() {
+export async function fetchTimestamps() {
     return await runQuery(async (prisma) => {
         return prisma.timeStamp.findMany({
             where: {

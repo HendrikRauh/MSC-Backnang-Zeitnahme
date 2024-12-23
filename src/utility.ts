@@ -6,7 +6,7 @@
  */
 // In src/utility.ts
 
-export function getTime(
+export function calculateTime(
     startTime: Date,
     endTime: Date,
     penalty = 0

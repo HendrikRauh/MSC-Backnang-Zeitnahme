@@ -1,6 +1,6 @@
 import { runQuery } from "./connector";
 
-export async function getStartedRuns() {
+export async function fetchStartedRuns() {
     return await runQuery(async (prisma) => {
         return prisma.run.findMany({
             where: {
@@ -16,7 +16,7 @@ export async function getStartedRuns() {
     });
 }
 
-export async function getEndedUnsavedRuns() {
+export async function fetchUnsavedRuns() {
     return await runQuery(async (prisma) => {
         return prisma.run.findMany({
             where: {
@@ -36,7 +36,7 @@ export async function getEndedUnsavedRuns() {
     });
 }
 
-export async function getLastRun() {
+export async function fetchLatestRun() {
     return await runQuery(async (prisma) => {
         return prisma.run.findFirst({
             where: {
@@ -58,7 +58,7 @@ export async function getLastRun() {
     });
 }
 
-export async function getDriverRuns(driverId: number) {
+export async function fetchAllRunsByDriverId(driverId: number) {
     return await runQuery(async (prisma) => {
         return prisma.run.findMany({
             where: {
@@ -70,22 +70,6 @@ export async function getDriverRuns(driverId: number) {
             },
             orderBy: {
                 id: "desc",
-            },
-            include: {
-                driver: true,
-                vehicle: true,
-                startTime: true,
-                endTime: true,
-            },
-        });
-    });
-}
-
-export async function getAllActiveTimes() {
-    return await runQuery(async (prisma) => {
-        return prisma.run.findMany({
-            where: {
-                active: true,
             },
             include: {
                 driver: true,
@@ -227,7 +211,7 @@ export async function endRun(run: number, timestamp: Date) {
     });
 }
 
-export async function getAllFinishedRuns() {
+export async function fetchFinishedRuns() {
     return await runQuery(async (prisma) => {
         return prisma.run.findMany({
             where: {
