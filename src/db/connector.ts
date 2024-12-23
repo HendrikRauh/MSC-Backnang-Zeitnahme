@@ -47,12 +47,6 @@ export function startPrismaStudio() {
     });
 }
 
-export async function getVehicles() {
-    return await runQuery(async (prisma) => {
-        return prisma.vehicle.findMany();
-    });
-}
-
 export async function hasDataToReset(): Promise<boolean> {
     const run = await runQuery(async (prisma) => {
         prisma.run.findFirst({
@@ -71,26 +65,6 @@ export async function hasDataToReset(): Promise<boolean> {
     });
 
     return run != null || timeStamp != null;
-}
-
-/**
- * Fetches the last vehicle of a driver
- * @param driverId ID of the driver
- * @returns The last vehicle of the driver
- */
-export async function lastVehicle(driverId: number) {
-    const driver = await runQuery(async (prisma) => {
-        return prisma.driver.findFirst({
-            where: {
-                id: driverId,
-            },
-            include: {
-                vehicle: true,
-            },
-        });
-    });
-
-    return driver;
 }
 
 /**

@@ -57,3 +57,23 @@ export async function saveDrivers(drivers: string | any[]) {
         });
     }
 }
+
+/**
+ * Fetches the last vehicle of a driver
+ * @param driverId ID of the driver
+ * @returns The last vehicle of the driver
+ */
+export async function lastVehicle(driverId: number) {
+    const driver = await runQuery(async (prisma) => {
+        return prisma.driver.findFirst({
+            where: {
+                id: driverId,
+            },
+            include: {
+                vehicle: true,
+            },
+        });
+    });
+
+    return driver;
+}

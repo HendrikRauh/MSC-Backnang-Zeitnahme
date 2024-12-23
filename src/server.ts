@@ -15,12 +15,8 @@ import {
     fetchTimeData,
     fetchTimes,
 } from "./data";
-import {
-    disableActiveEntries,
-    lastVehicle,
-    startPrismaStudio,
-} from "./db/connector";
-import { saveDrivers } from "./db/driver";
+import { disableActiveEntries, startPrismaStudio } from "./db/connector";
+import { lastVehicle, saveDrivers } from "./db/driver";
 import { deactivateRun, endRun, saveRun, startRun } from "./db/run";
 import { deactivateTimestamp, generateTimestamp } from "./db/timestamp";
 
