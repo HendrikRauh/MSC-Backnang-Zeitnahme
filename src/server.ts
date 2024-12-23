@@ -7,9 +7,6 @@ import path from "path";
 import { WebSocketServer } from "ws";
 import { CONFIG } from "./config";
 import {
-    deleteTime,
-    deleteTimestamp,
-    endRun,
     fetchDefaultDisplayData,
     fetchOperationData,
     fetchRankingData,
@@ -17,6 +14,11 @@ import {
     fetchStandaloneData,
     fetchTimeData,
     fetchTimes,
+} from "./data";
+import {
+    deleteTime,
+    deleteTimestamp,
+    endRun,
     generateTimestamp,
     lastVehicle,
     reset,
