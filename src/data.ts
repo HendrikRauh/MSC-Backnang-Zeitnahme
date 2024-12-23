@@ -1,18 +1,15 @@
 import { CONFIG } from "./config";
+import { getVehicles, hasDataToReset } from "./db/connector";
+import { getActiveDrivers, getInactiveDrivers } from "./db/driver";
 import {
-    getActiveDrivers,
-    getActiveTimestamps,
     getAllActiveTimes,
     getAllFinishedRuns,
     getDriverRuns,
     getEndedUnsavedRuns,
-    getInactiveDrivers,
     getLastRun,
-    getLastTimestamps,
     getStartedRuns,
-    getVehicles,
-    hasDataToReset,
-} from "./db";
+} from "./db/run";
+import { getActiveTimestamps, getLastTimestamps } from "./db/timestamp";
 import { handleSerialPort, portOpened } from "./serialport";
 import { getAllServerIps } from "./server";
 import { getTime } from "./utility";

@@ -16,17 +16,13 @@ import {
     fetchTimes,
 } from "./data";
 import {
-    deactivateRun,
-    deactivateTimestamp,
-    endRun,
-    generateTimestamp,
+    disableActiveEntries,
     lastVehicle,
-    reset,
-    saveDrivers,
-    saveRun,
     startPrismaStudio,
-    startRun,
-} from "./db";
+} from "./db/connector";
+import { saveDrivers } from "./db/driver";
+import { deactivateRun, endRun, saveRun, startRun } from "./db/run";
+import { deactivateTimestamp, generateTimestamp } from "./db/timestamp";
 
 /**
  * Gets all the IPv4 addresses of the server.
@@ -207,7 +203,7 @@ app.post("/save-run", async (req, res) => {
 
 app.post("/reset-data", async (req, res) => {
     try {
-        reset();
+        disableActiveEntries();
         res.status(200).send("Data reset");
     } catch (e) {
         console.error(e);

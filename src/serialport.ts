@@ -2,7 +2,7 @@ var accumulatedData = "";
 export var portOpened: SerialPort<AutoDetectTypes> | null = null;
 import { AutoDetectTypes } from "@serialport/bindings-cpp";
 import { SerialPort } from "serialport";
-import { createTimestamp } from "./db";
+import { createTimestamp } from "./db/timestamp";
 import { websocketSend } from "./server";
 
 /**
