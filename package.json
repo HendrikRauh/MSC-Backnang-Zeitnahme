@@ -26,7 +26,7 @@
         "restart": "pm2 restart ecosystem.config.cjs",
         "delete": "pm2 delete ecosystem.config.cjs",
         "update": "git pull && npm i && npm run stop && npx prisma generate && npx prisma migrate dev --name init && tsc && npm run restart",
-        "easy-start": "npm run delete && npm run start && start http://localhost"
+        "easy-start": "npm run restart && start http://localhost"
     },
     "repository": {
         "type": "git",
