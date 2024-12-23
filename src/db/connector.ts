@@ -3,11 +3,13 @@ import { exec } from "child_process";
 import http from "http";
 import { CONFIG } from "../config";
 
+export { disableActiveEntries, hasDataToReset, runQuery, startPrismaStudio };
+
 const prisma = new PrismaClient({
     log: ["warn", "error"],
 });
 
-export async function runQuery<T>(
+async function runQuery<T>(
     query: (prisma: PrismaClient) => Promise<T>
 ): Promise<T> {
     return query(prisma)
@@ -21,7 +23,7 @@ export async function runQuery<T>(
         });
 }
 
-export function startPrismaStudio() {
+function startPrismaStudio() {
     const req = http.request(
         {
             hostname: "localhost",
@@ -38,7 +40,7 @@ export function startPrismaStudio() {
     });
 }
 
-export async function hasDataToReset(): Promise<boolean> {
+async function hasDataToReset(): Promise<boolean> {
     const run = await runQuery(async (prisma) => {
         return prisma.run.findFirst({
             where: {
@@ -58,7 +60,7 @@ export async function hasDataToReset(): Promise<boolean> {
     return run != null || timeStamp != null;
 }
 
-export async function disableActiveEntries() {
+async function disableActiveEntries() {
     await runQuery(async (prisma) => {
         return prisma.run.updateMany({
             data: {

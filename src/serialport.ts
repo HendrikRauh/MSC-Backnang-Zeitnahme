@@ -1,11 +1,13 @@
 var accumulatedData = "";
-export var portOpened: SerialPort<AutoDetectTypes> | null = null;
+var portOpened: SerialPort<AutoDetectTypes> | null = null;
 import { AutoDetectTypes } from "@serialport/bindings-cpp";
 import { SerialPort } from "serialport";
 import { createTimestamp } from "./db/timestamp";
 import { websocketSend } from "./server";
 
-export async function handleSerialPort() {
+export { handleSerialPort, portOpened };
+
+async function handleSerialPort() {
     console.log("Serial port handler started.");
     if (!portOpened) {
         console.log("Attempting to open serial port...");
@@ -32,7 +34,7 @@ export async function handleSerialPort() {
     }
 }
 
-export async function parseSerialData(data: string): Promise<void> {
+async function parseSerialData(data: string): Promise<void> {
     accumulatedData += data;
 
     const timeRegexNormalTime = /(\d{1,2}:\d{2}:\d{2}\.\d{3})/;

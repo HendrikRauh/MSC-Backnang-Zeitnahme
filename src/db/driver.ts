@@ -1,6 +1,13 @@
 import { runQuery } from "./connector";
 
-export async function fetchActiveDrivers() {
+export {
+    fetchActiveDrivers,
+    fetchInactiveDrivers,
+    fetchLastVehicleByDriverId,
+    setDriversActiveState,
+};
+
+async function fetchActiveDrivers() {
     return await runQuery(async (prisma) => {
         return prisma.driver.findMany({
             where: {
@@ -13,7 +20,7 @@ export async function fetchActiveDrivers() {
     });
 }
 
-export async function fetchInactiveDrivers() {
+async function fetchInactiveDrivers() {
     return await runQuery(async (prisma) => {
         return prisma.driver.findMany({
             where: {
@@ -31,7 +38,7 @@ export async function fetchInactiveDrivers() {
     });
 }
 
-export async function setDriversActiveState(drivers: string | any[]) {
+async function setDriversActiveState(drivers: string | any[]) {
     await runQuery(async (prisma) => {
         return prisma.driver.updateMany({
             data: {
@@ -54,7 +61,7 @@ export async function setDriversActiveState(drivers: string | any[]) {
     }
 }
 
-export async function fetchLastVehicleByDriverId(driverId: number) {
+async function fetchLastVehicleByDriverId(driverId: number) {
     const driver = await runQuery(async (prisma) => {
         return prisma.driver.findFirst({
             where: {

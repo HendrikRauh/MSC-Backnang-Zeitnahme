@@ -1,6 +1,18 @@
 import { runQuery } from "./connector";
 
-export async function fetchStartedRuns() {
+export {
+    deactivateRun,
+    endRun,
+    fetchAllRunsByDriverId,
+    fetchFinishedRuns,
+    fetchLatestRun,
+    fetchStartedRuns,
+    fetchUnsavedRuns,
+    saveRun,
+    startRun,
+};
+
+async function fetchStartedRuns() {
     return await runQuery(async (prisma) => {
         return prisma.run.findMany({
             where: {
@@ -16,7 +28,7 @@ export async function fetchStartedRuns() {
     });
 }
 
-export async function fetchUnsavedRuns() {
+async function fetchUnsavedRuns() {
     return await runQuery(async (prisma) => {
         return prisma.run.findMany({
             where: {
@@ -36,7 +48,7 @@ export async function fetchUnsavedRuns() {
     });
 }
 
-export async function fetchLatestRun() {
+async function fetchLatestRun() {
     return await runQuery(async (prisma) => {
         return prisma.run.findFirst({
             where: {
@@ -58,7 +70,7 @@ export async function fetchLatestRun() {
     });
 }
 
-export async function fetchAllRunsByDriverId(driverId: number) {
+async function fetchAllRunsByDriverId(driverId: number) {
     return await runQuery(async (prisma) => {
         return prisma.run.findMany({
             where: {
@@ -81,7 +93,7 @@ export async function fetchAllRunsByDriverId(driverId: number) {
     });
 }
 
-export async function deactivateRun(run: number) {
+async function deactivateRun(run: number) {
     await runQuery(async (prisma) => {
         return prisma.run.updateMany({
             where: {
@@ -94,11 +106,7 @@ export async function deactivateRun(run: number) {
     });
 }
 
-export async function startRun(
-    timestamp: Date,
-    driverId: number,
-    vehicleId: number
-) {
+async function startRun(timestamp: Date, driverId: number, vehicleId: number) {
     await runQuery(async (prisma) => {
         return prisma.run.create({
             data: {
@@ -148,7 +156,7 @@ export async function startRun(
     });
 }
 
-export async function saveRun(run: number, penalty: number, note: string) {
+async function saveRun(run: number, penalty: number, note: string) {
     await runQuery(async (prisma) => {
         return prisma.run.update({
             where: {
@@ -162,7 +170,7 @@ export async function saveRun(run: number, penalty: number, note: string) {
     });
 }
 
-export async function endRun(run: number, timestamp: Date) {
+async function endRun(run: number, timestamp: Date) {
     await runQuery(async (prisma) => {
         return prisma.run.update({
             where: {
@@ -190,7 +198,7 @@ export async function endRun(run: number, timestamp: Date) {
     });
 }
 
-export async function fetchFinishedRuns() {
+async function fetchFinishedRuns() {
     return await runQuery(async (prisma) => {
         return prisma.run.findMany({
             where: {

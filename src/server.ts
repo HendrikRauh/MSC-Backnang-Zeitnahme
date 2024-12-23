@@ -19,7 +19,9 @@ import { fetchLastVehicleByDriverId, setDriversActiveState } from "./db/driver";
 import { deactivateRun, endRun, saveRun, startRun } from "./db/run";
 import { deactivateTimestamp, generateTimestamp } from "./db/timestamp";
 
-export async function fetchAllServerIpAddresses(): Promise<string[]> {
+export { fetchAllServerIpAddresses, websocketSend };
+
+async function fetchAllServerIpAddresses(): Promise<string[]> {
     const nets = networkInterfaces();
     const results: string[] = [];
 
@@ -35,7 +37,7 @@ export async function fetchAllServerIpAddresses(): Promise<string[]> {
     return results;
 }
 
-export async function websocketSend(message: string) {
+async function websocketSend(message: string) {
     wss.clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {
             client.send(message);

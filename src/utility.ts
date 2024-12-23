@@ -1,4 +1,6 @@
-export function calculateTime(
+export { calculateTime, formatTimestamp };
+
+function calculateTime(
     startTime: Date,
     endTime: Date,
     penalty = 0
@@ -19,7 +21,7 @@ export function calculateTime(
     };
 }
 
-export function formatDuration(durationMs: number): string {
+function formatDuration(durationMs: number): string {
     let formattedString = "";
 
     const totalSeconds = Math.floor(durationMs / 1000);
@@ -42,7 +44,7 @@ export function formatDuration(durationMs: number): string {
     return formattedString;
 }
 
-export function formatTimestamp(timestamp: Date) {
+function formatTimestamp(timestamp: Date) {
     return timestamp.toLocaleTimeString("de-de", {
         hour: "2-digit",
         minute: "2-digit",

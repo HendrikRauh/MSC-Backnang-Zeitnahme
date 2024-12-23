@@ -1,12 +1,20 @@
 import { formatTimestamp } from "../utility";
 import { runQuery } from "./connector";
 
-export async function generateTimestamp() {
+export {
+    createTimestamp,
+    deactivateTimestamp,
+    fetchLatestTimestamps,
+    fetchTimestamps,
+    generateTimestamp,
+};
+
+async function generateTimestamp() {
     const time = new Date();
     await createTimestamp(time);
 }
 
-export async function fetchLatestTimestamps(amount: number) {
+async function fetchLatestTimestamps(amount: number) {
     return await runQuery(async (prisma) => {
         return prisma.timeStamp.findMany({
             where: {
@@ -20,7 +28,7 @@ export async function fetchLatestTimestamps(amount: number) {
     });
 }
 
-export async function fetchTimestamps() {
+async function fetchTimestamps() {
     return await runQuery(async (prisma) => {
         return prisma.timeStamp.findMany({
             where: {
@@ -33,7 +41,7 @@ export async function fetchTimestamps() {
     });
 }
 
-export async function deactivateTimestamp(timestamp: Date) {
+async function deactivateTimestamp(timestamp: Date) {
     console.log("Deleting timestamp: " + timestamp);
     await runQuery(async (prisma) => {
         return prisma.timeStamp.update({
@@ -47,7 +55,7 @@ export async function deactivateTimestamp(timestamp: Date) {
     });
 }
 
-export async function createTimestamp(date: Date) {
+async function createTimestamp(date: Date) {
     await runQuery(async (prisma) => {
         return prisma.timeStamp.create({
             data: {

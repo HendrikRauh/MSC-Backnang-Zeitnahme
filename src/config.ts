@@ -1,9 +1,11 @@
 import dotenv from "dotenv";
 
+export { CONFIG };
+
 const parsedConfig = dotenv.config().parsed;
 
 interface Config {
     [key: string]: string;
 }
 
-export const CONFIG: Config = parsedConfig || {};
+const CONFIG: Config = parsedConfig || {};

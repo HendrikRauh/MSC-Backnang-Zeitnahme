@@ -17,7 +17,16 @@ import { handleSerialPort, portOpened } from "./serialport";
 import { fetchAllServerIpAddresses } from "./server";
 import { calculateTime } from "./utility";
 
-export async function fetchDataForDisplayDefault() {
+export {
+    fetchDataForDisplayDefault,
+    fetchDataForOperation,
+    fetchDataForRanking,
+    fetchDataForSettings,
+    fetchDataForStandalone,
+    fetchDataForTimes,
+};
+
+async function fetchDataForDisplayDefault() {
     const lastRun = await fetchLatestRun();
 
     if (!lastRun) {
@@ -53,7 +62,7 @@ export async function fetchDataForDisplayDefault() {
     return { lastRun: lastRun, allDriverRuns: lastRunsOfDriver };
 }
 
-export async function fetchDataForTimes() {
+async function fetchDataForTimes() {
     const times = await fetchFinishedRuns();
 
     for (let i = 0; i < times.length; i++) {
@@ -70,7 +79,7 @@ export async function fetchDataForTimes() {
     return { times: times };
 }
 
-export async function fetchDataForStandalone() {
+async function fetchDataForStandalone() {
     let main, sub1, sub2;
     const lastTimestamps = await fetchLastTimestamps(4);
     try {
@@ -105,7 +114,7 @@ export async function fetchDataForStandalone() {
     return { main, sub1, sub2 };
 }
 
-export async function fetchDataForRanking() {
+async function fetchDataForRanking() {
     const times = await fetchFinishedRuns();
 
     if (times.length === 0) {
@@ -155,7 +164,7 @@ export async function fetchDataForRanking() {
     return { bestTimes: ranking };
 }
 
-export async function fetchDataForOperation() {
+async function fetchDataForOperation() {
     handleSerialPort();
 
     const timestamps = await fetchTimestamps();
@@ -191,7 +200,7 @@ export async function fetchDataForOperation() {
     };
 }
 
-export async function fetchDataForSettings() {
+async function fetchDataForSettings() {
     const activeDrivers = await fetchActiveDrivers();
     const inactiveDrivers = await fetchInactiveDrivers();
 
