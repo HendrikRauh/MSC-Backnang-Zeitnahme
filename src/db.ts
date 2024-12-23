@@ -19,10 +19,8 @@ const prisma = new PrismaClient({
 async function runQuery<T>(
     query: (prisma: PrismaClient) => Promise<T>
 ): Promise<T> {
-    console.log("Running query: ", query.toString());
     return query(prisma)
         .then((queryResult: T) => {
-            console.log("Query successful", queryResult);
             return queryResult;
         })
         .catch(async (e: T) => {
