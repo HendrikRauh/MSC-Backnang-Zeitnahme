@@ -37,7 +37,7 @@ $(document).ready(function () {
         },
         paging: false,
         language: {
-            url: "datatables.de.json",
+            url: "/lang/datatables.de.json",
         },
     });
 });

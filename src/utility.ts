@@ -1,11 +1,17 @@
-export function getTime(startTimeRaw: Date, endTimeRaw: Date, penalty = 0) {
-    const startTime = new Date(startTimeRaw).getTime();
-    const endTime = new Date(endTimeRaw).getTime();
+export { calculateTime, formatTimestamp };
 
-    const driveTime: number = endTime - startTime;
+function calculateTime(
+    startTime: Date,
+    endTime: Date,
+    penalty = 0
+): {
+    time: number;
+    formattedDriveTime: string;
+    formattedTotalTime: string;
+} {
+    const driveTime = endTime.getTime() - startTime.getTime();
 
     let formattedDriveTime = formatDuration(driveTime);
-
     let formattedTotalTime = formatDuration(driveTime + penalty * 1000);
 
     return {
@@ -15,12 +21,7 @@ export function getTime(startTimeRaw: Date, endTimeRaw: Date, penalty = 0) {
     };
 }
 
-/**
- * Formats a duration in milliseconds as a string.
- * @param durationMs The duration in milliseconds.
- * @returns The formatted duration as a string.
- */
-export function formatDuration(durationMs: number): string {
+function formatDuration(durationMs: number): string {
     let formattedString = "";
 
     const totalSeconds = Math.floor(durationMs / 1000);
@@ -43,12 +44,7 @@ export function formatDuration(durationMs: number): string {
     return formattedString;
 }
 
-/**
- * Formats a timestamp as a string.
- * @param timestamp The timestamp to format.
- * @returns The formatted timestamp as a string.
- */
-export function formatTimestamp(timestamp: Date) {
+function formatTimestamp(timestamp: Date) {
     return timestamp.toLocaleTimeString("de-de", {
         hour: "2-digit",
         minute: "2-digit",

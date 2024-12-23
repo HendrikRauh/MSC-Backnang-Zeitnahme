@@ -1,11 +1,13 @@
 var accumulatedData = "";
-export var portOpened: SerialPort<AutoDetectTypes> | null = null;
+var portOpened: SerialPort<AutoDetectTypes> | null = null;
 import { AutoDetectTypes } from "@serialport/bindings-cpp";
 import { SerialPort } from "serialport";
-import { createTimestamp } from "./db";
+import { createTimestamp } from "./db/timestamp";
 import { websocketSend } from "./server";
 
-export async function handleSerialPort() {
+export { handleSerialPort, portOpened };
+
+async function handleSerialPort() {
     console.log("Serial port handler started.");
     if (!portOpened) {
         console.log("Attempting to open serial port...");
@@ -32,13 +34,7 @@ export async function handleSerialPort() {
     }
 }
 
-/**
- * Parse incoming serial data and create a new timestamp in the database.
- * @param {string} data The incoming serial data.
- * @returns {Promise<void>} A promise that resolves when the data has been parsed.
- * @throws {Error} If an error occurs while parsing the data.
- */
-export async function parseSerialData(data: string) {
+async function parseSerialData(data: string): Promise<void> {
     accumulatedData += data;
 
     const timeRegexNormalTime = /(\d{1,2}:\d{2}:\d{2}\.\d{3})/;
@@ -76,7 +72,6 @@ export async function parseSerialData(data: string) {
     }
 }
 
-// Function to find and open a serial port by manufacturer
 async function findAndOpenSerialPort(manufacturer: string | undefined) {
     const ports = await SerialPort.list();
     for (const port of ports) {

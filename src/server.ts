@@ -1,38 +1,27 @@
 import express, { Request, Response } from "express";
-import { WebSocketServer } from "ws";
-
 import session from "express-session";
 import helmet from "helmet";
 import http from "http";
 import { networkInterfaces } from "os";
 import path from "path";
-import {
-    deleteTime,
-    deleteTimestamp,
-    endRun,
-    fetchDefaultDisplayData,
-    fetchOperationData,
-    fetchRankingData,
-    fetchSettingsData,
-    fetchStandaloneData,
-    fetchTimeData,
-    fetchTimes,
-    generateTimestamp,
-    lastVehicle,
-    reset,
-    saveDrivers,
-    saveRun,
-    startPrismaStudio,
-    startRun,
-} from "./db";
-
+import { WebSocketServer } from "ws";
 import { CONFIG } from "./config";
+import {
+    fetchDataForDisplayDefault,
+    fetchDataForOperation,
+    fetchDataForRanking,
+    fetchDataForSettings,
+    fetchDataForStandalone,
+    fetchDataForTimes,
+} from "./data";
+import { disableActiveEntries, fetchPrismaStudioPort } from "./db/connector";
+import { fetchLastVehicleByDriverId, setDriversActiveState } from "./db/driver";
+import { deactivateRun, endRun, saveRun, startRun } from "./db/run";
+import { deactivateTimestamp, generateTimestamp } from "./db/timestamp";
 
-/**
- * Gets all the IPv4 addresses of the server.
- * @returns {Promise<string[]>} A promise that resolves to an array of IPv4 server IP addresses.
- */
-export async function getAllServerIps(): Promise<string[]> {
+export { fetchAllServerIpAddresses, websocketSend };
+
+async function fetchAllServerIpAddresses(): Promise<string[]> {
     const nets = networkInterfaces();
     const results: string[] = [];
 
@@ -48,11 +37,7 @@ export async function getAllServerIps(): Promise<string[]> {
     return results;
 }
 
-/**
- * Send a message to all connected clients.
- * @param {String} message
- */
-export async function websocketSend(message: string) {
+async function websocketSend(message: string) {
     wss.clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {
             client.send(message);
@@ -85,7 +70,7 @@ app.use(express.static(path.join(process.cwd(), "public")));
 app.use(express.json());
 
 app.use(async (req, res, next) => {
-    const serverIps = await getAllServerIps();
+    const serverIps = await fetchAllServerIpAddresses();
     helmet({
         contentSecurityPolicy: {
             useDefaults: false,
@@ -110,15 +95,15 @@ app.get("/display", async (req, res) => {
 
         switch (displayMode) {
             case "default":
-                data = await fetchDefaultDisplayData();
+                data = await fetchDataForDisplayDefault();
                 templateName = "display/default";
                 break;
             case "ranking":
-                data = await fetchRankingData();
+                data = await fetchDataForRanking();
                 templateName = "display/ranking";
                 break;
             case "standalone":
-                data = await fetchStandaloneData();
+                data = await fetchDataForStandalone();
                 templateName = "display/standalone";
                 break;
             default:
@@ -135,17 +120,13 @@ app.get("/display", async (req, res) => {
     }
 });
 
-app.get("/operation", fetchDataAndRender("operation", fetchOperationData));
+app.get("/operation", fetchDataAndRender("operation", fetchDataForOperation));
 
 app.get("/database", fetchDataAndRender("database", fetchPrismaStudioPort));
 
-app.get("/timeData", async (req, res) => {
-    res.json(await fetchTimeData());
-});
+app.get("/times", fetchDataAndRender("times", fetchDataForTimes));
 
-app.get("/times", fetchDataAndRender("times", fetchTimes));
-
-app.get("/settings", fetchDataAndRender("settings", fetchSettingsData));
+app.get("/settings", fetchDataAndRender("settings", fetchDataForSettings));
 
 //* ----------------- SERVER POST ROUTES -----------------
 
@@ -172,7 +153,7 @@ app.post("/start-run", async (req, res) => {
 app.post("/delete-time", async (req, res) => {
     const run = parseInt(req.body.run);
     try {
-        await deleteTime(run);
+        await deactivateRun(run);
         res.status(200).send("Time deleted");
     } catch (e) {
         console.error(e);
@@ -182,7 +163,7 @@ app.post("/delete-time", async (req, res) => {
 });
 
 app.post("/get-vehicle-for-driver", async (req, res) => {
-    let vehicle = lastVehicle(parseInt(req.body.driverId));
+    let vehicle = fetchLastVehicleByDriverId(parseInt(req.body.driverId));
     res.status(200).send(vehicle);
 });
 
@@ -207,7 +188,7 @@ app.post("/save-run", async (req, res) => {
 
 app.post("/reset-data", async (req, res) => {
     try {
-        reset();
+        disableActiveEntries();
         res.status(200).send("Data reset");
     } catch (e) {
         console.error(e);
@@ -219,7 +200,7 @@ app.post("/reset-data", async (req, res) => {
 app.post("/delete-timestamp", async (req, res) => {
     const timestamp = new Date(req.body.timestamp);
     try {
-        deleteTimestamp(timestamp);
+        deactivateTimestamp(timestamp);
         res.status(200).send("Timestamp deleted");
     } catch (e) {
         console.error(e);
@@ -231,7 +212,7 @@ app.post("/delete-timestamp", async (req, res) => {
 app.post("/save-drivers", async (req, res) => {
     const drivers = req.body.drivers;
     try {
-        saveDrivers(drivers);
+        setDriversActiveState(drivers);
         res.status(200).send("Drivers saved");
     } catch (e) {
         console.error(e);
@@ -281,9 +262,4 @@ function fetchDataAndRender(viewName: string, queryFn: () => Promise<any>) {
             res.status(500).send(`Error fetching data for ${viewName}`);
         }
     };
-}
-
-async function fetchPrismaStudioPort() {
-    startPrismaStudio();
-    return { dbPort: CONFIG.PRISMA_STUDIO_PORT };
 }
