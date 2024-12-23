@@ -10,8 +10,6 @@ const prisma = new PrismaClient({
     log: ["warn", "error"],
 });
 
-startPrismaStudio();
-
 /**
  * Run a query using Prisma and handle the result.
  * @param query The query to run.
@@ -21,8 +19,10 @@ startPrismaStudio();
 async function runQuery<T>(
     query: (prisma: PrismaClient) => Promise<T>
 ): Promise<T> {
+    console.log("Running query: ", query.toString());
     return query(prisma)
         .then((queryResult: T) => {
+            console.log("Query successful", queryResult);
             return queryResult;
         })
         .catch(async (e: T) => {
@@ -57,12 +57,51 @@ export function startPrismaStudio() {
  */
 export async function generateTimestamp() {
     const time = new Date();
+    await createTimestamp(time);
+}
 
-    await prisma.timeStamp.create({
-        data: {
-            timestamp: time,
-            friendly: formatTimestamp(time),
-        },
+async function getLastRun() {
+    return await runQuery(async (prisma) => {
+        return prisma.time.findFirst({
+            where: {
+                NOT: {
+                    endTime: null,
+                },
+                active: true,
+            },
+            orderBy: {
+                id: "desc",
+            },
+            include: {
+                driver: true,
+                vehicle: true,
+                startTime: true,
+                endTime: true,
+            },
+        });
+    });
+}
+
+async function getDriverRuns(driverId: number) {
+    return await runQuery(async (prisma) => {
+        return prisma.time.findMany({
+            where: {
+                driverId: driverId,
+                NOT: {
+                    endTime: null,
+                },
+                active: true,
+            },
+            orderBy: {
+                id: "desc",
+            },
+            include: {
+                driver: true,
+                vehicle: true,
+                startTime: true,
+                endTime: true,
+            },
+        });
     });
 }
 
@@ -71,26 +110,10 @@ export async function generateTimestamp() {
  * @returns The data for the default display.
  */
 export async function fetchDefaultDisplayData() {
-    const lastRun = await prisma.time.findFirst({
-        where: {
-            NOT: {
-                endTime: null,
-            },
-            active: true,
-        },
-        orderBy: {
-            id: "desc",
-        },
-        include: {
-            driver: true,
-            vehicle: true,
-            startTime: true,
-            endTime: true,
-        },
-    });
+    const lastRun = await getLastRun();
 
     if (!lastRun) {
-        return null;
+        return null; // Return null if no last run is found
     }
 
     type LastRunWithTime = typeof lastRun & {
@@ -107,34 +130,38 @@ export async function fetchDefaultDisplayData() {
         lastRun.penalty ?? 0
     );
 
-    const lastRuns = (await prisma.time.findMany({
-        where: {
-            driverId: lastRun.driverId,
-            NOT: {
-                endTime: null,
-            },
-            active: true,
-        },
-        orderBy: {
-            id: "desc",
-        },
-        include: {
-            driver: true,
-            vehicle: true,
-            startTime: true,
-            endTime: true,
-        },
-    })) as LastRunWithTime[];
+    const lastRunsOfDriver = (await getDriverRuns(
+        lastRun.driverId
+    )) as LastRunWithTime[];
 
-    for (let i = 0; i < lastRuns.length; i++) {
-        lastRuns[i].time = await getTime(
-            lastRuns[i].startTime.timestamp,
-            lastRuns[i].endTime!!.timestamp,
-            lastRuns[i].penalty ?? 0
+    for (let i = 0; i < lastRunsOfDriver.length; i++) {
+        lastRunsOfDriver[i].time = getTime(
+            lastRunsOfDriver[i].startTime.timestamp,
+            lastRunsOfDriver[i].endTime!!.timestamp,
+            lastRunsOfDriver[i].penalty ?? 0
         );
     }
 
-    return { lastRun: lastRun, allDriverRuns: lastRuns };
+    return { lastRun: lastRun, allDriverRuns: lastRunsOfDriver };
+}
+
+async function getAllFinishedRuns() {
+    return await runQuery(async (prisma) => {
+        return prisma.time.findMany({
+            where: {
+                active: true,
+                NOT: {
+                    endTime: null,
+                },
+            },
+            include: {
+                startTime: true,
+                endTime: true,
+                driver: true,
+                vehicle: true,
+            },
+        });
+    });
 }
 
 /**
@@ -142,23 +169,10 @@ export async function fetchDefaultDisplayData() {
  * @returns The data for the ranking display.
  */
 export async function fetchRankingData() {
-    const times = await prisma.time.findMany({
-        where: {
-            active: true,
-            NOT: {
-                endTime: null,
-            },
-        },
-        include: {
-            startTime: true,
-            endTime: true,
-            vehicle: true,
-            driver: true,
-        },
-    });
+    const times = await getAllFinishedRuns();
 
     if (times.length === 0) {
-        return null; // Return null if no times are found
+        return null;
     }
 
     let bestTimes = new Map();
@@ -166,7 +180,7 @@ export async function fetchRankingData() {
     for (let time of times) {
         let bestTime = bestTimes.get(time.driverId);
 
-        const currentTime = await getTime(
+        const currentTime = getTime(
             time.startTime.timestamp,
             time.endTime!!.timestamp,
             time.penalty ?? 0
@@ -220,7 +234,7 @@ export async function fetchStandaloneData() {
         take: 4,
     });
     try {
-        main = await getTime(
+        main = getTime(
             lastTimestamps[1].timestamp,
             lastTimestamps[0].timestamp
         ).formattedDriveTime;
@@ -232,7 +246,7 @@ export async function fetchStandaloneData() {
         }
     }
     try {
-        const sub1 = await getTime(
+        const sub1 = getTime(
             lastTimestamps[2].timestamp,
             lastTimestamps[1].timestamp
         ).formattedDriveTime;
@@ -241,7 +255,7 @@ export async function fetchStandaloneData() {
     }
 
     try {
-        const sub2 = await getTime(
+        const sub2 = getTime(
             lastTimestamps[3].timestamp,
             lastTimestamps[2].timestamp
         ).formattedDriveTime;
@@ -251,39 +265,40 @@ export async function fetchStandaloneData() {
     return { main, sub1, sub2 };
 }
 
-/**
- * Fetches the data for the operation view.
- * @returns The data for the operation view.
- */
-export async function fetchOperationData() {
-    handleSerialPort();
-    const timestamps = await runQuery(async (prisma) => {
+async function getActiveTimestamps() {
+    return await runQuery(async (prisma) => {
         return prisma.timeStamp.findMany({
             where: {
                 active: true,
             },
             orderBy: {
-                id: "asc",
+                timestamp: "asc",
             },
         });
     });
+}
 
-    let drivers = await runQuery(async (prisma) => {
+async function getActiveDrivers() {
+    return await runQuery(async (prisma) => {
         return prisma.driver.findMany({
-            orderBy: {
-                active: "asc",
-            },
             where: {
                 active: { not: null },
             },
+            orderBy: {
+                active: "asc",
+            },
         });
     });
+}
 
-    const vehicles = await runQuery(async (prisma) => {
+async function getVehicles() {
+    return await runQuery(async (prisma) => {
         return prisma.vehicle.findMany();
     });
+}
 
-    const timesStarted = await runQuery(async (prisma) => {
+async function getStartedRuns() {
+    return await runQuery(async (prisma) => {
         return prisma.time.findMany({
             where: {
                 endTime: null,
@@ -296,8 +311,10 @@ export async function fetchOperationData() {
             },
         });
     });
+}
 
-    const timesEnded = await runQuery(async (prisma) => {
+async function getEndedUnsavedRuns() {
+    return await runQuery(async (prisma) => {
         return prisma.time.findMany({
             where: {
                 NOT: {
@@ -314,6 +331,22 @@ export async function fetchOperationData() {
             },
         });
     });
+}
+
+/**
+ * Fetches the data for the operation view.
+ * @returns The data for the operation view.
+ */
+export async function fetchOperationData() {
+    handleSerialPort();
+
+    const timestamps = await getActiveTimestamps();
+    const drivers = await getActiveDrivers();
+    const vehicles = await getVehicles();
+
+    const timesStarted = await getStartedRuns();
+
+    const timesEnded = await getEndedUnsavedRuns();
 
     for (let time of timesEnded) {
         if (time.startTime && time.endTime) {
@@ -341,59 +374,38 @@ export async function fetchOperationData() {
 }
 
 /**
- * Fetches the data for the settings view.
- * @returns The data for the settings view.
+ * fetches data for operation views refresh
  */
 export async function fetchTimeData() {
-    const times = await prisma.time.findMany({
-        where: {
-            notes: null,
-            active: true,
-        },
-        include: {
-            startTime: true,
-            endTime: true,
-            driver: true,
-            vehicle: true,
-        },
-    });
-    const timestamps = await prisma.timeStamp.findMany({
-        where: {
-            active: true,
-        },
-    });
+    const startedRuns = await getStartedRuns();
+    const endedRuns = await getEndedUnsavedRuns();
+
+    const times = startedRuns.concat(endedRuns);
+
+    const timestamps = await getActiveTimestamps();
     return { times: times, timestamps: timestamps };
 }
 
-/**
- * Fetches the data for the settings view.
- * @returns The data for the settings view.
- */
-export async function fetchSettingsData() {
-    const activeDrivers = await prisma.driver.findMany({
-        where: {
-            active: { not: null },
-        },
-        orderBy: {
-            active: "asc",
-        },
-    });
-
-    const inactiveDrivers = await prisma.driver.findMany({
-        where: {
-            active: null,
-        },
-        orderBy: [
-            {
-                trainingGroup: "asc",
+async function getInactiveDrivers() {
+    return await runQuery(async (prisma) => {
+        return prisma.driver.findMany({
+            where: {
+                active: null,
             },
-            {
-                firstName: "asc",
-            },
-        ],
+            orderBy: [
+                {
+                    trainingGroup: "asc",
+                },
+                {
+                    firstName: "asc",
+                },
+            ],
+        });
     });
+}
 
-    const time = await prisma.time.findFirst({
+async function hasDataToReset(): Promise<boolean> {
+    const run = await prisma.time.findFirst({
         where: {
             active: true,
         },
@@ -405,15 +417,44 @@ export async function fetchSettingsData() {
         },
     });
 
-    const disableResetButton = time == null && timeStamp == null;
+    return run != null || timeStamp != null;
+}
+
+/**
+ * Fetches the data for the settings view.
+ * @returns The data for the settings view.
+ */
+export async function fetchSettingsData() {
+    const activeDrivers = await getActiveDrivers();
+    const inactiveDrivers = await getInactiveDrivers();
+
+    const disableResetButton = !(await hasDataToReset());
+
+    const ipAddresses = getAllServerIps();
 
     return {
         activeDrivers: activeDrivers,
         inactiveDrivers: inactiveDrivers,
         disableResetButton: disableResetButton,
         displayMode: CONFIG.DISPLAY_MODE,
-        ips: getAllServerIps(),
+        ips: ipAddresses,
     };
+}
+
+async function getAllActiveTimes() {
+    return await runQuery(async (prisma) => {
+        return prisma.time.findMany({
+            where: {
+                active: true,
+            },
+            include: {
+                driver: true,
+                vehicle: true,
+                startTime: true,
+                endTime: true,
+            },
+        });
+    });
 }
 
 /**
@@ -421,23 +462,7 @@ export async function fetchSettingsData() {
  * @returns All active times
  */
 export async function fetchTimes() {
-    const times = await prisma.time.findMany({
-        where: {
-            active: true,
-            NOT: {
-                endTime: null,
-            },
-        },
-        include: {
-            driver: true,
-            vehicle: true,
-            startTime: true,
-            endTime: true,
-        },
-        orderBy: {
-            id: "desc",
-        },
-    });
+    const times = await getAllActiveTimes();
 
     for (let i = 0; i < times.length; i++) {
         const time = times[i];
@@ -458,13 +483,15 @@ export async function fetchTimes() {
  * @param run ID of the run to be deleted
  */
 export async function deleteTime(run: number) {
-    await prisma.time.update({
-        where: {
-            id: run,
-        },
-        data: {
-            active: false,
-        },
+    await runQuery(async (prisma) => {
+        return prisma.time.updateMany({
+            where: {
+                id: run,
+            },
+            data: {
+                active: false,
+            },
+        });
     });
 }
 
@@ -479,45 +506,52 @@ export async function startRun(
     driverId: number,
     vehicleId: number
 ) {
-    await prisma.time.create({
-        data: {
-            driver: {
-                connect: {
-                    id: driverId,
+    await runQuery(async (prisma) => {
+        return prisma.time.create({
+            data: {
+                driver: {
+                    connect: {
+                        id: driverId,
+                    },
+                },
+                vehicle: {
+                    connect: {
+                        id: vehicleId,
+                    },
+                },
+                startTime: {
+                    connect: {
+                        timestamp: timestamp,
+                    },
                 },
             },
-            vehicle: {
-                connect: {
-                    id: vehicleId,
-                },
-            },
-            startTime: {
-                connect: {
-                    timestamp: timestamp,
-                },
-            },
-        },
-    });
-    await prisma.timeStamp.update({
-        where: {
-            timestamp: timestamp,
-        },
-        data: {
-            active: false,
-        },
+        });
     });
 
-    await prisma.driver.update({
-        where: {
-            id: driverId,
-        },
-        data: {
-            vehicle: {
-                connect: {
-                    id: vehicleId,
+    await runQuery(async (prisma) => {
+        return prisma.timeStamp.update({
+            where: {
+                timestamp: timestamp,
+            },
+            data: {
+                active: false,
+            },
+        });
+    });
+
+    await runQuery(async (prisma) => {
+        return prisma.driver.update({
+            where: {
+                id: driverId,
+            },
+            data: {
+                vehicle: {
+                    connect: {
+                        id: vehicleId,
+                    },
                 },
             },
-        },
+        });
     });
 }
 
@@ -527,13 +561,15 @@ export async function startRun(
  * @returns The last vehicle of the driver
  */
 export async function lastVehicle(driverId: number) {
-    const driver = await prisma.driver.findFirst({
-        where: {
-            id: driverId,
-        },
-        include: {
-            vehicle: true,
-        },
+    const driver = await runQuery(async (prisma) => {
+        return prisma.driver.findFirst({
+            where: {
+                id: driverId,
+            },
+            include: {
+                vehicle: true,
+            },
+        });
     });
 
     return driver;
@@ -546,14 +582,16 @@ export async function lastVehicle(driverId: number) {
  * @param note note for the run
  */
 export async function saveRun(run: number, penalty: number, note: string) {
-    await prisma.time.update({
-        where: {
-            id: run,
-        },
-        data: {
-            penalty: penalty,
-            notes: note,
-        },
+    await runQuery(async (prisma) => {
+        return prisma.time.update({
+            where: {
+                id: run,
+            },
+            data: {
+                penalty: penalty,
+                notes: note,
+            },
+        });
     });
 }
 
@@ -561,19 +599,23 @@ export async function saveRun(run: number, penalty: number, note: string) {
  * Resets the database, deactivating all runs and timestamps
  */
 export async function reset() {
-    await prisma.time.updateMany({
-        data: {
-            active: false,
-        },
+    await runQuery(async (prisma) => {
+        return prisma.time.updateMany({
+            data: {
+                active: false,
+            },
+        });
     });
 
-    await prisma.timeStamp.updateMany({
-        where: {
-            active: true,
-        },
-        data: {
-            active: false,
-        },
+    await runQuery(async (prisma) => {
+        return prisma.timeStamp.updateMany({
+            where: {
+                active: true,
+            },
+            data: {
+                active: false,
+            },
+        });
     });
 }
 
@@ -582,13 +624,16 @@ export async function reset() {
  * @param timestamp timestamp to delete
  */
 export async function deleteTimestamp(timestamp: Date) {
-    await prisma.timeStamp.update({
-        where: {
-            timestamp: timestamp,
-        },
-        data: {
-            active: false,
-        },
+    console.log("Deleting timestamp: " + timestamp);
+    await runQuery(async (prisma) => {
+        return prisma.timeStamp.update({
+            where: {
+                timestamp: timestamp,
+            },
+            data: {
+                active: false,
+            },
+        });
     });
 }
 
@@ -597,20 +642,24 @@ export async function deleteTimestamp(timestamp: Date) {
  * @param drivers drivers to save
  */
 export async function saveDrivers(drivers: string | any[]) {
-    await prisma.driver.updateMany({
-        data: {
-            active: null,
-        },
+    await runQuery(async (prisma) => {
+        return prisma.driver.updateMany({
+            data: {
+                active: null,
+            },
+        });
     });
 
     for (let i = 0; i < drivers.length; i++) {
-        await prisma.driver.update({
-            where: {
-                id: parseInt(drivers[i]),
-            },
-            data: {
-                active: i,
-            },
+        await runQuery(async (prisma) => {
+            return prisma.driver.update({
+                where: {
+                    id: parseInt(drivers[i]),
+                },
+                data: {
+                    active: i,
+                },
+            });
         });
     }
 }
@@ -621,25 +670,30 @@ export async function saveDrivers(drivers: string | any[]) {
  * @param timestamp end time of the run
  */
 export async function endRun(run: number, timestamp: Date) {
-    await prisma.time.update({
-        where: {
-            id: run,
-        },
-        data: {
-            endTime: {
-                connect: {
-                    timestamp: timestamp,
+    await runQuery(async (prisma) => {
+        return prisma.time.update({
+            where: {
+                id: run,
+            },
+            data: {
+                endTime: {
+                    connect: {
+                        timestamp: timestamp,
+                    },
                 },
             },
-        },
+        });
     });
-    await prisma.timeStamp.update({
-        where: {
-            timestamp: timestamp,
-        },
-        data: {
-            active: false,
-        },
+
+    await runQuery(async (prisma) => {
+        return prisma.timeStamp.update({
+            where: {
+                timestamp: timestamp,
+            },
+            data: {
+                active: false,
+            },
+        });
     });
 }
 
@@ -648,10 +702,12 @@ export async function endRun(run: number, timestamp: Date) {
  * @param date timestamp to create
  */
 export async function createTimestamp(date: Date) {
-    await prisma.timeStamp.create({
-        data: {
-            timestamp: date,
-            friendly: formatTimestamp(date),
-        },
+    await runQuery(async (prisma) => {
+        return prisma.timeStamp.create({
+            data: {
+                timestamp: date,
+                friendly: formatTimestamp(date),
+            },
+        });
     });
 }

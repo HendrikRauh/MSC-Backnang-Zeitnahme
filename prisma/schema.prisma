@@ -29,11 +29,11 @@ model Vehicle {
 }
 
 model Time {
-    id        Int      @id @default(autoincrement())
-    driver    Driver?  @relation(fields: [driverId], references: [id])
-    driverId  Int?
-    vehicle   Vehicle? @relation(fields: [vehicleId], references: [id])
-    vehicleId Int?
+    id        Int     @id @default(autoincrement())
+    driver    Driver  @relation(fields: [driverId], references: [id])
+    driverId  Int
+    vehicle   Vehicle @relation(fields: [vehicleId], references: [id])
+    vehicleId Int
     penalty   Int?
     notes     String?
 
