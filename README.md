@@ -45,6 +45,6 @@ npm run update
 
 ### Prolific driver
 
-To use the Prolific Serial-to-USB device, you need to install the driver. You can download the latest version of the driver. You can download the latest version of the driver from [here](https://www.prolific.com.tw/US/ShowProduct.aspx?p_id=229&pcid=41).
+To use the Prolific Serial-to-USB device, you need to install the driver. You can download the latest version of the driver. You can download the latest version of the driver from [here](https://www.prolific.com.tw/US/ShowProduct.aspx?p_id=225&pcid=41).
 
 > **Note:** You need to install the driver and restart the system before you can connect the device.
