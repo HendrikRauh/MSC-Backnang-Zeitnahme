@@ -1,0 +1,37 @@
+#last-run {
+    /* contains max text "00:00:000" 
+    text should be across the whole page*/
+    font-size: calc(100vw / 6);
+}
+
+#running {
+    font-size: calc(100vw / 12);
+}
+
+#error {
+    font-size: calc(100vw / 16);
+}
+
+#reconnect {
+    font-size: 32px;
+    color: var(--color-text);
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    margin: var(--big-spacing) 0;
+    padding: var(--big-spacing);
+    background-color: var(--color-card);
+    text-align: center;
+    border: 0.1rem solid var(--color-primary);
+    border-radius: 50vh;
+    opacity: 1;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: block;
+    margin-bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#reconnect:hover {
+    transform: scale(1.1);
+}

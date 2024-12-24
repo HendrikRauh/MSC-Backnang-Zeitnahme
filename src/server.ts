@@ -5,11 +5,10 @@ import http from "http";
 import { networkInterfaces } from "os";
 import path from "path";
 import { WebSocketServer } from "ws";
-import { CONFIG } from "./config";
+import { CONFIG, setOperationMode } from "./config";
 import {
-    fetchDataForDisplayDefault,
+    fetchDataForDisplayDefault as fetchDataForDisplayManual,
     fetchDataForOperation,
-    fetchDataForRanking,
     fetchDataForSettings,
     fetchDataForStandalone,
     fetchDataForTimes,
@@ -18,6 +17,7 @@ import { disableActiveEntries, fetchPrismaStudioPort } from "./db/connector";
 import { fetchLastVehicleByDriverId, setDriversActiveState } from "./db/driver";
 import { deactivateRun, endRun, saveRun, startRun } from "./db/run";
 import { deactivateTimestamp, generateTimestamp } from "./db/timestamp";
+import { handleSerialPort } from "./serialport";
 
 export { fetchAllServerIpAddresses, websocketSend };
 
@@ -84,40 +84,28 @@ app.use(async (req, res, next) => {
     })(req, res, next);
 });
 
-app.get("/", renderView("home"));
+app.get("/", (req, res) => {
+    res.render("home", { operationMode: CONFIG.OPERATION_MODE });
+});
 
-app.get("/display", async (req, res) => {
-    const displayMode = CONFIG.DISPLAY_MODE; // Fetch the current display mode from your config or another source
+app.get(
+    "/displayManual",
+    fetchDataAndRender("display/manual", fetchDataForDisplayManual)
+);
 
-    try {
-        let data;
-        let templateName;
+app.get(
+    "/displayStandalone",
+    fetchDataAndRender("display/standalone", fetchDataForStandalone)
+);
 
-        switch (displayMode) {
-            case "default":
-                data = await fetchDataForDisplayDefault();
-                templateName = "display/default";
-                break;
-            case "ranking":
-                data = await fetchDataForRanking();
-                templateName = "display/ranking";
-                break;
-            case "standalone":
-                data = await fetchDataForStandalone();
-                templateName = "display/standalone";
-                break;
-            default:
-                res.status(400).send("Unsupported display mode");
-                return;
-        }
-        if (!data) {
-            return res.render("display/empty");
-        }
-        res.render(templateName, data);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send(`Error fetching data for ${displayMode}`);
-    }
+app.get("/standalone", (req, res) => {
+    setOperationMode("standalone");
+    res.redirect("/displayStandalone");
+});
+
+app.post("/reconnect", (req, res) => {
+    handleSerialPort();
+    websocketSend("reload");
 });
 
 app.get("/operation", fetchDataAndRender("operation", fetchDataForOperation));
@@ -235,11 +223,12 @@ app.post("/end-run", async (req, res) => {
     }
 });
 
-app.post("/set-display-mode", async (req, res) => {
-    const mode = req.body.displayMode;
-    CONFIG.DISPLAY_MODE = mode;
-    res.status(200).send("Display mode set");
+app.post("/set-operation-mode", async (req, res) => {
+    console.log("Earlier operation mode: ", CONFIG.OPERATION_MODE);
+    setOperationMode(req.body.operationMode);
+    res.status(200).send("Operation mode set");
     websocketSend("reload");
+    console.log("New operation mode: ", CONFIG.OPERATION_MODE);
 });
 
 server.listen(CONFIG.PORT, () => {

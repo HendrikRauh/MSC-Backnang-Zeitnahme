@@ -9,3 +9,7 @@ interface Config {
 }
 
 const CONFIG: Config = parsedConfig || {};
+
+export function setOperationMode(mode: string) {
+    CONFIG.OPERATION_MODE = mode;
+}

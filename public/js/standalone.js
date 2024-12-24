@@ -1,8 +1,8 @@
 var lastCloseTime = null;
-// file deepcode ignore UseSecureWebsockets: <please specify a reason of ignoring this>
+
 const socket = new WebSocket("ws://" + window.location.host);
 socket.addEventListener("message", (event) => {
-    if (event.data === "reload") {
+    if (event.data === "reload" || event.data === "disconnect") {
         console.log("Reloading page...");
         location.reload();
     }
@@ -18,4 +18,12 @@ socket.addEventListener("close", (event) => {
         document.body.style.backgroundColor = "var(--color-orange)";
     }
     lastCloseTime = Date.now();
+});
+
+addEventListener("DOMContentLoaded", async () => {
+    document.getElementById("reconnect").addEventListener("click", () => {
+        fetch("/reconnect", {
+            method: "POST",
+        });
+    });
 });
