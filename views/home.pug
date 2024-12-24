@@ -8,12 +8,18 @@ append styles
 
 append content
     h1 Zeitnahme MSC
-        .container
-            a(href="/display").purple Anzeige
-            a(href="/operation").green Steuerung
-            a(href="/settings").yellow Einstellungen
-            a(href="/times").orange Zeiten
-            a(href="/database").red Datenbank
+
+        if operationMode === "manual"
+            .container
+                a(href="/displayManual").blue Anzeige
+                a(href="/operation").green Steuerung
+                a(href="/settings").yellow Einstellungen
+                a(href="/times").orange Zeiten
+                a(href="/database").purple Datenbank
+        if operationMode === "standalone"
+            .container
+                a(href="/standalone").blue Standalone
+                a(href="/settings").yellow Einstellungen
     footer 
         p Made with ❤ by 
             a(href="https://www.github.com/HendrikRauh") Hendrik Rauh

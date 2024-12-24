@@ -1,7 +1,9 @@
 extends /base.pug
 
 append scripts 
-    script(src="/js/settings.js")
+    if operationMode === "manual"
+        script(src="/js/settingsManual.js")
+    script(src="/js/settings.js") 
 
 append styles
     link(rel="stylesheet" href="/css/settings.css")
@@ -11,36 +13,37 @@ append variables
     - baseTitle = "Einstellungen"
 
 append content
-    h1.display Displaymode
-        select(name="displayMode" id="displayMode")
-            option(value="ranking" selected=(displayMode==="ranking")) Rangliste
-            option(value="default" selected=(displayMode==="default")) Standard
-            option(value="standalone" selected=(displayMode==="standalone")) Standalone
-    hr
-    h1.drivers Fahrer auswählen und sortieren
-        .row
-            .btn-group
-                button(id = "activate" disabled) 🟢 AKTIVIEREN
-                button(id = "deactivate" disabled) 🔴 DEAKTIVIEREN
-            button(id = "deactivateAll" disabled) 🔁 RESET
-            .btn-group
-                button(id = "moveUp" disabled) ⬆️ HOCH
-                button(id = "moveDown" disabled) ⬇️ RUNTER
-            button(id = "save" disabled) 💾 SPEICHERN
-        .driverSelektors
-            .driverSel
-                h2 Aktive Fahrer
-                select(name="activeDrivers" id="activeDrivers" class="noPill" size=activeDrivers.length overflow="hidden" disabled=activeDriversEmpty) 
-                    for driver in activeDrivers
-                        option(value=driver.id) #{driver.firstName} #{driver.lastName} (#{driver.drivingClass})
-            .driverSel
-                h2 Inaktive Fahrer
-                select(name="inactiveDrivers" id="inactiveDrivers" class="noPill" multiple size=inactiveDrivers.length overflow="hidden" disabled=inactiveDriversEmpty)
-                    for driver in inactiveDrivers
-                        option(value=driver.id) #{driver.firstName} #{driver.lastName} (#{driver.drivingClass})
-    hr
-    h1.data Daten 
-        button(id = "resetData" disabled=disableResetButton) ALLE ZEITEN ZURÜCKSETZEN
+    h1.display Modus
+        select(name="operationMode" id="operationMode")
+            option(value="standalone" selected=(operationMode==="standalone")) Standalone
+            option(value="manual" selected=(operationMode==="manual")) Manuell
+    if operationMode === "manual"
+        hr
+        h1.drivers Fahrer auswählen und sortieren
+            .row
+                .btn-group
+                    button(id = "activate" disabled) 🟢 AKTIVIEREN
+                    button(id = "deactivate" disabled) 🔴 DEAKTIVIEREN
+                button(id = "deactivateAll" disabled) 🔁 RESET
+                .btn-group
+                    button(id = "moveUp" disabled) ⬆️ HOCH
+                    button(id = "moveDown" disabled) ⬇️ RUNTER
+                button(id = "save" disabled) 💾 SPEICHERN
+            .driverSelektors
+                .driverSel
+                    h2 Aktive Fahrer
+                    select(name="activeDrivers" id="activeDrivers" class="noPill" size=activeDrivers.length overflow="hidden" disabled=activeDriversEmpty) 
+                        for driver in activeDrivers
+                            option(value=driver.id) #{driver.firstName} #{driver.lastName} (#{driver.drivingClass})
+                .driverSel
+                    h2 Inaktive Fahrer
+                    select(name="inactiveDrivers" id="inactiveDrivers" class="noPill" multiple size=inactiveDrivers.length overflow="hidden" disabled=inactiveDriversEmpty)
+                        for driver in inactiveDrivers
+                            option(value=driver.id) #{driver.firstName} #{driver.lastName} (#{driver.drivingClass})
+        hr
+
+        h1.data Daten 
+            button(id = "resetData" disabled=disableResetButton) ALLE ZEITEN ZURÜCKSETZEN
 
     footer 
         p #{ipAddress}

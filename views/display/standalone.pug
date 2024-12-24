@@ -4,12 +4,22 @@ append variables
     - baseTitle = "Display - Standalone"
 
 append scripts 
-    script(src="/js/websocket.js")
+    script(src="/js/standalone.js")
 
 append styles
-    link(rel="stylesheet" href="/css/display.css")
+    link(rel="stylesheet" href="/css/standalone.css")
 
-append content 
-    #standaloneMain #{main}
-    #standaloneSub1 #{sub1}
-    #standaloneSub2 #{sub2}
+append content
+    if lastRun != ""
+        #last-run #{lastRun}
+
+    if portOpened == null
+        #error 
+            p ❌ LICHTSCHRANKE ❌
+            button#reconnect NEU VERBINDEN
+    else 
+        if running 
+            #running 🔴 MESSUNG 🔴
+        else
+            #running 🟢 BEREIT 🟢
+

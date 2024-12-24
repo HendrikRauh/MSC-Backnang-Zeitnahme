@@ -8,26 +8,25 @@ import {
     fetchStartedRuns,
     fetchUnsavedRuns,
 } from "./db/run";
-import {
-    fetchLatestTimestamps as fetchLastTimestamps,
-    fetchTimestamps,
-} from "./db/timestamp";
+import { deactivateTimestamp, fetchTimestamps } from "./db/timestamp";
 import { fetchVehicles } from "./db/vehicles";
 import { handleSerialPort, portOpened } from "./serialport";
 import { fetchAllServerIpAddresses } from "./server";
 import { calculateTime } from "./utility";
 
 export {
-    fetchDataForDisplayDefault,
+    fetchDataForDisplayManual as fetchDataForDisplayDefault,
     fetchDataForOperation,
     fetchDataForRanking,
     fetchDataForSettings,
     fetchDataForStandalone,
-    fetchDataForTimes
+    fetchDataForTimes,
 };
 
-async function fetchDataForDisplayDefault() {
+async function fetchDataForDisplayManual() {
     const lastRun = await fetchLatestRun();
+
+    console.log(lastRun);
 
     if (!lastRun) {
         return null; // Return null if no last run is found
@@ -80,38 +79,36 @@ async function fetchDataForTimes() {
 }
 
 async function fetchDataForStandalone() {
-    let main, sub1, sub2;
-    const lastTimestamps = await fetchLastTimestamps(4);
-    try {
-        main = calculateTime(
-            lastTimestamps[1].timestamp,
-            lastTimestamps[0].timestamp
-        ).formattedDriveTime;
-    } catch {
-        if (lastTimestamps.length == 0) {
-            return;
-        } else if (lastTimestamps.length == 1) {
-            return { main: "--:--:---", sub1: "", sub2: "" };
-        }
-    }
-    try {
-        const sub1 = calculateTime(
-            lastTimestamps[2].timestamp,
-            lastTimestamps[1].timestamp
-        ).formattedDriveTime;
-    } catch {
-        return { main, sub1: "--:--:---", sub2: "" };
+    const timestamps = await fetchTimestamps();
+
+    if (timestamps.length % 2 === 0) {
+        var running = false;
+    } else {
+        var running = true;
     }
 
-    try {
-        const sub2 = calculateTime(
-            lastTimestamps[3].timestamp,
-            lastTimestamps[2].timestamp
+    if (timestamps.length > 1) {
+        var time = calculateTime(
+            timestamps[timestamps.length - 2 - (timestamps.length % 2)]
+                .timestamp,
+            timestamps[timestamps.length - 1 - (timestamps.length % 2)]
+                .timestamp
         ).formattedDriveTime;
-    } catch {
-        return { main, sub1, sub2: "--:--:---" };
+
+        if (timestamps.length > 3) {
+            for (let i = 0; i < timestamps.length - 2; i++) {
+                await deactivateTimestamp(timestamps[i].timestamp);
+            }
+        }
+    } else {
+        var time = "";
     }
-    return { main, sub1, sub2 };
+
+    return {
+        portOpened: portOpened,
+        lastRun: time,
+        running: running,
+    };
 }
 
 async function fetchDataForRanking() {
@@ -212,8 +209,7 @@ async function fetchDataForSettings() {
         activeDrivers: activeDrivers,
         inactiveDrivers: inactiveDrivers,
         disableResetButton: disableResetButton,
-        displayMode: CONFIG.DISPLAY_MODE,
+        operationMode: CONFIG.OPERATION_MODE,
         ips: ipAddresses,
     };
 }
-
