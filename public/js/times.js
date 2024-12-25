@@ -1,5 +1,23 @@
 $(document).ready(function () {
     var table = $("#times").DataTable({
+        columnDefs: [
+            {
+                targets: 4,
+                orderData: [3, 4],
+            },
+            {
+                targets: 3,
+                visible: false,
+            },
+            {
+                targets: 7,
+                orderData: [6, 7],
+            },
+            {
+                targets: 6,
+                visible: false,
+            },
+        ],
         layout: {
             topStart: "buttons",
             topEnd: "info",
@@ -11,7 +29,7 @@ $(document).ready(function () {
                 extend: "print",
                 key: "p",
                 exportOptions: {
-                    columns: ":not(:last-child):not(:first-child)",
+                    columns: ":not(:last-child):not(:first-child):visible",
                 },
             },
             { extend: "csv", key: "c" },
@@ -39,6 +57,7 @@ $(document).ready(function () {
         language: {
             url: "/lang/datatables.de.json",
         },
+        stateSave: true,
     });
 });
 
