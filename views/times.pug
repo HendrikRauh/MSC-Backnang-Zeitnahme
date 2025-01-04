@@ -19,9 +19,10 @@ append content
                 th ID
                 th Fahrer 
                 th Klasse
-                th Rohzeit
+                th FahrzeitRaw
                 th Fahrzeit
                 th Strafe
+                th GesamtzeitRaw
                 th Gesamtzeit
                 th Fahrzeug
                 th Notiz
@@ -35,6 +36,7 @@ append content
                     td #{run.time.time}
                     td #{run.time.formattedDriveTime}
                     td #{run.penalty}
+                    td #{run.time.time + run.penalty*1000}
                     td #{run.time.formattedTotalTime}
                     td #{run.vehicle.name}
                     td #{run.notes}
