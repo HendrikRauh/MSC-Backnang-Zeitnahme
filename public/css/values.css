@@ -53,6 +53,8 @@ body.light {
     --color-blue: #1c8ca8;
     --color-purple: #7058be;
 
+    --color-primary: var(--color-blue);
+
     --icon-search: url("/icon/search-light.png");
     --icon-sort-a: url("/icon/sort-a-light.png");
     --icon-sort-n: url("/icon/sort-n-light.png");
