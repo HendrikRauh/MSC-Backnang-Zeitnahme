@@ -16,8 +16,7 @@
     font-size: 1.5rem;
     text-decoration: none;
     color: var(--color-text);
-    border: 0.1rem;
-    border-style: solid;
+    border: 0.1rem solid;
     transition: all 0.3s ease-in-out;
 }
 
