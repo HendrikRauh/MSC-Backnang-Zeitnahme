@@ -48,11 +48,12 @@ select {
 option {
     margin: 0 10px;
     background-color: transparent;
+    border: 0.1rem solid transparent;
 }
 
 option:checked {
     background-color: transparent;
-    border: 0.1rem solid var(--color-primary);
+    border-color: var(--color-primary);
     border-radius: 50vh;
 }
 
