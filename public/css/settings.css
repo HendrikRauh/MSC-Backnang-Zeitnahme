@@ -25,7 +25,8 @@ button {
 }
 
 .driverSel {
-    flex-grow: 1;
+    flex: 1 1 40%;
+    min-width: fit-content;
 }
 
 select {
