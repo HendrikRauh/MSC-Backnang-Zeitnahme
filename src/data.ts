@@ -1,6 +1,10 @@
 import { CONFIG } from "./config";
 import { hasDataToReset } from "./db/connector";
-import { fetchActiveDrivers, fetchInactiveDrivers } from "./db/driver";
+import {
+    fetchActiveDrivers,
+    fetchAllTrainingGroups,
+    fetchInactiveDrivers,
+} from "./db/driver";
 import {
     fetchAllRunsByDriverId,
     fetchFinishedRuns,
@@ -201,6 +205,8 @@ async function fetchDataForSettings() {
     const activeDrivers = await fetchActiveDrivers();
     const inactiveDrivers = await fetchInactiveDrivers();
 
+    const trainingGroups = await fetchAllTrainingGroups();
+
     const disableResetButton = !(await hasDataToReset());
 
     const ipAddresses = fetchAllServerIpAddresses();
@@ -211,5 +217,6 @@ async function fetchDataForSettings() {
         disableResetButton: disableResetButton,
         operationMode: CONFIG.OPERATION_MODE,
         ips: ipAddresses,
+        trainingGroups: trainingGroups,
     };
 }
