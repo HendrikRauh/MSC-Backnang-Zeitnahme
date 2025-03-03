@@ -131,8 +131,6 @@ function somethingChanged() {
 }
 
 function filterDriversByTrainingGroup() {
-    console.log("filterDriversByTrainingGroup called");
-
     const checkboxes = document.querySelectorAll(
         'input[name="trainingGroups"]:checked'
     );
