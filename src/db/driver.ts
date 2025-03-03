@@ -2,6 +2,7 @@ import { runQuery } from "./connector";
 
 export {
     fetchActiveDrivers,
+    fetchAllTrainingGroups,
     fetchInactiveDrivers,
     fetchLastVehicleByDriverId,
     setDriversActiveState,
@@ -71,5 +72,17 @@ async function fetchLastVehicleByDriverId(driverId: number) {
                 vehicle: true,
             },
         });
+    });
+}
+
+async function fetchAllTrainingGroups() {
+    return await runQuery(async (prisma) => {
+        const drivers = await prisma.driver.findMany({
+            distinct: ["trainingGroup"],
+            orderBy: {
+                trainingGroup: "asc",
+            },
+        });
+        return drivers.map((driver) => driver.trainingGroup);
     });
 }

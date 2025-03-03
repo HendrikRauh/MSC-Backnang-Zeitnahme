@@ -32,6 +32,13 @@ addEventListener("DOMContentLoaded", async () => {
             .addEventListener("change", () => {
                 somethingChanged();
             });
+
+        const trainingGroupsElement = document.getElementById("trainingGroups");
+        if (trainingGroupsElement) {
+            trainingGroupsElement.addEventListener("change", () => {
+                filterDriversByTrainingGroup();
+            });
+        }
     });
 });
 
@@ -60,7 +67,9 @@ function somethingChanged() {
     const activateButton = document.getElementById("activate");
 
     activeSelect.size = activeSelect.length;
-    inactiveSelect.size = inactiveSelect.length;
+    inactiveSelect.size = Array.from(inactiveSelect.options).filter(
+        (option) => !option.hidden
+    ).length;
 
     if (activeSelect.length === 0) {
         moveUpButton.disabled = true;
@@ -117,6 +126,28 @@ function somethingChanged() {
     } else {
         activateButton.disabled = true;
     }
+
+    filterDriversByTrainingGroup();
+}
+
+function filterDriversByTrainingGroup() {
+    const checkboxes = document.querySelectorAll(
+        'input[name="trainingGroups"]:checked'
+    );
+    const selectedGroups = Array.from(checkboxes).map(
+        (checkbox) => checkbox.value
+    );
+
+    const inactiveSelect = document.getElementById("inactiveDrivers");
+
+    Array.from(inactiveSelect.options).forEach((option) => {
+        const trainingGroup = option.getAttribute("data-training-group");
+        option.hidden = !selectedGroups.includes(trainingGroup);
+    });
+
+    inactiveSelect.size = Array.from(inactiveSelect.options).filter(
+        (option) => !option.hidden
+    ).length;
 }
 
 async function activateDrivers() {
@@ -125,14 +156,19 @@ async function activateDrivers() {
 
     const selectedInactiveDrivers = Array.from(
         inactiveSelect.selectedOptions
-    ).map((option) => ({ value: option.value, text: option.text }));
+    ).map((option) => ({
+        value: option.value,
+        text: option.text,
+        trainingGroup: option.getAttribute("data-training-group"),
+    }));
 
     const fragment = document.createDocumentFragment();
 
-    selectedInactiveDrivers.forEach(({ value, text }) => {
+    selectedInactiveDrivers.forEach(({ value, text, trainingGroup }) => {
         const option = document.createElement("option");
         option.value = value;
         option.text = text;
+        option.setAttribute("data-training-group", trainingGroup);
         fragment.appendChild(option);
     });
 
@@ -183,15 +219,20 @@ async function activateDrivers() {
 async function deactivateDrivers() {
     const select = document.getElementById("activeDrivers");
     const selectedDrivers = Array.from(select.selectedOptions).map(
-        (option) => ({ value: option.value, text: option.text })
+        (option) => ({
+            value: option.value,
+            text: option.text,
+            trainingGroup: option.getAttribute("data-training-group"),
+        })
     );
 
     const inactiveSelect = document.getElementById("inactiveDrivers");
 
-    selectedDrivers.forEach(({ value, text }) => {
+    selectedDrivers.forEach(({ value, text, trainingGroup }) => {
         const option = document.createElement("option");
         option.value = value;
         option.text = text;
+        option.setAttribute("data-training-group", trainingGroup);
         inactiveSelect.add(option);
     });
 
@@ -220,14 +261,16 @@ async function deactivateAllDrivers() {
     const drivers = Array.from(select.options).map((option) => ({
         value: option.value,
         text: option.text,
+        trainingGroup: option.getAttribute("data-training-group"),
     }));
 
     const inactiveSelect = document.getElementById("inactiveDrivers");
 
-    drivers.forEach(({ value, text }) => {
+    drivers.forEach(({ value, text, trainingGroup }) => {
         const option = document.createElement("option");
         option.value = value;
         option.text = text;
+        option.setAttribute("data-training-group", trainingGroup);
         inactiveSelect.add(option);
     });
 

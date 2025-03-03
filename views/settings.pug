@@ -34,12 +34,18 @@ append content
                     h2 Aktive Fahrer
                     select(name="activeDrivers" id="activeDrivers" class="noPill" size=activeDrivers.length overflow="hidden" disabled=activeDriversEmpty) 
                         for driver in activeDrivers
-                            option(value=driver.id) #{driver.firstName} #{driver.lastName} (#{driver.drivingClass})
+                            option(value=driver.id data-training-group=driver.trainingGroup) #{driver.firstName} #{driver.lastName} (#{driver.drivingClass})
                 .driverSel
                     h2 Inaktive Fahrer
                     select(name="inactiveDrivers" id="inactiveDrivers" class="noPill" multiple size=inactiveDrivers.length overflow="hidden" disabled=inactiveDriversEmpty)
                         for driver in inactiveDrivers
-                            option(value=driver.id) #{driver.firstName} #{driver.lastName} (#{driver.drivingClass})
+                            option(value=driver.id data-training-group=driver.trainingGroup) #{driver.firstName} #{driver.lastName} (#{driver.drivingClass})
+            #trainingGroups
+                - var totalGroups = trainingGroups.length;
+                for group, index in trainingGroups
+                    .checkbox
+                        input(type="checkbox" name="trainingGroups" id=group value=group checked=index < totalGroups - 2)
+                        label(for=group) #{group}
         hr
 
         h1.data Daten 

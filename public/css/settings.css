@@ -45,11 +45,12 @@ select {
 option {
     margin: 0 10px;
     background-color: transparent;
+    border: 0.1rem solid transparent;
 }
 
 option:checked {
     background-color: transparent;
-    border: 0.1rem solid var(--color-primary);
+    border-color: var(--color-primary);
     border-radius: 50vh;
 }
 
@@ -77,4 +78,24 @@ option:checked {
     justify-content: center;
     gap: 1rem;
     flex-grow: 1;
+}
+
+#trainingGroups {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    width: 100%;
+    justify-content: flex-end;
+    margin: 0 1rem;
+}
+
+.checkbox {
+    display: flex;
+    flex-direction: row;
+}
+
+.checkbox > label {
+    position: relative;
+    /* checkbox is to far away */
+    margin-left: -0.5rem;
 }
