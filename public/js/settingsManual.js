@@ -67,7 +67,9 @@ function somethingChanged() {
     const activateButton = document.getElementById("activate");
 
     activeSelect.size = activeSelect.length;
-    inactiveSelect.size = inactiveSelect.length;
+    inactiveSelect.size = Array.from(inactiveSelect.options).filter(
+        (option) => !option.hidden
+    ).length;
 
     if (activeSelect.length === 0) {
         moveUpButton.disabled = true;
@@ -145,7 +147,9 @@ function filterDriversByTrainingGroup() {
         option.hidden = !selectedGroups.includes(trainingGroup);
     });
 
-    inactiveSelect.size = inactiveSelect.length;
+    inactiveSelect.size = Array.from(inactiveSelect.options).filter(
+        (option) => !option.hidden
+    ).length;
 }
 
 async function activateDrivers() {
