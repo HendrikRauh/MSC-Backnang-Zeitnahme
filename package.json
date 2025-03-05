@@ -27,7 +27,8 @@
         "delete": "pm2 delete ecosystem.config.cjs",
         "update": "git pull && npm i && npm run stop && npx prisma generate && npx prisma migrate dev --name init && tsc && npm run restart",
         "easy-start": "npm run restart && start http://localhost/",
-        "standalone": "npm run restart && start msedge --kiosk http://localhost/standalone --edge-kiosk-type=fullscreen"
+        "standalone": "npm run restart && start msedge --kiosk http://localhost/standalone --edge-kiosk-type=fullscreen",
+        "import": "node ./out/db/importDrivers.js"
     },
     "repository": {
         "type": "git",
