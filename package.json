@@ -27,7 +27,7 @@
         "delete": "pm2 delete ecosystem.config.cjs",
         "update": "git pull && npm i && npm run stop && npx prisma generate && npx prisma migrate dev --name init && tsc && npm run restart",
         "easy-start": "npm run restart && start http://localhost/",
-        "standalone": "npm run restart && start msedge --kiosk http://localhost/standalone"
+        "standalone": "npm run restart && start http://localhost/standalone"
     },
     "repository": {
         "type": "git",
