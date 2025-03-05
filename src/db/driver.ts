@@ -5,6 +5,7 @@ export {
     fetchAllTrainingGroups,
     fetchInactiveDrivers,
     fetchLastVehicleByDriverId,
+    insertDriver,
     setDriversActiveState,
 };
 
@@ -84,5 +85,42 @@ async function fetchAllTrainingGroups() {
             },
         });
         return drivers.map((driver) => driver.trainingGroup);
+    });
+}
+
+async function driverExists(firstName: string, lastName: string) {
+    const driver = await runQuery(async (prisma) => {
+        return prisma.driver.findFirst({
+            where: {
+                firstName,
+                lastName,
+            },
+        });
+    });
+    return driver !== null;
+}
+
+async function insertDriver(
+    firstName: string,
+    lastName: string,
+    drivingClass: string,
+    birthYear: number | null,
+    trainingGroup: string
+) {
+    const exists = await driverExists(firstName, lastName);
+    if (exists) {
+        console.warn(`${firstName} ${lastName} already exists`);
+        return;
+    }
+    return await runQuery(async (prisma) => {
+        return prisma.driver.create({
+            data: {
+                firstName,
+                lastName,
+                drivingClass,
+                birthYear,
+                trainingGroup,
+            },
+        });
     });
 }

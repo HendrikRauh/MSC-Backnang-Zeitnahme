@@ -16,6 +16,8 @@ node_modules
 
 # Personal Data
 insertDriversFromFile.json
+*.csv
+*.xlsx
 
 # Development
 tempCodeRunnerFile.*
