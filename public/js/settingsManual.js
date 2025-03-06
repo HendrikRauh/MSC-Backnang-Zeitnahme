@@ -205,11 +205,6 @@ async function activateDrivers() {
         if (option) {
             const index = option.index;
             inactiveSelect.remove(option.index);
-            if (index < inactiveSelect.length) {
-                inactiveSelect.selectedIndex = index;
-            } else {
-                inactiveSelect.selectedIndex = index - 1;
-            }
         }
     });
     document.getElementById("save").disabled = false;
