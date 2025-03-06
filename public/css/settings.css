@@ -11,6 +11,7 @@
 button {
     flex-grow: 1;
     flex-basis: 100px;
+    min-width: -webkit-fill-available;
     min-width: fit-content;
 }
 
@@ -26,6 +27,7 @@ button {
 
 .driverSel {
     flex: 1 1 40%;
+    min-width: -webkit-fill-available;
     min-width: fit-content;
 }
 
