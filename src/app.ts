@@ -28,18 +28,9 @@ io.action("restart", (cb: () => void) => {
 });
 
 io.action("update", (cb: () => void) => {
-    exec(
-        "npm run update",
-        (err: Error | null, stdout: string, stderr: string) => {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            console.log(stdout);
-            console.error(stderr);
-            cb();
-        }
-    );
+    console.log("Updating the system...");
+    exec("start cmd /c npm run update");
+    cb();
 });
 
 io.action("SYS RESTART", (cb: () => void) => {
