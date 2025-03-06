@@ -9,6 +9,9 @@ interface ExecCallback {
     (err: Error | null, stdout: string, stderr: string): void;
 }
 
+let lastRestartTime: number | null = null;
+let lastShutdownTime: number | null = null;
+
 io.action("restart", (cb: () => void) => {
     exec(
         "npm run restart",
@@ -40,33 +43,47 @@ io.action("update", (cb: () => void) => {
 });
 
 io.action("SYS RESTART", (cb: () => void) => {
-    exec(
-        "shutdown /r /t 0",
-        (err: Error | null, stdout: string, stderr: string) => {
-            if (err) {
-                console.error(err);
-                return;
+    const now = Date.now();
+    if (lastRestartTime && now - lastRestartTime < 20000) {
+        exec(
+            "shutdown /r /t 0",
+            (err: Error | null, stdout: string, stderr: string) => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                console.log(stdout);
+                console.error(stderr);
+                cb();
             }
-            console.log(stdout);
-            console.error(stderr);
-            cb();
-        }
-    );
+        );
+    } else {
+        lastRestartTime = now;
+        console.log("Please confirm the restart command within 20 seconds.");
+        cb();
+    }
 });
 
 io.action("SYS SHUTDOWN", (cb: () => void) => {
-    exec(
-        "shutdown /s /t 0",
-        (err: Error | null, stdout: string, stderr: string) => {
-            if (err) {
-                console.error(err);
-                return;
+    const now = Date.now();
+    if (lastShutdownTime && now - lastShutdownTime < 20000) {
+        exec(
+            "shutdown /s /t 0",
+            (err: Error | null, stdout: string, stderr: string) => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                console.log(stdout);
+                console.error(stderr);
+                cb();
             }
-            console.log(stdout);
-            console.error(stderr);
-            cb();
-        }
-    );
+        );
+    } else {
+        lastShutdownTime = now;
+        console.log("Please confirm the shutdown command within 20 seconds.");
+        cb();
+    }
 });
 
 chokidar.watch(CONFIG.DATABASE_PATH).on("change", () => {
