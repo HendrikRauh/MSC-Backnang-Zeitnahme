@@ -142,12 +142,24 @@ function filterDriversByTrainingGroup() {
 
     Array.from(inactiveSelect.options).forEach((option) => {
         const trainingGroup = option.getAttribute("data-training-group");
-        option.hidden = !selectedGroups.includes(trainingGroup);
+        if (!selectedGroups.includes(trainingGroup)) {
+            option.hidden = true;
+            option.selected = false;
+        } else {
+            option.hidden = false;
+        }
     });
 
     inactiveSelect.size = Array.from(inactiveSelect.options).filter(
         (option) => !option.hidden
     ).length;
+
+    const activateButton = document.getElementById("activate");
+    if (inactiveSelect.length > 0) {
+        activateButton.disabled = inactiveSelect.selectedOptions.length === 0;
+    } else {
+        activateButton.disabled = true;
+    }
 }
 
 async function activateDrivers() {
