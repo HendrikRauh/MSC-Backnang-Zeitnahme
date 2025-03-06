@@ -142,25 +142,37 @@ function filterDriversByTrainingGroup() {
 
     Array.from(inactiveSelect.options).forEach((option) => {
         const trainingGroup = option.getAttribute("data-training-group");
-        option.hidden = !selectedGroups.includes(trainingGroup);
+        if (!selectedGroups.includes(trainingGroup)) {
+            option.hidden = true;
+            option.selected = false;
+        } else {
+            option.hidden = false;
+        }
     });
 
     inactiveSelect.size = Array.from(inactiveSelect.options).filter(
         (option) => !option.hidden
     ).length;
+
+    const activateButton = document.getElementById("activate");
+    if (inactiveSelect.length > 0) {
+        activateButton.disabled = inactiveSelect.selectedOptions.length === 0;
+    } else {
+        activateButton.disabled = true;
+    }
 }
 
 async function activateDrivers() {
     const inactiveSelect = document.getElementById("inactiveDrivers");
     const activeSelect = document.getElementById("activeDrivers");
 
-    const selectedInactiveDrivers = Array.from(
-        inactiveSelect.selectedOptions
-    ).map((option) => ({
-        value: option.value,
-        text: option.text,
-        trainingGroup: option.getAttribute("data-training-group"),
-    }));
+    const selectedInactiveDrivers = Array.from(inactiveSelect.selectedOptions)
+        .filter((option) => !option.hidden)
+        .map((option) => ({
+            value: option.value,
+            text: option.text,
+            trainingGroup: option.getAttribute("data-training-group"),
+        }));
 
     const fragment = document.createDocumentFragment();
 
@@ -205,11 +217,6 @@ async function activateDrivers() {
         if (option) {
             const index = option.index;
             inactiveSelect.remove(option.index);
-            if (index < inactiveSelect.length) {
-                inactiveSelect.selectedIndex = index;
-            } else {
-                inactiveSelect.selectedIndex = index - 1;
-            }
         }
     });
     document.getElementById("save").disabled = false;
