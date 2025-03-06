@@ -154,13 +154,13 @@ async function activateDrivers() {
     const inactiveSelect = document.getElementById("inactiveDrivers");
     const activeSelect = document.getElementById("activeDrivers");
 
-    const selectedInactiveDrivers = Array.from(
-        inactiveSelect.selectedOptions
-    ).map((option) => ({
-        value: option.value,
-        text: option.text,
-        trainingGroup: option.getAttribute("data-training-group"),
-    }));
+    const selectedInactiveDrivers = Array.from(inactiveSelect.selectedOptions)
+        .filter((option) => !option.hidden)
+        .map((option) => ({
+            value: option.value,
+            text: option.text,
+            trainingGroup: option.getAttribute("data-training-group"),
+        }));
 
     const fragment = document.createDocumentFragment();
 
