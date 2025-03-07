@@ -41,7 +41,7 @@ flowchart LR
     1. `ON` 2 Sekunden gedrückt halten
     2. `#` drücken
     3. `#` drücken
-    4. `1` drücken
+    4. `1🟢` drücken
     5. `🔴 (L)` drücken
 4. Laser und Spiegel aufbauen
     1. Stative anschrauben
@@ -56,7 +56,7 @@ flowchart LR
 1. Laptop herunterfahren
 2. Steuerung ausschalten
     1. `F` drücken
-    2. `🔼` drücken
+    2. `▲` drücken
     3. `#` drücken
     4. `*` drücken
 3. Steuerung von Laptop trennen
