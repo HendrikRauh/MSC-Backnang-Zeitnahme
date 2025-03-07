@@ -24,12 +24,13 @@ config:
   layout: elk
 ---
 flowchart LR
-    Laptop --- Steuerung
-    Steuerung ==== Laser
-
-    subgraph Lichtschranke
-        Laser o-...-o Spiegel
-    end
+ subgraph Lichtschranke["Lichtschranke"]
+        Spiegel["Spiegel"]
+        Laser["Laser"]
+  end
+    Laptop["Laptop"] --- Steuerung["Steuerung"]
+    Steuerung --- Laser & Laser
+    Laser -...- Spiegel
 ```
 
 ## Aufbau
