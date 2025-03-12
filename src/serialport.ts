@@ -37,39 +37,36 @@ async function handleSerialPort() {
 async function parseSerialData(data: string): Promise<void> {
     accumulatedData += data;
 
-    const timeRegexNormalTime = /(\d{1,2}:\d{2}:\d{2}\.\d{3})/;
+    const timeRegex = /(?:(\d{1,2}):)??(?:(\d{1,2}):)?(\d{1,2}),(\d{3})/;
 
-    const timeRegexBeforeOne = /(\d{1,2}:\d{2}\.\d{3})/;
-
-    let match = accumulatedData.match(timeRegexNormalTime);
-
+    let match = accumulatedData.match(timeRegex);
     if (!match) {
-        match = accumulatedData.match(timeRegexBeforeOne);
-        if (match) {
-            accumulatedData = "0:" + match[1];
-            match = accumulatedData.match(timeRegexNormalTime);
-        }
-    }
-
-    if (match) {
-        var time = match[1];
-
-        const [hours, minutes, seconds, milliseconds] = time.split(/[:.]/);
-
-        const date = new Date();
-        date.setHours(
-            parseInt(hours, 10),
-            parseInt(minutes, 10),
-            parseInt(seconds, 10),
-            parseInt(milliseconds, 10)
-        );
-
-        accumulatedData = "";
-        await createTimestamp(date);
-    } else {
         console.error(`No time found in data, accumulating more data...`);
         console.error(`Accumulated data: ${accumulatedData}`);
+        return;
     }
+
+    let hours = match[1] ? parseInt(match[1]) : 0;
+    let minutes = match[2] ? parseInt(match[2]) : 0;
+    let seconds = parseInt(match[3]);
+    let milliseconds = parseInt(match[4]);
+
+    if (hours > 23 || minutes > 59 || seconds > 59 || milliseconds > 999) {
+        console.warn("Invalid time values:", {
+            hours,
+            minutes,
+            seconds,
+            milliseconds,
+        });
+        accumulatedData = "";
+        return;
+    }
+
+    let date = new Date();
+    date.setHours(hours, minutes, seconds, milliseconds);
+
+    accumulatedData = "";
+    await createTimestamp(date);
 }
 
 async function findAndOpenSerialPort(manufacturer: string | undefined) {
