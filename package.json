@@ -5,7 +5,7 @@
     "main": "./out/app.js",
     "dependencies": {
         "@pm2/io": "^6.1.0",
-        "@prisma/client": "^6.4.1",
+        "@prisma/client": "^6.5.0",
         "@serialport/parser-readline": "^12.0.0",
         "chokidar": "^3.6.0",
         "colors": "^1.4.0",
@@ -14,7 +14,7 @@
         "express-rate-limit": "^7.5.0",
         "express-session": "^1.18.1",
         "helmet": "^7.2.0",
-        "prisma": "^6.4.1",
+        "prisma": "^6.5.0",
         "pug": "^3.0.3",
         "qrcode": "^1.5.4",
         "serialport": "^12.0.0",
@@ -58,7 +58,7 @@
     "devDependencies": {
         "@types/express": "^5.0.0",
         "@types/express-session": "^1.18.1",
-        "@types/node": "^22.13.9",
+        "@types/node": "^22.13.10",
         "@types/ws": "^8.18.0",
         "typescript": "^5.8.2"
     }
