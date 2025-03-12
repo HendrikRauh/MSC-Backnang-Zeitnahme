@@ -15,6 +15,8 @@ html(lang="de")
 
         block scripts
             script(src="/js/theme.js" type="module" defer)
+            if typeof showHomeButton === "undefined" || showHomeButton === true
+                script(src="/js/homebutton.js" type="module" defer)
 
         block styles
             link(rel="stylesheet" href="/css/values.css" defer)
@@ -24,6 +26,5 @@ html(lang="de")
         block content
 
         if typeof showHomeButton === "undefined" || showHomeButton === true
-            .home-button
-                a(href="/")
-                    img(src="/icon/home-dark.svg" width="36px" height="36px" alt="Home")
+            a(href="/").home-button
+                img(src="/icon/home-dark.svg" width="36px" height="36px" alt="Home")
