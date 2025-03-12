@@ -36,6 +36,10 @@ h2 {
     width: 0 !important;
 }
 
+.hidden-home-button {
+    display: none;
+}
+
 .home-button {
     background-color: var(--color-primary);
     aspect-ratio: 1/1;
