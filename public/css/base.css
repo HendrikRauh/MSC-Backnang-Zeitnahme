@@ -45,4 +45,5 @@ h2 {
     left: var(--root-spacing);
     bottom: var(--root-spacing);
     padding: var(--spacing);
+    z-index: 5;
 }
