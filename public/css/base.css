@@ -48,6 +48,6 @@ h2 {
     z-index: 5;
 }
 
-.home-button > a > img {
+.home-button > img {
     content: var(--icon-home);
 }
