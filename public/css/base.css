@@ -37,7 +37,8 @@ h2 {
 }
 
 .hidden-home-button {
-    display: none;
+    transform: translateX(calc(-100% - var(--root-spacing)));
+    transition: transform 0.3s ease-in-out;
 }
 
 .home-button {
@@ -50,6 +51,7 @@ h2 {
     bottom: var(--root-spacing);
     padding: var(--spacing);
     z-index: 5;
+    transition: transform 0.3s ease-in-out; /* Add transition for smooth sliding */
 }
 
 .home-button > img {
