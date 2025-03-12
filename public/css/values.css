@@ -40,6 +40,7 @@
     --icon-search: url("/icon/search-dark.png");
     --icon-sort-a: url("/icon/sort-a-dark.png");
     --icon-sort-n: url("/icon/sort-n-dark.png");
+    --icon-home: url("/icon/home-dark.svg");
 }
 
 body.light {
@@ -58,4 +59,5 @@ body.light {
     --icon-search: url("/icon/search-light.png");
     --icon-sort-a: url("/icon/sort-a-light.png");
     --icon-sort-n: url("/icon/sort-n-light.png");
+    --icon-home: url("/icon/home-light.svg");
 }
