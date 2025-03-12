@@ -85,7 +85,10 @@ app.use(async (req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-    res.render("home", { operationMode: CONFIG.OPERATION_MODE });
+    res.render("home", {
+        operationMode: CONFIG.OPERATION_MODE,
+        showHomeButton: false,
+    });
 });
 
 app.get(

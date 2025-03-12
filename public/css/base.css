@@ -35,3 +35,25 @@ h2 {
     display: none !important;
     width: 0 !important;
 }
+
+.hidden-home-button {
+    transform: translateX(calc(-100% - var(--root-spacing)));
+    transition: transform 0.3s ease-in-out;
+}
+
+.home-button {
+    background-color: var(--color-primary);
+    aspect-ratio: 1/1;
+    font-size: 0;
+    border-radius: 50%;
+    position: fixed;
+    left: var(--root-spacing);
+    bottom: var(--root-spacing);
+    padding: var(--spacing);
+    z-index: 5;
+    transition: transform 0.3s ease-in-out; /* Add transition for smooth sliding */
+}
+
+.home-button > img {
+    content: var(--icon-home);
+}
