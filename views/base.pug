@@ -23,6 +23,7 @@ html(lang="de")
     body
         block content
 
-        .home-button
-            a(href="/")
-                img(src="/icon/home-dark.svg" width="36px" height="36px" alt="Home")
+        if typeof showHomeButton === "undefined" || showHomeButton === true
+            .home-button
+                a(href="/")
+                    img(src="/icon/home-dark.svg" width="36px" height="36px" alt="Home")
