@@ -37,7 +37,7 @@ async function handleSerialPort() {
 async function parseSerialData(data: string): Promise<void> {
     accumulatedData += data;
 
-    const timeRegex = /(?:(\d{1,2}):)??(?:(\d{1,2}):)?(\d{1,2}),(\d{3})/;
+    const timeRegex = /(?:(\d{1,2}):)??(?:(\d{1,2}):)?(\d{1,2}).(\d{3})/;
 
     let match = accumulatedData.match(timeRegex);
     if (!match) {
