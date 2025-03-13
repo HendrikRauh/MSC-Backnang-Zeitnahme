@@ -140,7 +140,6 @@ async function startRun() {
         return;
     }
     const selectedTimestamp = select.options[select.selectedIndex].value;
-
     select = document.getElementById("drivers");
     const driver = select.options[select.selectedIndex].value;
 
@@ -180,7 +179,6 @@ async function endRun() {
         return;
     }
     const selectedTimestamp = selectNew.options[selectNew.selectedIndex].value;
-
     try {
         await fetch("/end-run", {
             method: "POST",

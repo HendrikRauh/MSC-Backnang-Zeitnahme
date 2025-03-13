@@ -48,8 +48,8 @@ model Run {
 
 model TimeStamp {
     id        Int      @id @default(autoincrement())
-    timestamp DateTime @unique
-    friendly  String?  @unique
+    timestamp DateTime
+    friendly  String?
     active    Boolean  @default(true)
     startTime Run[]    @relation("Startzeit")
     endTime   Run[]    @relation("Endzeit")

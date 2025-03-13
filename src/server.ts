@@ -127,7 +127,7 @@ app.post("/generate-timestamp", async (req, res) => {
 });
 
 app.post("/start-run", async (req, res) => {
-    const timestamp = new Date(req.body.timestamp);
+    const timestamp = parseInt(req.body.timestamp);
     const driverId = parseInt(req.body.driver);
     const vehicleId = parseInt(req.body.vehicle);
 
@@ -189,7 +189,7 @@ app.post("/reset-data", async (req, res) => {
 });
 
 app.post("/delete-timestamp", async (req, res) => {
-    const timestamp = new Date(req.body.timestamp);
+    const timestamp = parseInt(req.body.timestamp);
     try {
         deactivateTimestamp(timestamp);
         res.status(200).send("Timestamp deleted");
@@ -213,7 +213,7 @@ app.post("/save-drivers", async (req, res) => {
 });
 
 app.post("/end-run", async (req, res) => {
-    const timestamp = new Date(req.body.timestamp);
+    const timestamp = parseInt(req.body.timestamp);
     const run = parseInt(req.body.run);
 
     try {

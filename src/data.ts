@@ -101,7 +101,7 @@ async function fetchDataForStandalone() {
 
         if (timestamps.length > 3) {
             for (let i = 0; i < timestamps.length - 2; i++) {
-                await deactivateTimestamp(timestamps[i].timestamp);
+                await deactivateTimestamp(timestamps[i].id);
             }
         }
     } else {
