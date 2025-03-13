@@ -106,7 +106,11 @@ async function deactivateRun(run: number) {
     });
 }
 
-async function startRun(timestamp: Date, driverId: number, vehicleId: number) {
+async function startRun(
+    timestampId: number,
+    driverId: number,
+    vehicleId: number
+) {
     await runQuery(async (prisma) => {
         return prisma.run.create({
             data: {
@@ -122,7 +126,7 @@ async function startRun(timestamp: Date, driverId: number, vehicleId: number) {
                 },
                 startTime: {
                     connect: {
-                        timestamp: timestamp,
+                        id: timestampId,
                     },
                 },
             },
@@ -132,7 +136,7 @@ async function startRun(timestamp: Date, driverId: number, vehicleId: number) {
     await runQuery(async (prisma) => {
         return prisma.timeStamp.update({
             where: {
-                timestamp: timestamp,
+                id: timestampId,
             },
             data: {
                 active: false,
@@ -170,7 +174,7 @@ async function saveRun(run: number, penalty: number, note: string) {
     });
 }
 
-async function endRun(run: number, timestamp: Date) {
+async function endRun(run: number, timestampId: number) {
     await runQuery(async (prisma) => {
         return prisma.run.update({
             where: {
@@ -179,7 +183,7 @@ async function endRun(run: number, timestamp: Date) {
             data: {
                 endTime: {
                     connect: {
-                        timestamp: timestamp,
+                        id: timestampId,
                     },
                 },
             },
@@ -189,7 +193,7 @@ async function endRun(run: number, timestamp: Date) {
     await runQuery(async (prisma) => {
         return prisma.timeStamp.update({
             where: {
-                timestamp: timestamp,
+                id: timestampId,
             },
             data: {
                 active: false,

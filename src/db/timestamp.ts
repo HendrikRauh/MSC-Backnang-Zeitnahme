@@ -41,12 +41,12 @@ async function fetchTimestamps() {
     });
 }
 
-async function deactivateTimestamp(timestamp: Date) {
-    console.log("Deleting timestamp: " + timestamp);
+async function deactivateTimestamp(timestampId: number) {
+    console.log("Deleting timestamp: " + timestampId);
     await runQuery(async (prisma) => {
         return prisma.timeStamp.update({
             where: {
-                timestamp: timestamp,
+                id: timestampId,
             },
             data: {
                 active: false,

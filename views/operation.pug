@@ -24,7 +24,7 @@ append content
                     if timestampsEmpty 
                         option Kein Zeitstempel
                     for timestamp in timestamps
-                        option(value=timestamp.timestamp) #{timestamp.friendly}
+                        option(value=timestamp.id) #{timestamp.friendly}
                 button(id = "deleteTime" disabled=timestampsEmpty) ❌
             .row
                 select(name="drivers" id="drivers" disabled=driversEmpty)
