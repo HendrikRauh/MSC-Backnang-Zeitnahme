@@ -5,6 +5,10 @@ describe("Basic functionality", () => {
         cy.url().should("eq", Cypress.config().baseUrl + "/");
     });
 
+    it("homebutton disappears after time");
+
+    it("homebutton get visible when action");
+
     it("opens display");
 
     it("opens operation");
