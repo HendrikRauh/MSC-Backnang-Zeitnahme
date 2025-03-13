@@ -1,9 +1,4 @@
 describe("General", () => {
-    it("opens settings", () => {
-        cy.visit("/");
-        cy.contains("Einstellungen").click();
-    });
-
     it("activate manual mode", () => {
         cy.visit("/settings");
 
@@ -54,4 +49,6 @@ describe("Manual Mode", () => {
         cy.contains("RESET").click();
         cy.get("#activeDrivers").find("option").should("have.length", 0);
     });
+
+    it("deletes all times");
 });
