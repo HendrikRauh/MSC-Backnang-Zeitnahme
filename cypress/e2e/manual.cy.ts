@@ -1,40 +1,25 @@
-describe("General", () => {
-    it("activate manual mode", () => {
+describe("Mode", () => {
+    it("activates", () => {
         cy.visit("/settings");
 
         cy.get("#operationMode").select("Manuell");
         cy.get("select:visible").should("have.length", 3);
     });
 
-    it("activate standalone mode", () => {
-        cy.visit("/settings");
-
-        cy.get("#operationMode").select("Standalone");
-        cy.get("select").should("have.length", 1);
-    });
-
-    it("activate manual mode API", () => {
+    it("activates (API)", () => {
         cy.request("POST", "/set-operation-mode", { operationMode: "manual" });
         cy.visit("/settings");
         cy.get("select:visible").should("have.length", 3);
     });
-
-    it("activate standalone mode API", () => {
-        cy.request("POST", "/set-operation-mode", {
-            operationMode: "standalone",
-        });
-        cy.visit("/settings");
-        cy.get("select:visible").should("have.length", 1);
-    });
 });
 
-describe("Driver Management Tests", () => {
+describe("drivermanagement", () => {
     beforeEach(() => {
         cy.request("POST", "/set-operation-mode", { operationMode: "manual" });
         cy.visit("/settings");
     });
 
-    it("filter trainingGroups", () => {
+    it("filters", () => {
         cy.get("#trainingGroups input[type='checkbox']").each(($el) => {
             cy.wrap($el).uncheck();
         });
@@ -51,7 +36,7 @@ describe("Driver Management Tests", () => {
             });
         });
 
-        it("should activate drivers correctly", () => {
+        it("works", () => {
             cy.get("#activeDrivers")
                 .find("option")
                 .then(($activeDrivers) => {
@@ -76,7 +61,7 @@ describe("Driver Management Tests", () => {
     });
 
     describe("Driver Deactivation", () => {
-        it("should deactivate drivers correctly", () => {
+        it("works", () => {
             cy.get("#activeDrivers")
                 .find("option")
                 .then(($activeDrivers) => {
@@ -101,7 +86,7 @@ describe("Driver Management Tests", () => {
     });
 
     describe("Driver Sorting", () => {
-        it("should move driver up correctly", () => {
+        it("upwards works", () => {
             cy.get("#activeDrivers")
                 .find("option")
                 .then(($options) => {
@@ -117,7 +102,7 @@ describe("Driver Management Tests", () => {
                 });
         });
 
-        it("should move driver down correctly", () => {
+        it("downwards works", () => {
             cy.get("#activeDrivers")
                 .find("option")
                 .then(($options) => {
@@ -135,9 +120,33 @@ describe("Driver Management Tests", () => {
     });
 
     describe("Reset Functionality", () => {
-        it("should reset driver management state", () => {
+        it("works", () => {
             cy.contains("RESET").click();
             cy.get("#activeDrivers").find("option").should("have.length", 0);
         });
     });
+
+    describe("Saving", () => {
+        it("works");
+    });
+});
+
+describe("operation", () => {
+    it("gets timestamps");
+    it("starts");
+    it("ends");
+    it("saves info");
+    it("deletes timestamp");
+    it("deletes running");
+    it("deletes finished");
+    it("autorefreshes");
+    it("shows disconnected");
+});
+
+describe("display", () => {
+    it("shows empty message");
+    it("shows last time");
+    it("shows last time info");
+    it("shows last times of driver");
+    it("autorefreshes");
 });

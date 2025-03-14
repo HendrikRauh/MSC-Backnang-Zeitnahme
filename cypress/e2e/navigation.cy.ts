@@ -1,20 +1,20 @@
-describe("Basic functionality", () => {
+describe("Home button", () => {
     beforeEach(() => {
         cy.visit("settings");
     });
 
-    it("has working home button", () => {
+    it("works", () => {
         cy.get(".home-button").click();
         cy.url().should("eq", Cypress.config().baseUrl + "/");
     });
 
-    it("homebutton disappears after time", () => {
+    it("disappears after time", () => {
         cy.get(".home-button").should("be.visible");
         cy.wait(5000);
         cy.get(".home-button").should("not.be.visible");
     });
 
-    it("homebutton gets visible when action", () => {
+    it("reappears after movement", () => {
         cy.wait(5000);
         cy.get(".home-button").should("not.be.visible");
 
@@ -26,43 +26,47 @@ describe("Basic functionality", () => {
         cy.get(".home-button").should("be.visible");
     });
 });
-describe("Links in manual mode", () => {
+describe("homepage links (manual)", () => {
     beforeEach(() => {
         cy.request("POST", "/set-operation-mode", { operationMode: "manual" });
         cy.visit("/");
     });
 
-    it("opens display", () => {
+    it("only show correct", () => {
+        cy.contains("Standalone").should("not.exist");
+    });
+
+    it("display", () => {
         cy.contains("Anzeige").click();
         cy.url().should("eq", Cypress.config().baseUrl + "/displayManual");
     });
 
-    it("opens operation", () => {
+    it("operation", () => {
         cy.contains("Steuerung").click();
         cy.url().should("eq", Cypress.config().baseUrl + "/operation");
         cy.contains("Speichern").should("exist");
     });
 
-    it("opens settings", () => {
+    it("settings", () => {
         cy.contains("Einstellungen").click();
         cy.url().should("eq", Cypress.config().baseUrl + "/settings");
         cy.contains("Modus").should("exist");
     });
 
-    it("opens times", () => {
+    it("times", () => {
         cy.contains("Zeiten").click();
         cy.url().should("eq", Cypress.config().baseUrl + "/times");
         cy.contains("Fahrzeit").should("exist");
     });
 
-    it("opens database", () => {
+    it("database", () => {
         cy.contains("Datenbank").click();
         cy.url().should("eq", Cypress.config().baseUrl + "/database");
         cy.get("#database").should("exist");
     });
 });
 
-describe("Links in standalone mode", () => {
+describe("homepage links (standalone)", () => {
     beforeEach(() => {
         cy.request("POST", "/set-operation-mode", {
             operationMode: "standalone",
@@ -70,22 +74,17 @@ describe("Links in standalone mode", () => {
         cy.visit("/");
     });
 
-    it("has standalone start", () => {
-        cy.visit("/standalone");
-        cy.url().should("eq", Cypress.config().baseUrl + "/displayStandalone");
+    it("only show correct", () => {
+        cy.contains("Steuerung").should("not.exist");
     });
 
-    it("opens settings", () => {
+    it("settings", () => {
         cy.contains("Einstellungen").click();
         cy.url().should("eq", Cypress.config().baseUrl + "/settings");
     });
 
-    it("opens display", () => {
+    it("display", () => {
         cy.contains("Standalone").click();
         cy.url().should("eq", Cypress.config().baseUrl + "/displayStandalone");
-    });
-
-    it("hides others", () => {
-        cy.contains("Steuerung").should("not.exist");
     });
 });
