@@ -45,7 +45,34 @@ describe("Manual Mode", () => {
             cy.wrap($el).check();
         });
 
-        //TODO: select drivers from inactive and click activate. amount of selected should move to active
+        cy.get("#activeDrivers")
+            .find("option")
+            .then(($activeDrivers) => {
+                const activeDriversBefore = $activeDrivers.length;
+
+                cy.get("#inactiveDrivers").select(0);
+                cy.contains("AKTIVIEREN").click();
+                cy.get("#activeDrivers")
+                    .find("option")
+                    .should("have.length.greaterThan", activeDriversBefore);
+                // TODO: test if inactive has less now
+            });
+
+        cy.get("#activeDrivers")
+            .find("option")
+            .then(($activeDrivers) => {
+                const activeDriversBefore = $activeDrivers.length;
+
+                cy.get("#activeDrivers").select(0);
+                cy.contains("DEAKTIVIEREN").click();
+                cy.get("#activeDrivers")
+                    .find("option")
+                    .should("have.length.lessThan", activeDriversBefore);
+                // TODO: test if inactive has more now
+            });
+
+        // TODO: test up and down moving
+
         cy.contains("RESET").click();
         cy.get("#activeDrivers").find("option").should("have.length", 0);
     });
