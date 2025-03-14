@@ -18,9 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const databaseIframe = document.getElementById("database");
     databaseIframe.src = `http://${window.location.hostname}:${dbPort}`;
 
-    databaseIframe.addEventListener("load", () => {
-        document.getElementById("loading").style.display = "none";
-    });
+    // databaseIframe.addEventListener("load", () => {
+    //     document.getElementById("loading").style.display = "none";
+    // });
 });
 
 function refreshData() {
