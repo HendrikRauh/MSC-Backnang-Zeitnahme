@@ -1,13 +1,30 @@
 describe("Basic functionality", () => {
-    it("has working home button", () => {
+    beforeEach(() => {
         cy.visit("settings");
+    });
+
+    it("has working home button", () => {
         cy.get(".home-button").click();
         cy.url().should("eq", Cypress.config().baseUrl + "/");
     });
 
-    it("homebutton disappears after time");
+    it("homebutton disappears after time", () => {
+        cy.get(".home-button").should("be.visible");
+        cy.wait(5000);
+        cy.get(".home-button").should("not.be.visible");
+    });
 
-    it("homebutton get visible when action");
+    it("homebutton gets visible when action", () => {
+        cy.wait(5000);
+        cy.get(".home-button").should("not.be.visible");
+
+        cy.get("body").trigger("mousemove", {
+            bubbles: true,
+            force: true,
+        });
+
+        cy.get(".home-button").should("be.visible");
+    });
 });
 describe("Links in manual mode", () => {
     it("opens display", () => {
