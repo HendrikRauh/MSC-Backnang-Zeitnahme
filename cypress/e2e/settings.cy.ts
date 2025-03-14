@@ -85,8 +85,33 @@ describe("Manual Mode", () => {
                     );
             });
 
-        // TODO: test up and down moving
+        cy.get("#activeDrivers")
+            .find("option")
+            .then(($options) => {
+                const totalOptions = $options.length;
 
+                cy.get("#activeDrivers").select(1);
+                cy.contains("HOCH").click();
+
+                cy.get("#activeDrivers")
+                    .find("option:first")
+                    .invoke("text")
+                    .should("eq", Cypress.$($options[1]).text());
+            });
+
+        cy.get("#activeDrivers")
+            .find("option")
+            .then(($options) => {
+                const totalOptions = $options.length;
+
+                cy.get("#activeDrivers").select(0);
+                cy.contains("RUNTER").click();
+
+                cy.get("#activeDrivers")
+                    .find("option:nth-child(2)")
+                    .invoke("text")
+                    .should("eq", Cypress.$($options[0]).text());
+            });
         cy.contains("RESET").click();
         cy.get("#activeDrivers").find("option").should("have.length", 0);
     });
