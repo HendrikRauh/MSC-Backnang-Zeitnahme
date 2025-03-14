@@ -55,7 +55,14 @@ describe("Manual Mode", () => {
                 cy.get("#activeDrivers")
                     .find("option")
                     .should("have.length.greaterThan", activeDriversBefore);
-                // TODO: test if inactive has less now
+
+                cy.get("#inactiveDrivers")
+                    .find("option")
+                    .its("length")
+                    .should(
+                        "be.lessThan",
+                        Cypress.$("#inactiveDrivers option").length
+                    );
             });
 
         cy.get("#activeDrivers")
@@ -68,7 +75,14 @@ describe("Manual Mode", () => {
                 cy.get("#activeDrivers")
                     .find("option")
                     .should("have.length.lessThan", activeDriversBefore);
-                // TODO: test if inactive has more now
+
+                cy.get("#inactiveDrivers")
+                    .find("option")
+                    .its("length")
+                    .should(
+                        "be.above",
+                        Cypress.$("#inactiveDrivers option").length
+                    );
             });
 
         // TODO: test up and down moving
