@@ -28,3 +28,9 @@ tempCodeRunnerFile.*
 
 # Config
 .env
+
+# Cypress
+
+cypress/screenshots
+cypress/downloads
+cypress/videos

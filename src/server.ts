@@ -121,6 +121,11 @@ app.get("/settings", fetchDataAndRender("settings", fetchDataForSettings));
 
 //* ----------------- SERVER POST ROUTES -----------------
 
+app.post("/set-operation-mode", async (req, res) => {
+    setOperationMode(req.body.operationMode);
+    res.status(200).send("Operation mode set");
+});
+
 app.post("/generate-timestamp", async (req, res) => {
     await generateTimestamp();
     res.send("Demo data generated");
