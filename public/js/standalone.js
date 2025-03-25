@@ -33,9 +33,7 @@ function startTimer() {
     if (!runningElement) return;
 
     const startTimeAttribute = runningElement.getAttribute("data-start-time");
-    if (!startTimeAttribute) {
-        return;
-    }
+    if (!startTimeAttribute) return;
 
     const startTime = new Date(startTimeAttribute);
 
