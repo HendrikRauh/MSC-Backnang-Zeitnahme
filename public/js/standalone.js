@@ -30,6 +30,7 @@ addEventListener("DOMContentLoaded", async () => {
 
 function startTimer() {
     const runningElement = document.getElementById("running");
+    if (!runningElement) return;
 
     const startTimeAttribute = runningElement.getAttribute("data-start-time");
     if (!startTimeAttribute) {
