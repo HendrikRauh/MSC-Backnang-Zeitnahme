@@ -40,16 +40,17 @@ function startTimer() {
     function updateTimer() {
         const currentTime = Date.now();
 
-        const elapsedTime = currentTime - startTime;
+        const elapsedTime = Math.floor(currentTime - startTime);
 
-        const totalSeconds = Math.floor(elapsedTime / 1000);
-        const hours = Math.floor(totalSeconds / 3600);
-        const minutes = Math.floor((totalSeconds % 3600) / 60);
-        const seconds = totalSeconds % 60;
+        const totalMilliseconds = elapsedTime;
+        const hours = Math.floor(totalMilliseconds / 3600000);
+        const minutes = Math.floor((totalMilliseconds % 3600000) / 60000);
+        const seconds = Math.floor((totalMilliseconds % 60000) / 1000);
+        const milliseconds = Math.floor((totalMilliseconds % 1000) / 100);
 
         const formattedTime = `🔴 ${pad(hours)}:${pad(minutes % 60)}:${pad(
             seconds % 60
-        )} 🔴`;
+        )},${milliseconds} 🔴`;
 
         runningElement.textContent = formattedTime;
     }
@@ -59,7 +60,7 @@ function startTimer() {
     }
 
     updateTimer();
-    setInterval(updateTimer, 1000);
+    setInterval(updateTimer, 100);
 }
 
 document.addEventListener("DOMContentLoaded", startTimer);
