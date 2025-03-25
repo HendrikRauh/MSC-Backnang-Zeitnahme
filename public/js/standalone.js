@@ -48,9 +48,18 @@ function startTimer() {
         const seconds = Math.floor((totalMilliseconds % 60000) / 1000);
         const milliseconds = Math.floor((totalMilliseconds % 1000) / 100);
 
-        const formattedTime = `🔴 ${pad(hours)}:${pad(minutes % 60)}:${pad(
+        let formattedTime = `🔴 ${pad(hours)}:${pad(minutes % 60)}:${pad(
             seconds % 60
         )},${milliseconds} 🔴`;
+
+        if (hours == 0) {
+            formattedTime = `🔴 ${pad(minutes % 60)}:${pad(
+                seconds % 60
+            )},${milliseconds} 🔴`;
+        }
+        if (minutes == 0 && hours == 0) {
+            formattedTime = `🔴 ${pad(seconds % 60)},${milliseconds} 🔴`;
+        }
 
         runningElement.textContent = formattedTime;
     }
