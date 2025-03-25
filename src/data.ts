@@ -108,10 +108,13 @@ async function fetchDataForStandalone() {
         var time = "";
     }
 
+    const lastTimestamp = timestamps[timestamps.length - 1];
+
     return {
         portOpened: portOpened,
         lastRun: time,
         running: running,
+        lastTimestamp: lastTimestamp,
     };
 }
 

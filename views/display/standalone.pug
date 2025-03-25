@@ -2,6 +2,7 @@ extends /base.pug
 
 append variables
     - baseTitle = "Display - Standalone"
+    - countUp = true
 
 append scripts 
     script(src="/js/standalone.js")
@@ -19,7 +20,10 @@ append content
             button#reconnect NEU VERBINDEN
     else 
         if running 
-            #running 🔴 MESSUNG 🔴
+            if countUp
+                #running(data-start-time = lastTimestamp.timestamp) 🔴 MESSUNG 🔴
+            else 
+                #running 🔴 MESSUNG 🔴
         else
             #running 🟢 BEREIT 🟢
 
