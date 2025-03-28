@@ -1,5 +1,7 @@
 var accumulatedData = "";
 var portOpened: SerialPort<AutoDetectTypes> | null = null;
+var offset: number | null = null;
+
 import { AutoDetectTypes } from "@serialport/bindings-cpp";
 import { SerialPort } from "serialport";
 import { createTimestamp } from "./db/timestamp";
@@ -14,6 +16,7 @@ async function handleSerialPort() {
         portOpened = await findAndOpenSerialPort("Prolific");
         if (portOpened) {
             console.log(`Connected to port: ${portOpened.path}`);
+            offset = null;
         } else {
             console.error("Failed to open serial port.");
         }
@@ -30,11 +33,13 @@ async function handleSerialPort() {
         if (!found) {
             console.log("Serial port is no longer available.");
             portOpened = null;
+            offset = null;
         }
     }
 }
 
 async function parseSerialData(data: string): Promise<void> {
+    let actualDate = new Date();
     accumulatedData += data;
 
     const timeRegex = /(?:(\d{1,2}):)??(?:(\d{1,2}):)?(\d{1,2}).(\d{3})/;
@@ -62,11 +67,19 @@ async function parseSerialData(data: string): Promise<void> {
         return;
     }
 
-    let date = new Date();
-    date.setHours(hours, minutes, seconds, milliseconds);
+    let originalDate = new Date();
+    originalDate.setHours(hours, minutes, seconds, milliseconds);
+
+    if (offset == null) {
+        offset = calculateOffset(originalDate, actualDate);
+        console.debug("Calculated offset:", offset);
+    }
+
+    let newDate = new Date();
+    newDate.setTime(originalDate.getTime() - offset);
 
     accumulatedData = "";
-    await createTimestamp(date);
+    await createTimestamp(newDate);
 }
 
 async function findAndOpenSerialPort(manufacturer: string | undefined) {
@@ -112,4 +125,12 @@ async function openSerialPort(path: string) {
         console.error("Error connecting to the clock:", e);
         return null;
     }
+}
+
+function calculateOffset(originalDate: Date, actualDate: Date): number {
+    const originalTimestamp = originalDate.getTime();
+    const actualTimestamp = actualDate.getTime();
+
+    const offset = originalTimestamp - actualTimestamp;
+    return offset;
 }
