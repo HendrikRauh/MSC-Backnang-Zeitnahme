@@ -108,10 +108,21 @@ async function fetchDataForStandalone() {
         var time = "";
     }
 
+    const lastTimestamp = timestamps[timestamps.length - 1];
+    const countUp =
+        CONFIG.STANDALONE_TICKING === "1" ||
+        CONFIG.STANDALONE_TICKING === "true" ||
+        CONFIG.STANDALONE_TICKING === "TRUE" ||
+        CONFIG.STANDALONE_TICKING === "True"
+            ? true
+            : false;
+
     return {
         portOpened: portOpened,
         lastRun: time,
         running: running,
+        lastTimestamp: lastTimestamp,
+        countUp: countUp,
     };
 }
 
