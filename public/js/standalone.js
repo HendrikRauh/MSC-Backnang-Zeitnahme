@@ -42,8 +42,7 @@ function startTimer() {
 
         const elapsedTime = Math.floor(currentTime - startTime);
 
-        // accounting for delay with 200ms
-        const totalMilliseconds = elapsedTime - 200;
+        const totalMilliseconds = elapsedTime;
         const hours = Math.floor(totalMilliseconds / 3600000);
         const minutes = Math.floor((totalMilliseconds % 3600000) / 60000);
         const seconds = Math.floor((totalMilliseconds % 60000) / 1000);
