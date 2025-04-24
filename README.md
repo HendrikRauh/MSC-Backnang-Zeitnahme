@@ -9,7 +9,7 @@ Koffer "Zeitnahme" beinhaltet:
 -   RJ11-USB-Kabel
 -   Spiegel (mit Stativ)
 -   Laser (mit Stativ)
--   Steuerung
+-   Steuerung (Tag Heuer Chronoprinter 520)
 -   Verbindungskabel Steuerung-Laser
 
 > [!TIP]
@@ -130,6 +130,14 @@ oder
     -   Steuerung neustarten
 -   Steuerung druckt alles aus
     -   Drucker deaktivieren
+
+| Symptom                 | Ursache                   | Lösung                              |
+| ----------------------- | ------------------------- | ----------------------------------- |
+| Laser leuchtet `Batt`   | Batterie leer             | Batterie wechseln                   |
+| Steuerung geht nicht an | Batterie leer             | Batterie wechseln                   |
+| Zeiten kommen nicht an  | Sperre aktiv              | `🔴(L)` drücken                     |
+| Zeiten kommen nicht an  | Laser nicht verbunden     | Laser mit Steuerung verbinden       |
+| Zeiten kommen nicht an  | Steuerung nicht verbunden | Steuerung mit Laptop (neu)verbinden |
 
 ---
 
